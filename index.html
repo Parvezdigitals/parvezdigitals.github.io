@@ -173,7 +173,7 @@ select.dtInp{width:auto;padding:8px}
 <div class="i" onclick="go('https://edistrict.wb.gov.in/')">📄 E-District - Birth/Death - Official</div>
 </div></div>
 
-<div class="g" style="border-color:#a855f7"><div class="gh" style="background:linear-gradient(90deg,#a855f7,#c084fc);color:#fff" onclick="tg('c')"><span>📜 Government Certificates</span><span>▼</span></div><div id="c" class="gl">
+<div class="g" style="border-color:#a855f7"><div class="gh" style="background:linear-gradient(90deg,#a855f7,#c084fc);color:#fff" onclick="tg('c')"><span>📜 Govt Certificates</span><span>▼</span></div><div id="c" class="gl">
 <div class="i" onclick="go('https://edistrict.wb.gov.in/')">📜 Caste Certificate - E-District - Official</div>
 <div class="i" onclick="go('https://edistrict.wb.gov.in/')">💰 Income Certificate - E-District - Official</div>
 <div class="i" onclick="go('https://edistrict.wb.gov.in/')">🏠 Residential Certificate - E-District - Official</div>
@@ -193,6 +193,8 @@ select.dtInp{width:auto;padding:8px}
 <div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#fb923c);color:#fff" onclick="tg('ga')"><span>⛽ Gas Service</span><span>▼</span></div><div id="ga" class="gl">
 <div class="i" onclick="go('https://my.ebharatgas.com/')">⛽ Bharat Gas - Official</div>
 <div class="i" onclick="go('https://www.indane.co.in/')">⛽ Indane Gas - Official</div>
+<div class="i" onclick="go('https://cx.indianoil.in/')">⛽ Indane Gas - New Portal - Official</div>
+<div class="i" onclick="go('https://myhpgas.in/')">⛽ HP Gas - New Portal - Official</div>
 </div></div>
 
 <div class="g" style="border-color:#2563eb"><div class="gh" style="background:linear-gradient(90deg,#2563eb,#3b82f6);color:#fff" onclick="tg('ot')"><span>🏛️ Govt Services</span><span>▼</span></div><div id="ot" class="gl">
@@ -204,10 +206,14 @@ select.dtInp{width:auto;padding:8px}
 <div class="i" onclick="go('https://wbpsc.gov.in/')">📝 WBPSC - Official Portal</div>
 <div class="i" onclick="go('https://samarth.wb.gov.in/')">💰 Pensioner Status (Samarth) - Official</div>
 <div class="i" onclick="go('https://www.ncs.gov.in/')">💼 Job Search - NCS Official</div>
-<div class="i" onclick="go('https://www.11zon.com/')">📄 11Zon - PDF Tools - Official</div>
-<div class="i" onclick="openPVC()">🪪 Auto PVC Card Maker - Parvez Tool</div>
 <div class="i" onclick="go('https://wbmdfcscholarship.in/')">🎓 Aikyashree - Scholarship - Official</div>
 <div class="i" onclick="go('https://ssc.gov.in/')">📝 SSC - Staff Selection Commission</div>
+<div class="i" onclick="go('https://www.rrbapply.gov.in/')">🚂 RRB - Railway Recruitment Board - Apply - Official</div>
+<div class="i" onclick="go('https://wbbpe.wb.gov.in/')">📝 Primary TET - WBBPE - Official</div>
+<div class="i" onclick="go('https://www.westbengalssc.com/')">📚 Upper Primary - WBSSC - Official</div>
+<div class="i" onclick="go('https://prb.wb.gov.in/')">👮 Police Constable - WBPRB - Official</div>
+<div class="i" onclick="go('https://indiapostgdsonline.cept.gov.in/')">📮 Post Office GDS - India Post - Apply - Official</div>
+<div class="i" onclick="go('https://www.wbprd.gov.in/')">🏛️ Panchayat Recruitment - WBPRD - Official</div>
 <div class="i" onclick="go('https://www.npci.org.in/')">🏦 NPCI Service - Aadhaar Seeding - Official - NEW</div>
 <div class="i" onclick="go('https://retail.onlinesbi.sbi/retail/login.htm')">🏦 SBI KYC Update - Internet Banking - Official - NEW</div>
 <div class="i" onclick="go('https://www.ckycindia.in/')">🪪 CKYC - Central KYC Registry - Check Status - Official - NEW</div>
@@ -496,7 +502,7 @@ select.dtInp{width:auto;padding:8px}
 function go(u){window.open(u,'_blank');}
 function tg(id){var e=document.getElementById(id);e.classList.toggle('open');}
 function closeWelcome(){document.getElementById('welcomePopup').style.display='none';}
-window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('welcomePopup').style.display='flex';}, 300);});
+window.addEventListener('load',()=>{setTimeout(()=>{var w=document.getElementById('welcomePopup');w.style.display='flex';setTimeout(()=>{w.style.display='none';},2000);}, 300);});
 function toggleMenu(){var m=document.getElementById('sideMenu');var o=document.getElementById('overlay');m.classList.toggle('open');o.classList.toggle('open');}
 
 function openPVC(){document.getElementById('pvcToolView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0);}
