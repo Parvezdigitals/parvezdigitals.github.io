@@ -33,8 +33,15 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#
 .svc.ic{font-size:24px;flex-shrink:0}
 .svc.nm{flex:1;font-size:14px;font-weight:600;color:#e2e8f0}
 .svc.go{color:var(--gold2);font-size:18px}
+.fic{width:30px;height:30px;object-fit:contain;flex-shrink:0;border-radius:7px;background:#fff;padding:3px}
+.mic{width:48px;height:48px;object-fit:contain;display:block;margin:0 auto 8px;background:#fff;border-radius:12px;padding:5px}
 .tag{font-size:9px;background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:20px;font-weight:700;white-space:nowrap}
 .tag.free{background:#1e3a8a;color:#bfdbfe}.tag.wb{background:#7c2d12;color:#fed7aa}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.main-svc{background:linear-gradient(145deg,#3a2c05,#1e293b);border:2px solid var(--gold2);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;box-shadow:0 0 14px rgba(212,160,23,.35)}
+.main-svc:active{transform:scale(.96)}
+.main-svc.nm{font-size:13px;font-weight:700;color:var(--gold2)}
+.main-svc.st{font-size:9px;color:#a7f3d0;background:#065f46;border-radius:12px;padding:2px 8px;display:inline-block;margin-top:6px}
 .wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.05;pointer-events:none;z-index:0;width:280px}
 .fab{position:fixed;bottom:18px;right:16px;z-index:200;display:flex;flex-direction:column;gap:10px}
 .fab a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
@@ -61,7 +68,7 @@ canvas{max-width:100%;border-radius:10px;margin-top:10px;display:none}
 .row2{display:flex;gap:8px}.row2>*{flex:1}
 .note{font-size:11px;color:#94a3b8;margin-top:8px;line-height:1.5}
 .kbd{font-size:11px;color:#64748b;text-align:center;margin-top:14px}
-@media(min-width:700px){.dash{padding:20px}.tt h1{font-size:20px}}
+@media(min-width:700px){.dash{padding:20px}.tt h1{font-size:20px}.main-grid{grid-template-columns:1fr 1fr 1fr}}
 </style>
 </head>
 <body>
@@ -97,13 +104,14 @@ canvas{max-width:100%;border-radius:10px;margin-top:10px;display:none}
 <p class="wb">West Bengal • Trusted • Professional • Secure</p>
 <div class="hint">Tap menu button on top to browse all services<br><span style="font-size:11px;color:#94a3b8">Official government portals • Secure • Verified • Professional</span></div>
 </div>
-<div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap">
-<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🅰️</span><span class="nm">Aadhaar</span><span class="tag">Official</span></div>
-<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🅿️</span><span class="nm">PAN</span><span class="tag">Official</span></div>
-<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🗳️</span><span class="nm">Voter</span><span class="tag">Official</span></div>
-<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🍚</span><span class="nm">Ration</span><span class="tag">Official</span></div>
-<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🌾</span><span class="nm">PM Kisan</span><span class="tag">Official</span></div>
-<div class="svc" style="flex:1;min-width:140px;justify-content:center" onclick="go('govt')"><span class="ic">📋</span><span class="nm">Full Menu</span><span class="tag wb">55+ Services</span></div>
+<div class="sec-t">⭐ Main Services</div>
+<div class="main-grid">
+<div class="main-svc" onclick="openU('https://www.utiitsl.com')"><img class="mic" src="https://www.google.com/s2/favicons?domain=utiitsl.com&sz=128" onerror="this.outerHTML='🅿️'"><span class="nm">PAN Card</span><br><span class="st">UTI / NSDL Official</span></div>
+<div class="main-svc" onclick="openU('https://myaadhaar.uidai.gov.in')"><img class="mic" src="https://www.google.com/s2/favicons?domain=myaadhaar.uidai.gov.in&sz=128" onerror="this.outerHTML='🅰️'"><span class="nm">Aadhaar</span><br><span class="st">UIDAI Official</span></div>
+<div class="main-svc" onclick="openU('https://voters.eci.gov.in')"><img class="mic" src="https://www.google.com/s2/favicons?domain=voters.eci.gov.in&sz=128" onerror="this.outerHTML='🗳️'"><span class="nm">Voter Card</span><br><span class="st">ECI Official</span></div>
+<div class="main-svc" onclick="openU('https://food.wb.gov.in')"><img class="mic" src="https://www.google.com/s2/favicons?domain=food.wb.gov.in&sz=128" onerror="this.outerHTML='🍚'"><span class="nm">Ration Card</span><br><span class="st">WB Food Dept</span></div>
+<div class="main-svc" onclick="openU('https://pmkisan.gov.in')"><img class="mic" src="https://www.google.com/s2/favicons?domain=pmkisan.gov.in&sz=128" onerror="this.outerHTML='🌾'"><span class="nm">PM Kisan</span><br><span class="st">Official</span></div>
+<div class="main-svc" onclick="openU('https://beneficiary.nha.gov.in')"><img class="mic" src="https://www.google.com/s2/favicons?domain=beneficiary.nha.gov.in&sz=128" onerror="this.outerHTML='🏥'"><span class="nm">Ayushman</span><br><span class="st">PM-JAY Official</span></div>
 </div>
 <div class="sec-t">🔥 Popular - All Official</div>
 <div id="pop"></div>
@@ -132,11 +140,27 @@ canvas{max-width:100%;border-radius:10px;margin-top:10px;display:none}
 <div class="dash">
 <button class="bk" onclick="go('home')">‹ Back</button>
 <div class="sec-t">🏦 Banking Service</div>
-<div class="svc" onclick="openU('https://www.paynearby.in')"><span class="ic">🏧</span><span class="nm">PayNearby — Official Site</span><span class="go">›</span></div>
-<div class="svc" onclick="openU('https://www.spicemoney.com')"><span class="ic">💳</span><span class="nm">Spice Money — Official Site</span><span class="go">›</span></div>
-<div class="svc" onclick="openU('https://www.onlinesbi.sbi')"><span class="ic">🏛️</span><span class="nm">SBI — e-KYC / Internet Banking</span><span class="go">›</span></div>
-<div class="svc" onclick="openU('https://www.npci.org.in')"><span class="ic">🔗</span><span class="nm">NPCI — Aadhaar Seeding / DBT Status</span><span class="go">›</span></div>
-<div class="svc" onclick="openU('https://www.ckycindia.in')"><span class="ic">📝</span><span class="nm">CKYC — Check KYC Status</span><span class="go">›</span></div>
+<div class="sec-t" style="font-size:13px">💼 AEPS / Money Transfer</div>
+<div class="svc" onclick="openU('https://www.paynearby.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=paynearby.in&sz=64" onerror="this.outerHTML='🏧'"><span class="nm">PayNearby — Official Site</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.spicemoney.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=spicemoney.com&sz=64" onerror="this.outerHTML='💳'"><span class="nm">Spice Money — Official Site</span><span class="go">›</span></div>
+<div class="sec-t" style="font-size:13px">🏛️ Bank e-KYC / Video KYC</div>
+<div class="svc" onclick="openU('https://retail.onlinesbi.sbi')"><img class="fic" src="https://www.google.com/s2/favicons?domain=onlinesbi.sbi&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">SBI — e-KYC / Internet Banking</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.pnbindia.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=pnbindia.in&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">PNB — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.bankofbaroda.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=bankofbaroda.in&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Bank of Baroda — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.canarabank.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=canarabank.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Canara Bank — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.unionbankofindia.co.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=unionbankofindia.co.in&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Union Bank — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.bankofindia.co.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=bankofindia.co.in&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Bank of India — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.centralbankofindia.co.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=centralbankofindia.co.in&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Central Bank — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.iob.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=iob.in&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Indian Overseas Bank — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.ucobank.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=ucobank.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">UCO Bank — e-KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.hdfcbank.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=hdfcbank.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">HDFC Bank — Video KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.icicibank.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=icicibank.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">ICICI Bank — Video KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.axisbank.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=axisbank.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Axis Bank — Video KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.kotak.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=kotak.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Kotak Mahindra — Video KYC</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://bandhanbank.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=bandhanbank.com&sz=64" onerror="this.outerHTML='🏦'"><span class="nm">Bandhan Bank — e-KYC</span><span class="go">›</span></div>
+<div class="sec-t" style="font-size:13px">🔗 KYC Status Check</div>
+<div class="svc" onclick="openU('https://www.npci.org.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=npci.org.in&sz=64" onerror="this.outerHTML='🔗'"><span class="nm">NPCI — Aadhaar Seeding / DBT Status</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.ckycindia.in')"><img class="fic" src="https://www.google.com/s2/favicons?domain=ckycindia.in&sz=64" onerror="this.outerHTML='📝'"><span class="nm">CKYC — Check KYC Status</span><span class="go">›</span></div>
 </div>
 </div>
 
@@ -212,8 +236,8 @@ canvas{max-width:100%;border-radius:10px;margin-top:10px;display:none}
 <div class="tool"><h4>📝 Text to PDF</h4><label>Paste Text</label><input type="text" id="t2pT" placeholder="Type or paste text here"><button class="btn" onclick="t2p()">Create PDF</button><div class="out" id="t2pO"></div></div>
 <p class="note">Full PDF merge/split/OCR needs server — for advanced work use the free sites below.</p>
 <div class="sec-t">🌐 Free Online Tool Sites</div>
-<div class="svc" onclick="openU('https://www.ilovepdf.com')"><span class="ic">🧰</span><span class="nm">iLovePDF — All PDF Tools</span><span class="go">›</span></div>
-<div class="svc" onclick="openU('https://smallpdf.com')"><span class="ic">📄</span><span class="nm">SmallPDF</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.ilovepdf.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=ilovepdf.com&sz=64" onerror="this.outerHTML='🧰'"><span class="nm">iLovePDF — All PDF Tools</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://smallpdf.com')"><img class="fic" src="https://www.google.com/s2/favicons?domain=smallpdf.com&sz=64" onerror="this.outerHTML='📄'"><span class="nm">SmallPDF</span><span class="go">›</span></div>
 </div>
 </div>
 
@@ -272,7 +296,8 @@ const G=[
 ["WBPSC","https://wbpsc.gov.in","📋","WB Govt"],
 ["Yuvashakti","https://yuvashakti.wb.gov.in","⚡","WB Govt"]];
 const P=["PAN Services (UTI/NSDL)","Aadhaar Services","Voter Services","Instant e-PAN - Income Tax Official|https://eportal.incometax.gov.in","Banglarbhumi (Land Records)","E-District (All Certificates)"];
-function svc(n,u,ic,t){return `<div class="svc" onclick="openU('${u}')"><span class="ic">${ic}</span><span class="nm">${n}</span><span class="tag ${t.includes('WB')?'wb':(t==='Official'?'':'free')}">${t}</span><span class="go">›</span></div>`}
+function fav(u,e){try{const h=new URL(u).hostname;return `<img class="fic" src="https://www.google.com/s2/favicons?domain=${h}&sz=64" onerror="this.outerHTML='${e}'">`}catch(x){return `<span class="ic">${e}</span>`}}
+function svc(n,u,ic,t){return `<div class="svc" onclick="openU('${u}')">${fav(u,ic)}<span class="nm">${n}</span><span class="tag ${t.includes('WB')?'wb':(t==='Official'?'':'free')}">${t}</span><span class="go">›</span></div>`}
 document.getElementById('govtList').innerHTML=G.map(g=>svc(g[0],g[1],g[2],g[3])).join('');
 document.getElementById('pop').innerHTML=P.map(p=>{const[n,u]=p.split('|');const f=G.find(g=>g[0]===n);return f?svc(f[0],u||f[1],f[2],f[3]):''}).join('');
 function tgM(){document.getElementById('menu').classList.toggle('on');document.getElementById('ovl').classList.toggle('on')}
