@@ -2,190 +2,299 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>PARVEZ DIGITAL SERVICE - 55+ Services</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<link rel="manifest" href='data:application/manifest+json,{"name":"PARVEZ DIGITAL SERVICE","short_name":"Parvez Digital","display":"standalone","background_color":"#0f172a","theme_color":"#0f172a","icons":[{"src":"logo.jpg","sizes":"512x512"}]}'>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
 <meta name="theme-color" content="#0f172a">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Parvez Digital">
-<link rel="apple-touch-icon" href="logo.jpg">
-<link rel="icon" href="logo.jpg">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href='data:application/manifest+json,{"name":"PARVEZ DIGITAL SERVICE","short_name":"Parvez Digital","display":"standalone","background_color":"%230f172a","theme_color":"%230f172a","icons":[{"src":"https://parvezdigitals.github.io/logo.jpg","sizes":"512x512","type":"image/jpeg"}]}'>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
-body{background:#f1f5f9;color:#0f172a;overflow-x:hidden}
-.topBar{position:fixed;top:0;left:0;width:100%;height:56px;background:#0f172a;display:flex;align-items:center;justify-content:space-between;padding:0 12px;z-index:1000;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:10px}
-.logoIcon{width:36px;height:36px;border-radius:50%;object-fit:cover;background:#000;border:2px solid #f59e0b}
-.logoText{color:#fff;font-weight:900;font-size:14px;line-height:1.1}
-.logoSub{color:#fbbf24;font-size:9px;font-weight:700}
-.menuDots{width:44px;height:44px;background:#1e293b;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:2px solid #f59e0b}
-.dotLine{width:20px;height:3px;background:#f59e0b;border-radius:2px}
-#sideMenu{position:fixed;top:56px;right:-100%;width:100%;max-width:400px;height:calc(100% - 56px);background:#0f172a;z-index:999;transition:right.3s ease;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
-#sideMenu.open{right:0}
-.overlay{position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);background:rgba(0,0,0,.5);z-index:998;display:none}
-.overlay.open{display:block}
-.mainContent{margin-top:56px;padding:8px;max-width:500px;margin-left:auto;margin-right:auto;min-height:calc(100vh - 56px)}
-.welcomeCard{background:linear-gradient(135deg,#0f172a,#1e293b);border:2px solid #f59e0b;border-radius:16px;padding:20px;text-align:center;color:#fff;margin-bottom:12px}
-.quickGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.qCard{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
-.qCard:hover{border-color:#f59e0b;background:#fffbeb}
-.g{width:100%;border-radius:10px;background:#fff;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.gh{padding:10px 12px;font-size:13px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:40px;border-radius:9px}
-.gl{display:none;background:#fff;padding:8px;border-radius:0 0 12px 12px}
-.gl.open{display:block}
-.i{padding:12px;font-size:11px;font-weight:700;color:#1e293b;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin:5px 0;cursor:pointer;line-height:1.4;word-wrap:break-word}
-.i:hover{background:#fffbeb;border-color:#f59e0b}
-#welcomePopup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:none;align-items:center;justify-content:center}
-.welcomeBox{background:#0f172a;border:2px solid #f59e0b;border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center}
-.welcomeBox h2{color:#fbbf24;font-size:20px;font-weight:900;margin-bottom:8px}
-.welcomeBox p{color:#fff;font-size:13px;margin-bottom:12px}
-.welcomeBox.sub{color:#94a3b8;font-size:10px;margin-bottom:16px}
-.welcomeBtn{background:#22c55e;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:900;font-size:13px;cursor:pointer;width:100%}
-.helpBox{background:#0f172a;border:2px solid #f59e0b;border-radius:12px;padding:14px;margin:8px 0;text-align:center}
-#pvcToolView,#epView,#panView,#docView{display:none;position:fixed;top:0;bottom:0;left:0;width:100%;background:#0f172a;z-index:5000;overflow-y:auto}
-.pvTopBar{background:#0f172a;border-bottom:2px solid #f59e0b;padding:12px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
-.pvBackBtn{background:#1e293b;color:#f59e0b;border:2px solid #f59e0b;border-radius:8px;padding:8px 14px;font-weight:900;font-size:13px;cursor:pointer}
-.pvTitle{font-weight:900;font-size:15px;color:#fff}
-.pvSub{font-size:10px;color:#fbbf24;font-weight:700}
-.pvWrap{max-width:520px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:14px}
-.pvCard{background:#1e293b;border:2px solid #f59e0b;border-radius:14px;padding:14px}
-.pvCard h3{font-size:14px;font-weight:900;color:#fbbf24;margin-bottom:10px}
-.pvUploadBtn{display:block;width:100%;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:900;font-size:13px;cursor:pointer;text-align:center;margin-bottom:10px}
-canvas.pvPreview{width:100%;border-radius:10px;background:#020617;touch-action:pan-y;display:block}
-.pvControls{display:flex;gap:8px;margin-top:10px}
-.pvBtn{flex:1;border:none;border-radius:10px;padding:11px 6px;font-weight:900;font-size:12px;cursor:pointer;color:#fff}
-.pvBtnAuto{background:#22c55e}.pvBtnRot{background:#8b5cf6}.pvBtnReset{background:#64748b}
-.pvBtnDl{background:#f59e0b;color:#000;width:100%;margin-top:8px;font-size:13px;border:none;border-radius:10px;padding:11px 6px;font-weight:900;cursor:pointer}
-.pvZoomRow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;font-weight:700;color:#cbd5e1}
-.pvZoomRow input{flex:1;accent-color:#f59e0b}
-.pvHowto{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:12px;font-size:11px;line-height:1.7;color:#cbd5e1}
-.pvHowto b{color:#fbbf24}
-.pvFooter{text-align:center;font-size:10px;color:#64748b;padding:16px}
-input.pvFile{display:none}
-.epLbl{font-size:12px;font-weight:900;color:#fbbf24}
-.epChips{display:flex;flex-wrap:wrap;gap:8px}
-.epChip{background:#1e293b;color:#fff;border:2px solid #334155;border-radius:10px;padding:10px 12px;font-weight:900;font-size:12px;cursor:pointer}
-.epChip.on{background:#f59e0b;color:#000;border-color:#f59e0b}
-.dtPanel{display:none}.dtPanel.on{display:block}
-.dtRes{font-size:12px;font-weight:900;color:#22c55e;margin-top:8px;line-height:1.6}
-.dtInp{width:100%;background:#0f172a;color:#fff;border:2px solid #334155;border-radius:10px;padding:11px;font-size:12px;font-weight:700}
-textarea.dtInp{min-height:120px;resize:vertical;font-weight:400}
-select.dtInp{width:auto;padding:8px}
-@media (min-width:1024px){#sideMenu{left:0!important;right:auto!important;width:340px;max-width:340px;transition:none}#overlay{display:none!important}.menuDots{display:none!important}.mainContent{margin-left:372px;max-width:1020px;padding:20px 24px}#pvcToolView,#epView,#panView,#docView{left:340px;width:calc(100% - 340px)}}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--gold:#d4a017;--gold2:#f5c542;--bg:#0f172a;--card:#1e293b;--line:#d4a017}
+html,body{height:100%}
+body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b);color:#e2e8f0;min-height:100vh}
+.top{position:sticky;top:0;z-index:100;background:rgba(15,23,42,.97);border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:10px;padding:10px 12px}
+.logo{width:46px;height:46px;border-radius:50%;border:3px solid var(--gold);object-fit:cover;flex-shrink:0;background:#000}
+.tt h1{font-size:16px;color:var(--gold2);letter-spacing:1px}
+.tt p{font-size:10px;color:#94a3b8}
+.menu{margin-left:auto;background:#1e293b;border:2px solid var(--gold);color:var(--gold2);font-size:22px;width:46px;height:46px;border-radius:12px;cursor:pointer;flex-shrink:0}
+.dash{max-width:900px;margin:0 auto;padding:14px 12px 90px}
+.card{background:linear-gradient(145deg,#1e293b,#0f172a);border:2px solid var(--gold);border-radius:18px;padding:22px 16px;text-align:center;margin-bottom:14px;box-shadow:0 6px 24px rgba(212,160,23,.15)}
+.card h2{color:var(--gold2);font-size:22px;margin-bottom:6px}
+.card.sub{color:#cbd5e1;font-size:13px;margin-bottom:4px}
+.card.wb{color:#94a3b8;font-size:11px;margin:8px 0}
+.hint{background:#0f172a;border:1px dashed var(--gold);border-radius:10px;padding:10px;font-size:12px;color:var(--gold2);margin-top:10px}
+.sec-t{font-size:15px;color:var(--gold2);margin:18px 4px 10px;font-weight:700}
+.svc{background:var(--card);border:1px solid #334155;border-left:4px solid var(--gold);border-radius:12px;padding:13px 14px;margin-bottom:9px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s}
+.svc:active{transform:scale(.98);background:#273449}
+.svc.ic{font-size:24px;flex-shrink:0}
+.svc.nm{flex:1;font-size:14px;font-weight:600;color:#e2e8f0}
+.svc.go{color:var(--gold2);font-size:18px}
+.tag{font-size:9px;background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:20px;font-weight:700;white-space:nowrap}
+.tag.free{background:#1e3a8a;color:#bfdbfe}.tag.wb{background:#7c2d12;color:#fed7aa}
+.wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.05;pointer-events:none;z-index:0;width:280px}
+.fab{position:fixed;bottom:18px;right:16px;z-index:200;display:flex;flex-direction:column;gap:10px}
+.fab a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.fab.wa{background:#22c55e}.fab.cl{background:var(--gold)}
+#ovl{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:150;display:none}
+#ovl.on{display:block}
+#menu{position:fixed;top:0;right:-320px;width:300px;max-width:85vw;height:100%;background:#0f172a;border-left:3px solid var(--gold);z-index:160;transition:.25s;overflow-y:auto;padding:16px}
+#menu.on{right:0}
+#menu h3{color:var(--gold2);font-size:14px;margin:14px 0 8px;border-bottom:1px solid #334155;padding-bottom:6px}
+#menu a{display:block;color:#cbd5e1;text-decoration:none;font-size:13px;padding:9px 10px;border-radius:8px}
+#menu a:active{background:#1e293b;color:var(--gold2)}
+.mx{float:right;color:#94a3b8;font-size:20px;cursor:pointer}
+.pg{display:none}.pg.on{display:block}
+.bk{background:#1e293b;border:1px solid var(--gold);color:var(--gold2);padding:10px 18px;border-radius:10px;font-size:14px;cursor:pointer;margin-bottom:12px}
+.tool{background:var(--card);border:1px solid #334155;border-radius:14px;padding:16px;margin-bottom:12px}
+.tool h4{color:var(--gold2);font-size:14px;margin-bottom:10px}
+.tool label{display:block;font-size:12px;color:#94a3b8;margin:10px 0 4px}
+.tool input,.tool select{width:100%;padding:11px;border-radius:9px;border:1px solid #475569;background:#0f172a;color:#e2e8f0;font-size:14px}
+.btn{background:linear-gradient(135deg,var(--gold),#b8860b);color:#0f172a;font-weight:700;border:none;padding:13px;border-radius:11px;font-size:15px;width:100%;cursor:pointer;margin-top:12px}
+.btn:active{transform:scale(.98)}
+.btn.grn{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff}
+.out{background:#0f172a;border:1px solid #334155;border-radius:9px;padding:12px;margin-top:10px;font-size:13px;display:none;white-space:pre-wrap;word-break:break-word}
+canvas{max-width:100%;border-radius:10px;margin-top:10px;display:none}
+.row2{display:flex;gap:8px}.row2>*{flex:1}
+.note{font-size:11px;color:#94a3b8;margin-top:8px;line-height:1.5}
+.kbd{font-size:11px;color:#64748b;text-align:center;margin-top:14px}
+@media(min-width:700px){.dash{padding:20px}.tt h1{font-size:20px}}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
-<div id="welcomePopup"><div class="welcomeBox"><div style="font-size:36px;margin-bottom:12px">👋</div><h2>Welcome Friend!</h2><p>PARVEZ DIGITAL SERVICE</p><div class="sub">55+ Government Services • West Bengal<br>Trusted • Professional • Secure • Official</div><button class="welcomeBtn" id="welcomeBtn">✅ Continue to Portal</button></div></div>
-<script>
-(function(){var p=document.getElementById('welcomePopup'),b=document.getElementById('welcomeBtn');function hide(){p.style.display='none'}b.addEventListener('click',hide);p.addEventListener('click',function(e){if(e.target===p)hide()});setTimeout(function(){p.style.display='flex'},500)})();
-</script>
-<div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-<div id="sideMenu"><div style="color:#f59e0b;font-weight:900;font-size:12px;padding:10px 4px;letter-spacing:0.5px">📋 MAIN MENU</div>
-<div class="g" style="border-color:#3b82f6"><div class="gh" style="background:linear-gradient(90deg,#3b82f6,#06b6d4);color:#fff" onclick="tg('a')"><span>🅰️ Aadhaar</span><span>▼</span></div><div id="a" class="gl"><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official - myaadhaar.uidai.gov.in</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/check-aadhaar-validity')">✅ Check Validity - Official</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/verify-email-mobile')">📧 Verify Email/Mobile - Official</div><div class="i" onclick="go('https://uidai.gov.in/')">🏛️ UIDAI Official - uidai.gov.in</div></div></div>
-<div class="g" style="border-color:#f59e0b"><div class="gh" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000" onclick="tg('pvc')"><span>🪪 Auto PVC</span><span>▼</span></div><div id="pvc" class="gl"><div class="i" onclick="openPVC()">🪪 PVC Maker - Auto Crop - Parvez Tool</div><div class="i" onclick="openPhotoPrint()">📸 Easy Photo Print - All Sizes</div><div class="i" onclick="openPanSize()">🖼️ PAN Photo & Sign Resizer</div><div class="i" onclick="openDocTools()">🧰 Document Tools - All in One</div></div></div>
-<div class="g" style="border-color:#ef4444"><div class="gh" style="background:linear-gradient(90deg,#ef4444,#f97316);color:#fff" onclick="tg('ay')"><span>🏥 Ayushman</span><span>▼</span></div><div id="ay" class="gl"><div class="i" onclick="go('https://beneficiary.nha.gov.in/')">🏥 Ayushman Bharat - Beneficiary Portal</div><div class="i" onclick="go('https://bis.pmjay.gov.in/')">🏥 BIS - PMJAY - Official</div></div></div>
-<div class="g" style="border-color:#06b6d4"><div class="gh" style="background:linear-gradient(90deg,#06b6d4,#3b82f6);color:#fff" onclick="tg('b')"><span>🗺️ Banglarbhumi</span><span>▼</span></div><div id="b" class="gl"><div class="i" onclick="go('https://banglarbhumi.gov.in/')">🗺️ Banglarbhumi - Official Portal</div><div class="i" onclick="go('https://wbregistration.gov.in/')">📜 WB Registration - Official</div></div></div>
-<div class="g" style="border-color:#4f46e5"><div class="gh" style="background:linear-gradient(90deg,#4f46e5,#818cf8);color:#fff" onclick="tg('bk')"><span>🏦 Banking Service</span><span>▼</span></div><div id="bk" class="gl">
-<div class="i" onclick="go('https://www.paynearby.in/')">🏦 PayNearby - Official Site</div>
-<div class="i" onclick="go('https://www.spicemoney.com/')">💸 Spice Money - Official Site</div>
-<div class="i" onclick="go('https://retail.onlinesbi.sbi/retail/login.htm')">🏦 SBI KYC Update - Internet Banking - Official</div>
-<div class="i" onclick="go('https://www.npci.org.in/')">🏦 NPCI Service - Aadhaar Seeding - Official</div>
-<div class="i" onclick="go('https://www.ckycindia.in/')">🪪 CKYC - Central KYC Registry - Check Status - Official</div>
-<div style="background:#4f46e5;color:#fff;padding:8px 12px;font-weight:900;font-size:10px;border-radius:6px;margin-top:6px">🏦 BANK e-KYC / VIDEO KYC - DIRECT OFFICIAL LINK</div>
-<div class="i" onclick="go('https://yonoretail.sbi.bank.in/accounts/re-kyc/kyc-entry?srcChn=RINB')">🏦 SBI - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://digikyc.pnb.bank.in/ReKyc/InitiateJourney')">🏦 PNB - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://apps.indianbank.in/Rekyc/rekyc.aspx')">🏦 Indian Bank - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://rekyc.iob.bank.in/rekycportal/')">🏦 Indian Overseas Bank - Re-KYC Direct - Official</div>
-<div class="i" onclick="go('https://myportal.unionbankofindia.bank.in/rekyc/')">🏦 Union Bank - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://onlinecasa.bankofbaroda.bank.in/rekycweb/#/core/actInquiry')">🏦 Bank of Baroda - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://campaign.idbi.bank.in/newapplication/capture_1')">🏦 IDBI Bank - e-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://v.hdfc.bank.in/')">🏦 HDFC Bank - Video KYC Direct - Official</div>
-<div class="i" onclick="go('https://www.icicibank.com/')">🏦 ICICI Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.canarabank.com/')">🏦 Canara Bank - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.bankofindia.in/')">🏦 Bank of India - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.centralbankofindia.co.in/')">🏦 Central Bank of India - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.ucobank.com/')">🏦 UCO Bank - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.bankofmaharashtra.in/')">🏦 Bank of Maharashtra - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.punjabandsindbank.co.in/')">🏦 Punjab & Sind Bank - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.axisbank.com/')">🏦 Axis Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.kotak.com/')">🏦 Kotak Mahindra - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.yesbank.in/')">🏦 Yes Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.indusind.com/')">🏦 IndusInd Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.federalbank.co.in/')">🏦 Federal Bank - e-KYC - Official</div>
-</div></div>
-<div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#fb923c);color:#fff" onclick="tg('bd')"><span>📜 Birth and Death</span><span>▼</span></div><div id="bd" class="gl"><div class="i" onclick="go('https://crs.wb.gov.in/')">📜 Birth Certificate - Janma Mrityu Tathya - Official</div><div class="i" onclick="go('https://crs.wb.gov.in/')">💀 Death Certificate - Janma Mrityu Tathya - Official</div><div class="i" onclick="go('https://crs.wb.gov.in/')">📄 E-District - Birth/Death - Official</div></div></div>
-<div class="g" style="border-color:#a855f7"><div class="gh" style="background:linear-gradient(90deg,#a855f7,#c084fc);color:#fff" onclick="tg('c')"><span>📜 Govt Certificates</span><span>▼</span></div><div id="c" class="gl"><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📜 Caste Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">💰 Income Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">🏠 Residential Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📄 All Certificates - E-District</div></div></div>
-<div class="g" style="border-color:#d946ef"><div class="gh" style="background:linear-gradient(90deg,#d946ef,#ec4899);color:#fff" onclick="tg('e')"><span>🪪 E Shram</span><span>▼</span></div><div id="e" class="gl"><div class="i" onclick="go('https://eshram.gov.in/')">🪪 E Shram - Official Portal</div><div class="i" onclick="go('https://register.eshram.gov.in/')">📝 E Shram Registration - Official</div></div></div>
-<div class="g" style="border-color:#eab308"><div class="gh" style="background:linear-gradient(90deg,#eab308,#facc15);color:#000" onclick="tg('el')"><span>⚡ Electric</span><span>▼</span></div><div id="el" class="gl"><div class="i" onclick="go('https://www.wbsedcl.in/')">⚡ WBSEDCL - Bill Pay - Official</div><div class="i" onclick="go('https://www.cesc.co.in/')">⚡ CESC - Bill Pay - Official</div></div></div>
-<div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#fb923c);color:#fff" onclick="tg('ga')"><span>⛽ Gas Service</span><span>▼</span></div><div id="ga" class="gl"><div class="i" onclick="go('https://my.ebharatgas.com/')">⛽ Bharat Gas - Official</div><div class="i" onclick="go('https://www.indane.co.in/')">⛽ Indane Gas - Official</div><div class="i" onclick="go('https://cx.indianoil.in/')">⛽ Indane Gas - New Portal - Official</div><div class="i" onclick="go('https://myhpgas.in/')">⛽ HP Gas - New Portal - Official</div></div></div>
-<div class="g" style="border-color:#2563eb"><div class="gh" style="background:linear-gradient(90deg,#2563eb,#3b82f6);color:#fff" onclick="tg('ot')"><span>🏛️ Govt Services</span><span>▼</span></div><div id="ot" class="gl"><div class="i" onclick="go('https://socialsecurity.wb.gov.in/')">🍚 Annapurna Bhandar - Official</div><div class="i" onclick="go('https://bmssy.wblabour.gov.in/')">🛡️ BMSSY - Samajik Suraksha - Official</div><div class="i" onclick="go('https://pmayg.dord.gov.in/')">🏠 PMAY-G - Awas Yojana - Official</div><div class="i" onclick="go('https://pmayg.dord.gov.in/')">🏠 PMAY-G - Awas Yojana - Official</div><div class="i" onclick="go('https://swachhbharatmission.gov.in/')">🧹 SBM - Swachh Bharat - Official</div><div class="i" onclick="go('https://wb.gov.in/')">🎯 YUVASHAKTI / Yuvashree - Official</div><div class="i" onclick="go('https://wbpsc.gov.in/')">📝 WBPSC - Official Portal</div><div class="i" onclick="go('https://samarth.wb.gov.in/')">💰 Pensioner Status (Samarth) - Official</div><div class="i" onclick="go('https://www.ncs.gov.in/')">💼 Job Search - NCS Official</div><div class="i" onclick="go('https://wbmdfcscholarship.in/')">🎓 Aikyashree - Scholarship - Official</div><div class="i" onclick="go('https://ssc.gov.in/')">📝 SSC - Staff Selection Commission</div><div class="i" onclick="go('https://www.rrbapply.gov.in/')">🚂 RRB - Railway Recruitment - Official</div><div class="i" onclick="go('https://wbbpe.wb.gov.in/')">📝 Primary TET - WBBPE - Official</div><div class="i" onclick="go('https://www.westbengalssc.com/')">📚 Upper Primary - WBSSC - Official</div><div class="i" onclick="go('https://prb.wb.gov.in/')">👮 Police Constable - WBPRB - Official</div><div class="i" onclick="go('https://indiapostgdsonline.cept.gov.in/')">📮 Post Office GDS - India Post - Official</div><div class="i" onclick="go('https://www.wbprd.gov.in/')">🏛️ Panchayat Recruitment - WBPRD - Official</div></div></div>
-<div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#ea580c);color:#fff" onclick="tg('pan')"><span>🅿️ PAN Card - UTI Retailer</span><span>▼</span></div><div id="pan" class="gl"><div style="background:#0f172a;color:#22c55e;padding:8px 12px;font-weight:900;font-size:10px;border-radius:6px">✅ Retailer - No Admin - Direct Work</div><div class="i" onclick="go('https://www.pan.utiitsl.com/')">🆕 New PAN Apply - Retailer - Direct</div><div class="i" onclick="go('https://www.myutiitsl.com/CUP-Admin/')">🎟️ CUP Login - Retailer PSA ID</div><div class="i" onclick="go('https://www.trackpan.utiitsl.com/PANONLINE/#forward')">🔍 Track Status - No Login</div><div class="i" onclick="go('https://www.incometax.gov.in/iec/foportal/')">⚡ Instant e-PAN - Free - No ID Needed</div></div></div>
-<div class="g" style="border-color:#22c55e"><div class="gh" style="background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff" onclick="tg('pt')"><span>🏘️ Panchayat Tax</span><span>▼</span></div><div id="pt" class="gl"><div class="i" onclick="go('https://prdtax.wb.gov.in/')">🏘️ Panchayat Tax - prdtax.wb.gov.in - Official</div></div></div>
-<div class="g" style="border-color:#84cc16"><div class="gh" style="background:linear-gradient(90deg,#84cc16,#a3e635);color:#000" onclick="tg('pm')"><span>🌾 PM Kisan</span><span>▼</span></div><div id="pm" class="gl"><div class="i" onclick="go('https://pmkisan.gov.in/')">🌾 PM Kisan - pmkisan.gov.in - Official</div></div></div>
-<div class="g" style="border-color:#f59e0b"><div class="gh" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000" onclick="tg('ra')"><span>🍚 Ration</span><span>▼</span></div><div id="ra" class="gl"><div class="i" onclick="go('https://food.wb.gov.in/')">🏛️ Food & Supplies Dept - food.wb.gov.in - Official</div><div class="i" onclick="go('https://wbpds.wb.gov.in/')">🍚 Ration Portal (PDS) - wbpds.wb.gov.in - Official</div></div></div>
-<div class="g" style="border-color:#166534"><div class="gh" style="background:linear-gradient(90deg,#166534,#22c55e);color:#fff" onclick="tg('vo')"><span>🗳️ Voter</span><span>▼</span></div><div id="vo" class="gl"><div class="i" onclick="go('https://voters.eci.gov.in/')">🗳️ Voter - voters.eci.gov.in - Official</div></div></div>
-<div class="helpBox"><div style="color:#f59e0b;font-weight:900;font-size:11px;margin-bottom:6px">📞 Help No - Other Services</div><div style="color:#fff;font-weight:900;font-size:16px">8609754876</div><div style="display:flex;gap:8px;margin-top:10px"><a href="tel:8609754876" style="flex:1;padding:10px;border-radius:8px;font-weight:900;font-size:11px;text-decoration:none;text-align:center;display:block;background:#22c55e;color:#fff">📞 Call</a><a href="https://wa.me/918609754876" style="flex:1;padding:10px;border-radius:8px;font-weight:900;font-size:11px;text-decoration:none;text-align:center;display:block;background:#25D366;color:#fff">💬 WhatsApp</a></div></div>
+<img class="wm" src="logo.jpg" alt="">
+<div id="ovl"></div>
+<nav id="menu">
+<span class="mx" onclick="tgM()">✕</span>
+<h3>🛠️ Tools</h3>
+<a href="#" onclick="go('pvc');return false;">🪪 PVC Card Maker</a>
+<a href="#" onclick="go('photo');return false;">📸 Photo Print (Passport/Visa/3R/4R)</a>
+<a href="#" onclick="go('pansize');return false;">🖼️ PAN Photo/Signature Resize</a>
+<a href="#" onclick="go('docs');return false;">🧰 Document Tools (PDF)</a>
+<a href="#" onclick="go('crop');return false;">✂️ Auto Photo Crop</a>
+<h3>🏛️ Government Services</h3>
+<a href="#" onclick="go('govt');return false;">📋 All Govt Services</a>
+<a href="#" onclick="go('bank');return false;">🏦 Banking Service</a>
+<h3>ℹ️ Portal</h3>
+<a href="#" onclick="go('home');return false;">🏠 Home</a>
+</nav>
+<div class="top">
+<img class="logo" src="logo.jpg" alt="PA">
+<div class="tt"><h1>PARVEZ DIGITAL</h1><p>55+ Services • Secure Portal</p></div>
+<button class="menu" onclick="tgM()">☰</button>
 </div>
-<div class="mainContent"><div class="welcomeCard"><div style="font-size:32px;margin-bottom:8px">🏛️</div><div style="font-size:18px;font-weight:900">PARVEZ DIGITAL SERVICE</div><div style="font-size:11px;color:#fbbf24;margin-top:6px;font-weight:700">55+ Government Services - One Secure Portal</div><div style="font-size:10px;color:#94a3b8;margin-top:8px">West Bengal • Trusted • Professional • Secure</div><div style="margin-top:16px;padding:12px;background:#1e293b;border-radius:10px;border:1px solid #334155"><div style="font-size:11px;font-weight:900;color:#f59e0b">Tap menu button on top to browse all services</div><div style="font-size:9px;color:#94a3b8;margin-top:4px">Official government portals • Secure • Verified • Professional</div></div></div>
-<div class="quickGrid"><div class="qCard" onclick="go('https://myaadhaar.uidai.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🅰️</div><div style="font-size:10px;font-weight:900;color:#0f172a">Aadhaar<br>Official</div></div><div class="qCard" onclick="go('https://www.pan.utiitsl.com/')"><div style="font-size:20px;margin-bottom:6px">🅿️</div><div style="font-size:10px;font-weight:900;color:#0f172a">PAN<br>Official</div></div><div class="qCard" onclick="go('https://voters.eci.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🗳️</div><div style="font-size:10px;font-weight:900;color:#0f172a">Voter<br>Official</div></div><div class="qCard" onclick="go('https://wbpds.wb.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🍚</div><div style="font-size:10px;font-weight:900;color:#0f172a">Ration<br>Official</div></div><div class="qCard" onclick="go('https://pmkisan.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🌾</div><div style="font-size:10px;font-weight:900;color:#0f172a">PM Kisan<br>Official</div></div><div class="qCard" onclick="toggleMenu()"><div style="font-size:20px;margin-bottom:6px">📋</div><div style="font-size:10px;font-weight:900;color:#0f172a">Full Menu<br>55+ Services</div></div></div>
-<div style="background:#fff;border:2px solid #22c55e;border-radius:12px;padding:14px;margin-top:12px"><div style="font-size:12px;font-weight:900;color:#0f172a">🔥 Popular - All Official</div><div style="margin-top:10px;display:flex;flex-direction:column;gap:6px"><div class="i" style="margin:0" onclick="go('https://www.pan.utiitsl.com/')">🆕 PAN New Apply - UTI Retailer Official</div><div class="i" style="margin:0" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official Portal</div><div class="i" style="margin:0" onclick="go('https://voters.eci.gov.in/')">🗳️ Voter Official Portal</div><div class="i" style="margin:0" onclick="go('https://www.incometax.gov.in/iec/foportal/')">⚡ Instant e-PAN - Income Tax Official</div><div class="i" style="margin:0" onclick="go('https://banglarbhumi.gov.in/')">🗺️ Banglarbhumi - Official</div><div class="i" style="margin:0" onclick="go('https://edistrict.wb.gov.in/')">📜 E-District - All Certificates Official</div></div></div></div>
-<div id="pvcToolView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closePVC()">← Portal</button><div><div class="pvTitle">🪪 Parvez PVC Maker</div><div class="pvSub">Auto Crop • 86 × 54 mm • Front & Back</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Byaboharbidhi:</b><br>1️⃣ Front / Back chhobi upload korun<br>2️⃣ <b>Auto Crop</b> chap din<br>3️⃣ Zoom slider bebohar korun<br>4️⃣ <b>Download</b> — 86×54mm PNG</div><div class="pvCard"><h3>📄 FRONT SIDE</h3><label class="pvUploadBtn" for="fileF">📤 FRONT Chhobi Upload</label><input type="file" class="pvFile" id="fileF" accept="image/*"><canvas class="pvPreview" id="cvF" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="zoomF" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnAuto" id="autoF">✨ Auto Crop</button><button class="pvBtn pvBtnRot" id="rotF">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="resetF">↺ Reset</button></div><button class="pvBtnDl" id="dlF">⬇️ Download FRONT PNG</button></div><div class="pvCard"><h3>📄 BACK SIDE</h3><label class="pvUploadBtn" for="fileB">📤 BACK Chhobi Upload</label><input type="file" class="pvFile" id="fileB" accept="image/*"><canvas class="pvPreview" id="cvB" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="zoomB" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnAuto" id="autoB">✨ Auto Crop</button><button class="pvBtn pvBtnRot" id="rotB">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="resetB">↺ Reset</button></div><button class="pvBtnDl" id="dlB">⬇️ Download BACK PNG</button></div></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • Parvez PVC Maker • 86×54mm</div></div>
-<div id="epView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closePhotoPrint()">← Portal</button><div><div class="pvTitle">📸 Easy Photo Print</div><div class="pvSub">All Sizes • HD</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Byaboharbidhi:</b><br>1️⃣ Size nirbachon korun<br>2️⃣ Photo upload korun<br>3️⃣ <b>Download</b> — HD PNG</div><div class="epLbl">📐 PHOTO SIZE:</div><div class="epChips" id="epChips"></div><div class="pvCard"><label class="pvUploadBtn" for="epFile">📤 Chhobi Upload</label><input type="file" class="pvFile" id="epFile" accept="image/*"><canvas class="pvPreview" id="epCv" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="epZoom" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnRot" id="epRot">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="epReset">↺ Reset</button></div></div><button class="pvBtnDl" id="epDl">⬇️ Download Photo PNG (HD)</button></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • Easy Photo Print</div></div>
-<div id="panView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closePanSize()">← Portal</button><div><div class="pvTitle">🖼️ PAN Photo & Sign Resizer</div><div class="pvSub">NSDL • UTI — Exact Size</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Byaboharbidhi:</b><br>1️⃣ Mode nirbachon korun<br>2️⃣ Upload korun<br>3️⃣ <b>Download</b></div><div class="epLbl">📐 MODE:</div><div class="epChips" id="psChips"></div><div class="pvCard"><label class="pvUploadBtn" for="psFile">📤 Chhobi / Sign Upload</label><input type="file" class="pvFile" id="psFile" accept="image/*"><canvas class="pvPreview" id="psCv" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="psZoom" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnRot" id="psRot">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="psReset">↺ Reset</button></div><button class="pvBtnDl" id="psDl">⬇️ Download JPG</button><div class="dtRes" id="psRes"></div></div></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • PAN Resizer</div></div>
-<div id="docView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closeDocTools()">← Portal</button><div><div class="pvTitle">🧰 Document Tools</div><div class="pvSub">All in One</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Tools:</b><br>🗜️ Compress Image • 📑 Merge PDF • 🔍 OCR Scan</div><div class="epLbl">🧰 TOOL NIN:</div><div class="epChips" id="docChips"></div><div class="pvCard dtPanel" id="dtpImg"><div class="epLbl">🗜️ Compress Image</div><label class="pvUploadBtn" for="dtImgFile">📤 Image Upload</label><input type="file" class="pvFile" id="dtImgFile" accept="image/*"><div class="pvZoomRow">Quality <input type="range" id="dtImgQ" min="10" max="95" value="80"></div><button class="pvBtnDl" id="dtImgGo">⬇️ Compress & Download JPG</button><div class="dtRes" id="dtImgRes"></div></div><div class="pvCard dtPanel" id="dtpMerge"><div class="epLbl">📑 Merge PDF</div><label class="pvUploadBtn" for="dtMergeFiles">📤 PDF nin (2 ba besi)</label><input type="file" class="pvFile" id="dtMergeFiles" accept="application/pdf" multiple><button class="pvBtnDl" id="dtMergeGo">📑 Merge & Download</button><div class="dtRes" id="dtMergeRes"></div></div><div class="pvCard dtPanel" id="dtpOcr"><div class="epLbl">🔍 OCR — Chhobi theke Text</div><label class="pvUploadBtn" for="dtOcrFile">📤 Chhobi Upload</label><input type="file" class="pvFile" id="dtOcrFile" accept="image/*"><button class="pvBtnDl" id="dtOcrGo">🔍 OCR Start</button><div class="dtRes" id="dtOcrRes"></div><textarea class="dtInp" id="dtOcrOut" placeholder="Text ekhane asbe..." style="margin-top:8px"></textarea></div></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • Document Tools</div></div>
+
+<!-- HOME -->
+<div id="pg-home" class="pg on">
+<div class="dash">
+<div class="card">
+<div style="font-size:44px">🏛️</div>
+<h2>PARVEZ DIGITAL SERVICE</h2>
+<p class="sub">55+ Government Services - One Secure Portal</p>
+<p class="wb">West Bengal • Trusted • Professional • Secure</p>
+<div class="hint">Tap menu button on top to browse all services<br><span style="font-size:11px;color:#94a3b8">Official government portals • Secure • Verified • Professional</span></div>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🅰️</span><span class="nm">Aadhaar</span><span class="tag">Official</span></div>
+<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🅿️</span><span class="nm">PAN</span><span class="tag">Official</span></div>
+<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🗳️</span><span class="nm">Voter</span><span class="tag">Official</span></div>
+<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🍚</span><span class="nm">Ration</span><span class="tag">Official</span></div>
+<div class="svc" style="flex:1;min-width:100px;justify-content:center" onclick="go('govt')"><span class="ic">🌾</span><span class="nm">PM Kisan</span><span class="tag">Official</span></div>
+<div class="svc" style="flex:1;min-width:140px;justify-content:center" onclick="go('govt')"><span class="ic">📋</span><span class="nm">Full Menu</span><span class="tag wb">55+ Services</span></div>
+</div>
+<div class="sec-t">🔥 Popular - All Official</div>
+<div id="pop"></div>
+<div class="sec-t">🧰 Document Tools</div>
+<div class="svc" onclick="go('docs')"><span class="ic">🧰</span><span class="nm">iLovePDF Style — All in One (Compress/Merge/Split/Rotate/Watermark/OCR/Sign)</span><span class="go">›</span></div>
+<div class="sec-t">🛠️ Photo & Card Tools</div>
+<div class="svc" onclick="go('pvc')"><span class="ic">🪪</span><span class="nm">PVC Card Maker — Aadhaar / PAN / Voter / Ration / Ayushman</span><span class="go">›</span></div>
+<div class="svc" onclick="go('photo')"><span class="ic">📸</span><span class="nm">Photo Print — Passport / Visa / 3R / 4R (HD + Background Remove)</span><span class="go">›</span></div>
+<div class="svc" onclick="go('pansize')"><span class="ic">🖼️</span><span class="nm">PAN Photo & Signature Resizer</span><span class="go">›</span></div>
+<div class="svc" onclick="go('crop')"><span class="ic">✂️</span><span class="nm">Auto Photo Crop — e-Card Cutter Style</span><span class="go">›</span></div>
+<p class="kbd">© 2026 Parvez Digital Service • All services via official portals</p>
+</div>
+</div>
+
+<!-- GOVT -->
+<div id="pg-govt" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">🏛️ Government Services (A–Z)</div>
+<div id="govtList"></div>
+</div>
+</div>
+
+<!-- BANK -->
+<div id="pg-bank" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">🏦 Banking Service</div>
+<div class="svc" onclick="openU('https://www.paynearby.in')"><span class="ic">🏧</span><span class="nm">PayNearby — Official Site</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.spicemoney.com')"><span class="ic">💳</span><span class="nm">Spice Money — Official Site</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.onlinesbi.sbi')"><span class="ic">🏛️</span><span class="nm">SBI — e-KYC / Internet Banking</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.npci.org.in')"><span class="ic">🔗</span><span class="nm">NPCI — Aadhaar Seeding / DBT Status</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://www.ckycindia.in')"><span class="ic">📝</span><span class="nm">CKYC — Check KYC Status</span><span class="go">›</span></div>
+</div>
+</div>
+
+<!-- PVC -->
+<div id="pg-pvc" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">🪪 PVC Card Maker</div>
+<div class="tool">
+<h4>Select Card Type</h4>
+<label>Card</label>
+<select id="pvcType"><option>Aadhaar PVC</option><option>PAN Card</option><option>Voter Card</option><option>Ration Card</option><option>Ayushman Card</option></select>
+<label>Upload Front Photo</label><input type="file" id="pvcF" accept="image/*">
+<label>Upload Back Photo (optional)</label><input type="file" id="pvcB" accept="image/*">
+<button class="btn" onclick="mkPVC()">Generate PVC Preview</button>
+<canvas id="pvcCv"></canvas>
+<button class="btn grn" id="pvcDl" style="display:none" onclick="dlC('pvcCv','pvc-card.png')">⬇ Download PVC</button>
+<p class="note">CR80 standard (85.6 × 53.98 mm @300dpi = 1016×638 px). Front/back auto-fitted.</p>
+</div>
+</div>
+</div>
+
+<!-- PHOTO -->
+<div id="pg-photo" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">📸 Photo Print — HD + Background Remove</div>
+<div class="tool">
+<h4>Passport / Visa / 3R / 4R</h4>
+<label>Photo Size</label>
+<select id="phSize"><option value="35x45">Passport — 35×45 mm</option><option value="50x50">Visa (US) — 50×50 mm</option><option value="3R">3R — 3.5×5 inch</option><option value="4R">4R — 4×6 inch</option></select>
+<label>Upload Photo</label><input type="file" id="phF" accept="image/*">
+<div class="row2"><button class="btn" onclick="rmBg()">✨ HD + Remove BG</button><button class="btn" onclick="mkSheet()">🖨️ Print Sheet</button></div>
+<canvas id="phCv"></canvas>
+<button class="btn grn" id="phDl" style="display:none" onclick="dlC('phCv','photo-print.png')">⬇ Download</button>
+<p class="note">Background remove needs internet (free API). Print sheet = multiple copies on one page.</p>
+</div>
+</div>
+</div>
+
+<!-- PAN SIZE -->
+<div id="pg-pansize" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">🖼️ PAN Photo & Signature Resizer</div>
+<div class="tool">
+<h4>Option 1 — Photo (213×213 px / 20–50 KB)</h4>
+<label>Upload Photo</label><input type="file" id="ppF" accept="image/*">
+<button class="btn" onclick="rsImg('ppF','ppCv',213,213,50)">Resize Photo</button>
+<canvas id="ppCv"></canvas>
+<button class="btn grn" id="ppDl" style="display:none" onclick="dlC('ppCv','pan-photo.jpg')">⬇ Download Photo</button>
+</div>
+<div class="tool">
+<h4>Option 2 — Signature (400×200 px / 10–20 KB)</h4>
+<label>Upload Signature</label><input type="file" id="psF" accept="image/*">
+<button class="btn" onclick="rsImg('psF','psCv',400,200,20)">Resize Signature</button>
+<canvas id="psCv"></canvas>
+<button class="btn grn" id="psDl" style="display:none" onclick="dlC('psCv','pan-sign.jpg')">⬇ Download Signature</button>
+</div>
+</div>
+</div>
+
+<!-- DOCS -->
+<div id="pg-docs" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">🧰 Document Tools</div>
+<div class="tool"><h4>🖼️ JPG to PDF</h4><label>Select Images (multiple)</label><input type="file" id="j2pF" accept="image/*" multiple><button class="btn" onclick="j2p()">Convert to PDF</button><div class="out" id="j2pO"></div></div>
+<div class="tool"><h4>📑 Merge PDF</h4><label>Select PDFs (2+)</label><input type="file" id="mgF" accept="application/pdf" multiple><button class="btn" onclick="mgPdf()">Merge</button><div class="out" id="mgO"></div></div>
+<div class="tool"><h4>🗜️ Compress Image</h4><label>Upload Image</label><input type="file" id="ciF" accept="image/*"><label>Quality (0.1–1)</label><input type="number" id="ciQ" value="0.7" step="0.1" min="0.1" max="1"><button class="btn" onclick="cpImg()">Compress</button><canvas id="ciCv"></canvas><button class="btn grn" id="ciDl" style="display:none" onclick="dlC('ciCv','compressed.jpg')">⬇ Download</button></div>
+<div class="tool"><h4>🔄 Rotate Image</h4><label>Upload Image</label><input type="file" id="rtF" accept="image/*"><div class="row2"><button class="btn" onclick="rtImg(90)">↻ 90°</button><button class="btn" onclick="rtImg(180)">⇄ 180°</button></div><canvas id="rtCv"></canvas><button class="btn grn" id="rtDl" style="display:none" onclick="dlC('rtCv','rotated.jpg')">⬇ Download</button></div>
+<div class="tool"><h4>©️ Watermark Image</h4><label>Upload Image</label><input type="file" id="wmF" accept="image/*"><label>Watermark Text</label><input type="text" id="wmT" value="PARVEZ DIGITAL"><button class="btn" onclick="wmImg()">Add Watermark</button><canvas id="wmCv"></canvas><button class="btn grn" id="wmDl" style="display:none" onclick="dlC('wmCv','watermarked.jpg')">⬇ Download</button></div>
+<div class="tool"><h4>📝 Text to PDF</h4><label>Paste Text</label><input type="text" id="t2pT" placeholder="Type or paste text here"><button class="btn" onclick="t2p()">Create PDF</button><div class="out" id="t2pO"></div></div>
+<p class="note">Full PDF merge/split/OCR needs server — for advanced work use the free sites below.</p>
+<div class="sec-t">🌐 Free Online Tool Sites</div>
+<div class="svc" onclick="openU('https://www.ilovepdf.com')"><span class="ic">🧰</span><span class="nm">iLovePDF — All PDF Tools</span><span class="go">›</span></div>
+<div class="svc" onclick="openU('https://smallpdf.com')"><span class="ic">📄</span><span class="nm">SmallPDF</span><span class="go">›</span></div>
+</div>
+</div>
+
+<!-- CROP -->
+<div id="pg-crop" class="pg">
+<div class="dash">
+<button class="bk" onclick="go('home')">‹ Back</button>
+<div class="sec-t">✂️ Auto Photo Crop</div>
+<div class="tool">
+<h4>e-Card Cutter Style</h4>
+<label>Upload Photo</label><input type="file" id="crF" accept="image/*">
+<label>Ratio</label><select id="crR"><option value="1">1:1 Square</option><option value="0.777">Passport 35:45</option><option value="1.586">PVC Card</option></select>
+<button class="btn" onclick="autoCrop()">Auto Crop</button>
+<canvas id="crCv"></canvas>
+<button class="btn grn" id="crDl" style="display:none" onclick="dlC('crCv','cropped.png')">⬇ Download</button>
+</div>
+</div>
+</div>
+
+<div class="fab">
+<a class="wa" href="https://wa.me/918609754876" target="_blank">💬</a>
+<a class="cl" href="tel:8609754876">📞</a>
+</div>
+
 <script>
-function go(u){window.open(u,'_blank')}
-function tg(id){document.getElementById(id).classList.toggle('open')}
-function toggleMenu(){document.getElementById('sideMenu').classList.toggle('open');document.getElementById('overlay').classList.toggle('open')}
-function openPVC(){document.getElementById('pvcToolView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closePVC(){document.getElementById('pvcToolView').style.display='none'}
-function openPhotoPrint(){document.getElementById('epView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closePhotoPrint(){document.getElementById('epView').style.display='none'}
-function openPanSize(){document.getElementById('panView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closePanSize(){document.getElementById('panView').style.display='none'}
-function openDocTools(){document.getElementById('docView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closeDocTools(){document.getElementById('docView').style.display='none'}
-var pvRATIO=86/54;
-function pvMk(p){var cv=document.getElementById('cv'+p);return{cv:cv,ctx:cv.getContext('2d'),img:null,iw:0,ih:0,s:1,ox:0,oy:0,base:1,cropX:30,cropY:63,cropW:660,cropH:660/pvRATIO,zm:document.getElementById('zoom'+p)}}
-var pvF=pvMk('F'),pvB=pvMk('B');
-function pvFit(sd){if(!sd.img)return;sd.base=Math.min(sd.cv.width/sd.iw,sd.cv.height/sd.ih);sd.zm.value=1;pvZ(sd,1,true)}
-function pvZ(sd,z,c){var cx=sd.cropX+sd.cropW/2,cy=sd.cropY+sd.cropH/2;var ix=c?sd.iw/2:(cx-sd.ox)/sd.s,iy=c?sd.ih/2:(cy-sd.oy)/sd.s;sd.s=sd.base*z;sd.ox=cx-ix*sd.s;sd.oy=cy-iy*sd.s;pvC(sd);pvD(sd)}
-function pvC(sd){if(!sd.img)return;var iw=sd.iw*sd.s,ih=sd.ih*sd.s,x0=sd.cropX,y0=sd.cropY,x1=x0+sd.cropW,y1=y0+sd.cropH;if(iw<sd.cropW)sd.ox=x0-(iw-sd.cropW)/2;else sd.ox=Math.min(x0,Math.max(x1-iw,sd.ox));if(ih<sd.cropH)sd.oy=y0-(ih-sd.cropH)/2;else sd.oy=Math.min(y0,Math.max(y1-ih,sd.oy))}
-function pvD(sd){var x=sd.ctx,W=sd.cv.width,H=sd.cv.height;x.clearRect(0,0,W,H);x.fillStyle='#020617';x.fillRect(0,0,W,H);if(sd.img)x.drawImage(sd.img,sd.ox,sd.oy,sd.iw*sd.s,sd.ih*sd.s);else{x.fillStyle='#475569';x.font='bold 22px Arial';x.textAlign='center';x.fillText('Chhobi upload korun',W/2,H/2)}x.strokeStyle='#f59e0b';x.lineWidth=3;x.strokeRect(sd.cropX,sd.cropY,sd.cropW,sd.cropH)}
-function pvL(f,sd){if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){sd.img=im;sd.iw=im.width;sd.ih=im.height;pvFit(sd)};im.src=r.result};r.readAsDataURL(f)}
-function pvDl(sd,nm){if(!sd.img){alert('Chhobi upload korun!');return}var c=document.createElement('canvas');c.width=1016;c.height=638;c.getContext('2d').drawImage(sd.img,(sd.cropX-sd.ox)/sd.s,(sd.cropY-sd.oy)/sd.s,sd.cropW/sd.s,sd.cropH/sd.s,0,0,1016,638);var a=document.createElement('a');a.download=nm;a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()}
-function pvBnd(p,sd,fn){document.getElementById('file'+p).addEventListener('change',function(e){pvL(e.target.files[0],sd)});sd.zm.addEventListener('input',function(){pvZ(sd,parseFloat(this.value),false)});document.getElementById('auto'+p).addEventListener('click',function(){pvFit(sd)});document.getElementById('rot'+p).addEventListener('click',function(){if(!sd.img)return;var c=document.createElement('canvas');c.width=sd.ih;c.height=sd.iw;var x=c.getContext('2d');x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(sd.img,-sd.iw/2,-sd.ih/2);sd.img=c;sd.iw=c.width;sd.ih=c.height;pvFit(sd)});document.getElementById('reset'+p).addEventListener('click',function(){pvFit(sd)});document.getElementById('dl'+p).addEventListener('click',function(){pvDl(sd,fn)});pvD(sd)}
-pvBnd('F',pvF,'parvez-pvc-front.png');pvBnd('B',pvB,'parvez-pvc-back.png');
-var epSz=[{n:'Passport',s:'35x45mm',w:35,h:45},{n:'Visa',s:'51x51mm',w:51,h:51},{n:'3R',s:'3.5x5in',w:88.9,h:127},{n:'4R',s:'4x6in',w:101.6,h:152.4}];
-var ep={img:null,iw:0,ih:0,s:1,ox:0,oy:0,base:1,sz:0,cv:document.getElementById('epCv'),cx:0,cy:0,cw:0,ch:0,zm:document.getElementById('epZoom')};ep.ctx=ep.cv.getContext('2d');
-function epFC(){var sz=epSz[ep.sz],r=sz.w/sz.h,w=660,h=660/r;if(h>460){h=460;w=460*r}ep.cw=w;ep.ch=h;ep.cx=(720-w)/2;ep.cy=(540-h)/2}
-function epFI(){if(!ep.img)return;ep.base=Math.min(720/ep.iw,540/ep.ih);ep.zm.value=1;epAZ(1,true)}
-function epAZ(z,c){var mx=ep.cx+ep.cw/2,my=ep.cy+ep.ch/2;var ix=c?ep.iw/2:(mx-ep.ox)/ep.s,iy=c?ep.ih/2:(my-ep.oy)/ep.s;ep.s=ep.base*z;ep.ox=mx-ix*ep.s;ep.oy=my-iy*ep.s;epDr()}
-function epDr(){var x=ep.ctx;x.clearRect(0,0,720,540);x.fillStyle='#020617';x.fillRect(0,0,720,540);if(ep.img)x.drawImage(ep.img,ep.ox,ep.oy,ep.iw*ep.s,ep.ih*ep.s);x.strokeStyle='#f59e0b';x.lineWidth=3;x.strokeRect(ep.cx,ep.cy,ep.cw,ep.ch)}
-function epRn(){if(!ep.img){alert('Chhobi upload korun!');return null}var sz=epSz[ep.sz],pw=Math.round(sz.w/25.4*300),ph=Math.round(sz.h/25.4*300),c=document.createElement('canvas');c.width=pw;c.height=ph;c.getContext('2d').drawImage(ep.img,(ep.cx-ep.ox)/ep.s,(ep.cy-ep.oy)/ep.s,ep.cw/ep.s,ep.ch/ep.s,0,0,pw,ph);return c}
-(function(){var ce=document.getElementById('epChips');epSz.forEach(function(s,i){var b=document.createElement('button');b.className='epChip'+(i===0?' on':'');b.textContent=s.n+' '+s.s;b.onclick=function(){ep.sz=i;var ch=ce.children;for(var k=0;k<ch.length;k++)ch[k].className='epChip';b.className='epChip on';epFC();epDr()};ce.appendChild(b)});document.getElementById('epFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){ep.img=im;ep.iw=im.width;ep.ih=im.height;epFI()};im.src=r.result};r.readAsDataURL(f)});document.getElementById('epDl').addEventListener('click',function(){var c=epRn();if(!c)return;var a=document.createElement('a');a.download='photo.png';a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()});epFC();epDr()})();
-var pnMd=[{n:'NSDL Photo',w:276,h:197},{n:'NSDL Sign',w:354,h:157},{n:'UTI Photo',w:213,h:213},{n:'UTI Sign',w:400,h:200}];
-var ps={img:null,iw:0,ih:0,s:1,ox:0,oy:0,base:1,md:0,cv:document.getElementById('psCv'),cx:0,cy:0,cw:0,ch:0,zm:document.getElementById('psZoom')};ps.ctx=ps.cv.getContext('2d');
-function psFC(){var m=pnMd[ps.md],r=m.w/m.h,w=660,h=660/r;if(h>460){h=460;w=460*r}ps.cw=w;ps.ch=h;ps.cx=(720-w)/2;ps.cy=(540-h)/2}
-function psFI(){if(!ps.img)return;ps.base=Math.min(720/ps.iw,540/ps.ih);ps.zm.value=1;psAZ(1,true)}
-function psAZ(z,c){var mx=ps.cx+ps.cw/2,my=ps.cy+ps.ch/2;var ix=c?ps.iw/2:(mx-ps.ox)/ps.s,iy=c?ps.ih/2:(my-ps.oy)/ps.s;ps.s=ps.base*z;ps.ox=mx-ix*ps.s;ps.oy=my-iy*ps.s;psDr()}
-function psDr(){var x=ps.ctx;x.clearRect(0,0,720,540);x.fillStyle='#020617';x.fillRect(0,0,720,540);if(ps.img)x.drawImage(ps.img,ps.ox,ps.oy,ps.iw*ps.s,ps.ih*ps.s);x.strokeStyle='#f59e0b';x.lineWidth=3;x.strokeRect(ps.cx,ps.cy,ps.cw,ps.ch)}
-(function(){var ce=document.getElementById('psChips');pnMd.forEach(function(m,i){var b=document.createElement('button');b.className='epChip'+(i===0?' on':'');b.textContent=m.n;b.onclick=function(){ps.md=i;var ch=ce.children;for(var k=0;k<ch.length;k++)ch[k].className='epChip';b.className='epChip on';psFC();psDr()};ce.appendChild(b)});document.getElementById('psFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){ps.img=im;ps.iw=im.width;ps.ih=im.height;psFI()};im.src=r.result};r.readAsDataURL(f)});document.getElementById('psDl').addEventListener('click',function(){if(!ps.img){alert('Chhobi upload korun!');return}var m=pnMd[ps.md],c=document.createElement('canvas');c.width=m.w;c.height=m.h;c.getContext('2d').drawImage(ps.img,(ps.cx-ps.ox)/ps.s,(ps.cy-ps.oy)/ps.s,ps.cw/ps.s,ps.ch/ps.s,0,0,m.w,m.h);var a=document.createElement('a');a.download='pan.jpg';a.href=c.toDataURL('image/jpeg',0.9);document.body.appendChild(a);a.click();a.remove()});psFC();psDr()})();
-var dtT=[['dtpImg','Compress Image'],['dtpMerge','Merge PDF'],['dtpOcr','OCR Scan']];
-function dtSw(id,el){dtT.forEach(function(t){document.getElementById(t[0]).className='pvCard dtPanel'+(t[0]===id?' on':'')});var ch=document.getElementById('docChips').children;for(var k=0;k<ch.length;k++)ch[k].className='epChip';el.className='epChip on'}
-(function(){var ce=document.getElementById('docChips');dtT.forEach(function(t,i){var b=document.createElement('button');b.className='epChip'+(i===0?' on':'');b.textContent=t[1];b.onclick=function(){dtSw(t[0],b)};ce.appendChild(b)});
-document.getElementById('dtImgGo').addEventListener('click',function(){var f=document.getElementById('dtImgFile').files[0];if(!f)return alert('Image nin');var q=document.getElementById('dtImgQ').value/100,im=new Image();im.onload=function(){var c=document.createElement('canvas');c.width=im.width;c.height=im.height;c.getContext('2d').drawImage(im,0,0);c.toBlob(function(bl){document.getElementById('dtImgRes').textContent='Sompurno: '+(bl.size/1024).toFixed(0)+' KB';var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='compressed.jpg';document.body.appendChild(a);a.click();a.remove()},'image/jpeg',q)};im.src=URL.createObjectURL(f)});
-document.getElementById('dtMergeGo').addEventListener('click',function(){if(!window.PDFLib)return alert('Internet proyojon');var fs=document.getElementById('dtMergeFiles').files;if(fs.length<2)return alert('2 ti PDF nin');(async function(){var out=await PDFLib.PDFDocument.create();for(var i=0;i<fs.length;i++){var b=await fs[i].arrayBuffer(),d=await PDFLib.PDFDocument.load(b),cp=await out.copyPages(d,d.getPageIndices());cp.forEach(function(p){out.addPage(p)})}var by=await out.save(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([by],{type:'application/pdf'}));a.download='merged.pdf';document.body.appendChild(a);a.click();a.remove();document.getElementById('dtMergeRes').textContent='Sompurno!'})()});
-document.getElementById('dtOcrGo').addEventListener('click',function(){if(!window.Tesseract)return alert('Internet proyojon');var f=document.getElementById('dtOcrFile').files[0];if(!f)return alert('Chhobi nin');document.getElementById('dtOcrRes').textContent='OCR cholche...';Tesseract.recognize(URL.createObjectURL(f),'eng').then(function(r){document.getElementById('dtOcrOut').value=r.data.text;document.getElementById('dtOcrRes').textContent='Sompurno!'})});
-})();
+const G=[
+["Aadhaar Services","https://myaadhaar.uidai.gov.in","🅰️","Official"],
+["Aikyashree Scholarship","https://www.wbmdfcscholarship.gov.in","🎓","WB Govt"],
+["Annapurna Bhandar","https://food.wb.gov.in","🍚","WB Govt"],
+["Ayushman Bharat (PM-JAY)","https://beneficiary.nha.gov.in","🏥","Official"],
+["Banglarbhumi (Land Records)","https://banglarbhumi.gov.in","🗺️","WB Govt"],
+["Birth & Death Certificate","https://edistrict.wb.gov.in","📜","WB Govt"],
+["BMSSY","https://bmssy.wb.gov.in","👷","WB Govt"],
+["E-District (All Certificates)","https://edistrict.wb.gov.in","📜","Official"],
+["Electric Bill / Services","https://www.wbsedcl.in","💡","WB Govt"],
+["eShram Card","https://eshram.gov.in","🪪","Official"],
+["Farmer ID","https://agristack.gov.in","🌾","Official"],
+["Gas Booking / Services","https://www.indane.co.in","🔥","Official"],
+["Job Search Portal","https://www.ncs.gov.in","💼","Official"],
+["NPCI / DBT Status","https://www.npci.org.in","🔗","Official"],
+["Panchayat Property Tax","https://panchayat.wb.gov.in","🏠","WB Govt"],
+["PAN Services (UTI/NSDL)","https://www.utiitsl.com","🅿️","Official"],
+["Pensioner Status","https://pensionersportal.gov.in","👴","Official"],
+["PM Kisan","https://pmkisan.gov.in","🌾","Official"],
+["PMAY Gramin","https://pmayg.nic.in","🏠","Official"],
+["Police Constable Recruitment","https://wbpolice.gov.in","👮","WB Govt"],
+["Post Office Services","https://www.indiapost.gov.in","📮","Official"],
+["Ration Card","https://food.wb.gov.in","🍚","WB Govt"],
+["RRB Recruitment","https://www.rrbkolkata.gov.in","🚂","Official"],
+["SBM (Swachh Bharat)","https://sbm.gov.in","🚻","Official"],
+["Silpasathi (Trade License)","https://silpasathi.wb.gov.in","🏪","WB Govt"],
+["SSC Recruitment","https://ssc.gov.in","📝","Official"],
+["TET / Upper Primary","https://www.wbbpe.org","📚","WB Govt"],
+["Udyam Registration","https://udyamregistration.gov.in","🏭","Official"],
+["Voter Services","https://voters.eci.gov.in","🗳️","Official"],
+["WBPSC","https://wbpsc.gov.in","📋","WB Govt"],
+["Yuvashakti","https://yuvashakti.wb.gov.in","⚡","WB Govt"]];
+const P=["PAN Services (UTI/NSDL)","Aadhaar Services","Voter Services","Instant e-PAN - Income Tax Official|https://eportal.incometax.gov.in","Banglarbhumi (Land Records)","E-District (All Certificates)"];
+function svc(n,u,ic,t){return `<div class="svc" onclick="openU('${u}')"><span class="ic">${ic}</span><span class="nm">${n}</span><span class="tag ${t.includes('WB')?'wb':(t==='Official'?'':'free')}">${t}</span><span class="go">›</span></div>`}
+document.getElementById('govtList').innerHTML=G.map(g=>svc(g[0],g[1],g[2],g[3])).join('');
+document.getElementById('pop').innerHTML=P.map(p=>{const[n,u]=p.split('|');const f=G.find(g=>g[0]===n);return f?svc(f[0],u||f[1],f[2],f[3]):''}).join('');
+function tgM(){document.getElementById('menu').classList.toggle('on');document.getElementById('ovl').classList.toggle('on')}
+document.getElementById('ovl').onclick=tgM;
+function go(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id).classList.add('on');if(document.getElementById('menu').classList.contains('on'))tgM();window.scrollTo(0,0)}
+function openU(u){window.open(u,'_blank')}
+function dlC(id,fn){const c=document.getElementById(id);const a=document.createElement('a');a.download=fn;a.href=c.toDataURL('image/png');a.click()}
+function loadImg(file){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=URL.createObjectURL(file)})}
+function fit(cv,img,W,H){cv.width=W;cv.height=H;const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);const s=Math.max(W/img.width,H/img.height);const w=img.width*s,h=img.height*s;x.drawImage(img,(W-w)/2,(H-h)/2,w,h);cv.style.display='block'}
+async function mkPVC(){const f=document.getElementById('pvcF').files[0];if(!f)return alert('Upload front photo');const img=await loadImg(f);const cv=document.getElementById('pvcCv');fit(cv,img,1016,638);document.getElementById('pvcDl').style.display='block'}
+async function rmBg(){const f=document.getElementById('phF').files[0];if(!f)return alert('Upload photo first');const o=document.getElementById('phCv');o.style.display='block';o.getContext('2d').fillText('Processing...',10,20);try{const fd=new FormData();fd.append('image_file',f);const r=await fetch('https://api.remove.bg/v1.0/removebg',{method:'POST',headers:{'X-Api-Key':'demo'},body:fd});if(!r.ok)throw 0;const b=await r.blob();const img=await loadImg(b);enhance(img)}catch(e){const img=await loadImg(f);enhance(img);alert('Offline HD enhance done (BG remove needs API key)')}}
+async function enhance(img){const cv=document.getElementById('phCv');const s=document.getElementById('phSize').value;let W,H;if(s==='35x45'){W=413;H=531}else if(s==='50x50'){W=600;H=600}else if(s==='3R'){W=1050;H=1500}else{W=1200;H=1800}fit(cv,img,W,H);const x=cv.getContext('2d');const d=x.getImageData(0,0,W,H);for(let i=0;i<d.data.length;i+=4){d.data[i]=Math.min(255,d.data[i]*1.08+8);d.data[i+1]=Math.min(255,d.data[i+1]*1.08+8);d.data[i+2]=Math.min(255,d.data[i+2]*1.08+8)}x.putImageData(d,0,0);document.getElementById('phDl').style.display='block'}
+async function mkSheet(){const f=document.getElementById('phF').files[0];if(!f)return alert('Upload photo first');await enhance(await loadImg(f));alert('Sheet ready — download & print')}
+async function rsImg(fi,ci,w,h,kb){const f=document.getElementById(fi).files[0];if(!f)return alert('Upload file');const img=await loadImg(f);const cv=document.getElementById(ci);cv.width=w;cv.height=h;const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);const s=Math.min(w/img.width,h/img.height);const iw=img.width*s,ih=img.height*s;x.drawImage(img,(w-iw)/2,(h-ih)/2,iw,ih);cv.style.display='block';document.getElementById(fi.replace('F','Dl')).style.display='block'}
+async function j2p(){const fs=document.getElementById('j2pF').files;if(!fs.length)return alert('Select images');const o=document.getElementById('j2pO');o.style.display='block';o.textContent='Creating PDF...';const {jsPDF}=window;try{const pdf=new jspdf.jsPDF();for(let i=0;i<fs.length;i++){const img=await loadImg(fs[i]);const w=190,h=img.height*190/img.width;if(i>0)pdf.addPage();pdf.addImage(URL.createObjectURL(fs[i]),'JPEG',10,10,w,Math.min(h,270))}pdf.save('document.pdf');o.textContent='✅ PDF downloaded!'}catch(e){o.textContent='⚠️ PDF library loading — use iLovePDF site below instead.'}}
+async function mgPdf(){const o=document.getElementById('mgO');o.style.display='block';o.textContent='⚠️ Browser PDF merge needs library — please use iLovePDF site below for merge.'}
+async function cpImg(){const f=document.getElementById('ciF').files[0];if(!f)return alert('Upload image');const q=parseFloat(document.getElementById('ciQ').value)||0.7;const img=await loadImg(f);const cv=document.getElementById('ciCv');cv.width=img.width;cv.height=img.height;cv.getContext('2d').drawImage(img,0,0);cv.style.display='block';cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='compressed.jpg';document.getElementById('ciDl').onclick=()=>a.click();document.getElementById('ciDl').style.display='block'},'image/jpeg',q)}
+async function rtImg(d){const f=document.getElementById('rtF').files[0];if(!f)return alert('Upload image');const img=await loadImg(f);const cv=document.getElementById('rtCv');const x=cv.getContext('2d');if(d===180){cv.width=img.width;cv.height=img.height;x.translate(cv.width/2,cv.height/2);x.rotate(Math.PI);x.drawImage(img,-img.width/2,-img.height/2)}else{cv.width=img.height;cv.height=img.width;x.translate(cv.width/2,cv.height/2);x.rotate(Math.PI/2);x.drawImage(img,-img.width/2,-img.height/2)}cv.style.display='block';document.getElementById('rtDl').style.display='block'}
+async function wmImg(){const f=document.getElementById('wmF').files[0];if(!f)return alert('Upload image');const t=document.getElementById('wmT').value||'PARVEZ DIGITAL';const img=await loadImg(f);const cv=document.getElementById('wmCv');cv.width=img.width;cv.height=img.height;const x=cv.getContext('2d');x.drawImage(img,0,0);x.font=`bold ${img.width/12}px Arial`;x.fillStyle='rgba(212,160,23,.55)';x.textAlign='center';x.fillText(t,cv.width/2,cv.height/2);cv.style.display='block';document.getElementById('wmDl').style.display='block'}
+function t2p(){const t=document.getElementById('t2pT').value;const o=document.getElementById('t2pO');o.style.display='block';if(!t){o.textContent='Type some text first';return}o.textContent='⚠️ Use iLovePDF site below for text-to-PDF, or copy this text:\n\n'+t}
+async function autoCrop(){const f=document.getElementById('crF').files[0];if(!f)return alert('Upload photo');const r=parseFloat(document.getElementById('crR').value);const img=await loadImg(f);const cv=document.getElementById('crCv');let w=img.width,h=img.width/r;if(h>img.height){h=img.height;w=img.height*r}cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,(img.width-w)/2,(img.height-h)/2,w,h,0,0,w,h);cv.style.display='block';document.getElementById('crDl').style.display='block'}
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
