@@ -191,9 +191,11 @@ document.getElementById('dtOcrGo').addEventListener('click',function(){if(!windo
 })();
 </script>
 <script>
-/* Service logos — single strip file (CSS sprite) + favicon backup */
+/* Service logos — strip file auto-khuje nebe (nam jai hok) + favicon backup */
 (function(){
-  var STRIP='unnamed-imageonline.co-merged.png';
+  var REPO='https://api.github.com/repos/Parvezdigitals/parvezdigitals.github.io/contents/';
+  var GUESS='unnamed-imageonline.co-merged.png';
+  var STRIP='';
   function ddg(d){return 'https://icons.duckduckgo.com/ip3/'+d+'.ico';}
   function gg(d){return 'https://www.google.com/s2/favicons?domain='+d+'&sz=64';}
   function stripEm(t){return t.replace(/^[^\p{L}\p{N}]+/u,'');}
@@ -270,10 +272,21 @@ document.getElementById('dtOcrGo').addEventListener('click',function(){if(!windo
       else putFav(GF[id],'gicon',t,orig,ins);
     });
   }
-  var t=new Image();
-  t.onload=function(){init(true);};
-  t.onerror=function(){init(false);};
-  t.src=STRIP;
+  function tryLoad(url,ok,fail){
+    var im=new Image();im.onload=function(){STRIP=url;ok();};im.onerror=fail;im.src=url;
+  }
+  function discover(){
+    fetch(REPO).then(function(r){return r.json();}).then(function(fs){
+      var hit=null;
+      for(var i=0;i<fs.length;i++){
+        var n=fs[i].name||'';
+        if(/\.png$/i.test(n)&&/merged|imageonline|strip/i.test(n)){hit=fs[i];break;}
+      }
+      if(hit&&hit.download_url)tryLoad(hit.download_url,function(){init(true);},function(){init(false);});
+      else init(false);
+    }).catch(function(){init(false);});
+  }
+  tryLoad(GUESS,function(){init(true);},discover);
 })();
 </script>
 </body>
