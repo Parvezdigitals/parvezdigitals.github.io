@@ -76,6 +76,9 @@ input.pvFile{display:none}
 textarea.dtInp{min-height:120px;resize:vertical;font-weight:400}
 select.dtInp{width:auto;padding:8px}
 @media (min-width:1024px){#sideMenu{left:0!important;right:auto!important;width:340px;max-width:340px;transition:none}#overlay{display:none!important}.menuDots{display:none!important}.mainContent{margin-left:372px;max-width:1020px;padding:20px 24px}#pvcToolView,#epView,#panView,#docView{left:340px;width:calc(100% - 340px)}}
+.ficon{width:24px;height:24px;object-fit:contain;vertical-align:-6px;margin-right:7px;border-radius:5px;background:#fff;padding:2px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.qicon{width:36px;height:36px;object-fit:contain;border-radius:9px;background:#fff;padding:3px}
+.gicon{width:22px;height:22px;object-fit:contain;vertical-align:-4px;margin-right:6px;border-radius:5px;background:rgba(255,255,255,.92);padding:2px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -184,6 +187,62 @@ function dtSw(id,el){dtT.forEach(function(t){document.getElementById(t[0]).class
 document.getElementById('dtImgGo').addEventListener('click',function(){var f=document.getElementById('dtImgFile').files[0];if(!f)return alert('Image nin');var q=document.getElementById('dtImgQ').value/100,im=new Image();im.onload=function(){var c=document.createElement('canvas');c.width=im.width;c.height=im.height;c.getContext('2d').drawImage(im,0,0);c.toBlob(function(bl){document.getElementById('dtImgRes').textContent='Sompurno: '+(bl.size/1024).toFixed(0)+' KB';var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='compressed.jpg';document.body.appendChild(a);a.click();a.remove()},'image/jpeg',q)};im.src=URL.createObjectURL(f)});
 document.getElementById('dtMergeGo').addEventListener('click',function(){if(!window.PDFLib)return alert('Internet proyojon');var fs=document.getElementById('dtMergeFiles').files;if(fs.length<2)return alert('2 ti PDF nin');(async function(){var out=await PDFLib.PDFDocument.create();for(var i=0;i<fs.length;i++){var b=await fs[i].arrayBuffer(),d=await PDFLib.PDFDocument.load(b),cp=await out.copyPages(d,d.getPageIndices());cp.forEach(function(p){out.addPage(p)})}var by=await out.save(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([by],{type:'application/pdf'}));a.download='merged.pdf';document.body.appendChild(a);a.click();a.remove();document.getElementById('dtMergeRes').textContent='Sompurno!'})()});
 document.getElementById('dtOcrGo').addEventListener('click',function(){if(!window.Tesseract)return alert('Internet proyojon');var f=document.getElementById('dtOcrFile').files[0];if(!f)return alert('Chhobi nin');document.getElementById('dtOcrRes').textContent='OCR cholche...';Tesseract.recognize(URL.createObjectURL(f),'eng').then(function(r){document.getElementById('dtOcrOut').value=r.data.text;document.getElementById('dtOcrRes').textContent='Sompurno!'})});
+})();
+</script>
+<script>
+/* Genuine official icons — auto favicon for every service link */
+(function(){
+  function fv(d){return 'https://www.google.com/s2/favicons?domain='+d+'&sz=64';}
+  function stripEm(t){return t.replace(/^[^\p{L}\p{N}]+/u,'');}
+  /* 1. Sob service item (.i) — link er domain theke asol favicon */
+  document.querySelectorAll('.i').forEach(function(el){
+    var m=(el.getAttribute('onclick')||'').match(/go\('([^']+)'/);
+    if(!m) return;
+    try{
+      var d=new URL(m[1]).hostname, t=el.firstChild;
+      if(!t||t.nodeType!==3) return;
+      var orig=t.textContent;
+      var img=document.createElement('img');
+      img.className='ficon'; img.alt=''; img.src=fv(d);
+      img.onerror=function(){ t.textContent=orig; this.remove(); };
+      t.textContent=stripEm(orig);
+      el.insertBefore(img, t);
+    }catch(e){}
+  });
+  /* 2. Quick grid cards */
+  document.querySelectorAll('.qCard').forEach(function(el){
+    var oc=el.getAttribute('onclick')||'';
+    if(oc.indexOf('toggleMenu')>-1) return;
+    var m=oc.match(/go\('([^']+)'/);
+    if(!m) return;
+    try{
+      var d=new URL(m[1]).hostname, box=el.querySelector('div');
+      if(!box) return;
+      var orig=box.innerHTML;
+      var img=document.createElement('img');
+      img.className='qicon'; img.alt=''; img.src=fv(d);
+      img.onerror=function(){ box.innerHTML=orig; };
+      box.innerHTML=''; box.appendChild(img);
+    }catch(e){}
+  });
+  /* 3. Menu group headers */
+  var gm={a:'myaadhaar.uidai.gov.in',ay:'beneficiary.nha.gov.in',b:'banglarbhumi.gov.in',bd:'crs.wb.gov.in',c:'edistrict.wb.gov.in',e:'eshram.gov.in',el:'wbsedcl.in',ga:'my.ebharatgas.com',pan:'pan.utiitsl.com',pt:'prdtax.wb.gov.in',pm:'pmkisan.gov.in',ra:'wbpds.wb.gov.in',vo:'voters.eci.gov.in'};
+  Object.keys(gm).forEach(function(id){
+    var gl=document.getElementById(id);
+    if(!gl) return;
+    var g=gl.closest('.g');
+    if(!g) return;
+    var sp=g.querySelector('.gh span');
+    if(!sp) return;
+    var t=sp.firstChild;
+    if(!t||t.nodeType!==3) return;
+    var orig=t.textContent;
+    var img=document.createElement('img');
+    img.className='gicon'; img.alt=''; img.src=fv(gm[id]);
+    img.onerror=function(){ t.textContent=orig; this.remove(); };
+    t.textContent=stripEm(orig);
+    sp.insertBefore(img, t);
+  });
 })();
 </script>
 </body>
