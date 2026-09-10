@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Easy Photo Print - PARVEZ DIGITAL SERVICE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{background:#0b1526;color:#fff;min-height:100vh;padding-bottom:30px}
+header{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:2px solid #f59e0b;background:#0b1526;position:sticky;top:0;z-index:10}
+.backBtn{border:2px solid #f59e0b;background:transparent;color:#f59e0b;font-weight:900;font-size:15px;padding:10px 16px;border-radius:12px;cursor:pointer}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;color:#f59e0b;font-weight:700}
+.wrap{max-width:520px;margin:0 auto;padding:14px}
+.card{background:#141f36;border:1px solid #2a3a5f;border-radius:16px;padding:16px;margin-bottom:14px}
+.card b.gold{color:#fbbf24}
+.step{display:flex;gap:8px;align-items:center;font-size:14px;color:#cbd5e1;margin-top:8px}
+.secTitle{color:#fbbf24;font-weight:900;font-size:15px;margin:14px 0 10px}
+.sizes{display:flex;flex-wrap:wrap;gap:10px}
+.sizeBtn{flex:1 1 30%;min-width:140px;padding:14px 8px;border-radius:14px;border:2px solid #2a3a5f;background:#141f36;color:#fff;font-weight:800;font-size:13px;cursor:pointer;text-align:center}
+.sizeBtn.active{background:#f59e0b;border-color:#f59e0b;color:#000}
+.panel{border:2px solid #f59e0b;border-radius:18px;padding:14px;background:#101b31;margin-top:6px}
+.uploadBtn{width:100%;padding:15px;border:none;border-radius:12px;background:#2563eb;color:#fff;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:12px}
+#stage{width:100%;background:#05080f;border-radius:12px;display:block;touch-action:none;cursor:grab}
+.row{display:flex;align-items:center;gap:10px;margin-top:12px}
+.row label{font-size:14px;font-weight:700;white-space:nowrap}
+input[type=range]{flex:1;accent-color:#f59e0b}
+.btnRow{display:flex;gap:10px;margin-top:12px}
+.halfBtn{flex:1;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer}
+.rotate{background:#8b5cf6;color:#fff}
+.reset{background:#475569;color:#fff}
+.optRow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.optBtn{flex:1;min-width:140px;padding:12px;border-radius:12px;border:2px solid #2a3a5f;background:#141f36;color:#fff;font-weight:800;font-size:13px;cursor:pointer}
+.optBtn.active{border-color:#22c55e;color:#22c55e}
+.swatches{display:flex;gap:10px;margin-top:10px;align-items:center}
+.sw{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.sw.active{border-color:#f59e0b}
+.swLabel{font-size:13px;font-weight:700;color:#cbd5e1}
+.dlBtn{width:100%;margin-top:16px;padding:17px;border:none;border-radius:14px;background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000;font-size:17px;font-weight:900;cursor:pointer}
+.dlBtn:disabled{opacity:.4;cursor:not-allowed}
+footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
+#fileInput{display:none}
+.hint{font-size:12px;color:#94a3b8;text-align:center;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+<button class="backBtn" onclick="goBack()">← Portal</button>
+<div><div class="title">📸 Easy Photo Print</div><div class="sub">All Sizes • HD Enhance</div></div>
+</header>
+<div class="wrap">
+<div class="card">
+<b class="gold">📝 How to Use:</b>
+<div class="step">1️⃣ Select photo size</div>
+<div class="step">2️⃣ Upload your photo</div>
+<div class="step">3️⃣ Adjust zoom, rotate &amp; HD Enhance</div>
+<div class="step">4️⃣ <b class="gold">Download</b> — HD PNG (300 DPI)</div>
+</div>
+<div class="secTitle">📐 PHOTO SIZE:</div>
+<div class="sizes">
+<button class="sizeBtn active" data-size="passport">Passport<br>35×45mm</button>
+<button class="sizeBtn" data-size="visa">Visa<br>51×51mm</button>
+<button class="sizeBtn" data-size="r3">3R<br>3.5×5in</button>
+<button class="sizeBtn" data-size="r4">4R<br>4×6in</button>
+</div>
+<div class="panel">
+<button class="uploadBtn" onclick="document.getElementById('fileInput').click()">📤 Upload Photo</button>
+<input type="file" id="fileInput" accept="image/*">
+<canvas id="stage"></canvas>
+<div class="hint">Drag photo to adjust position</div>
+<div class="row">
+<label>🔍 Zoom</label>
+<input type="range" id="zoom" min="100" max="300" value="100">
+</div>
+<div class="btnRow">
+<button class="halfBtn rotate" onclick="rotateImg()">🔄 Rotate</button>
+<button class="halfBtn reset" onclick="resetAll()">↺ Reset</button>
+</div>
+<div class="optRow">
+<button class="optBtn active" id="enhBtn" onclick="toggleEnhance()">✨ HD Enhance: ON</button>
+</div>
+<div class="swatches">
+<span class="swLabel">Background:</span>
+<div class="sw active" data-bg="#ffffff" style="background:#ffffff" title="White"></div>
+<div class="sw" data-bg="#a8d8f0" style="background:#a8d8f0" title="Light Blue"></div>
+<div class="sw" data-bg="#e53935" style="background:#e53935" title="Red"></div>
+<div class="sw" data-bg="original" style="background:linear-gradient(45deg,#888,#ccc)" title="Original"></div>
+</div>
+</div>
+<button class="dlBtn" id="dlBtn" onclick="downloadHD()" disabled>⬇ Download Photo PNG (HD)</button>
+<footer>PARVEZ DIGITAL SERVICE • Easy Photo Print</footer>
+</div>
+<script>
+var SIZES={
+ passport:{w:35,h:45,unit:'mm'},
+ visa:{w:51,h:51,unit:'mm'},
+ r3:{w:3.5,h:5,unit:'in'},
+ r4:{w:4,h:6,unit:'in'}
+};
+var img=null,sizeKey='passport',zoom=1,rot=0,px=0,py=0,enhance=true,bg='#ffffff';
+var stage=document.getElementById('stage'),ctx=stage.getContext('2d');
+var dragging=false,lx=0,ly=0;
+function mmPx(v,unit){return unit==='mm'?v/25.4*300:v*300;}
+function sizePx(){
+ var s=SIZES[sizeKey];
+ return {w:Math.round(mmPx(s.w,s.unit)),h:Math.round(mmPx(s.h,s.unit))};
+}
+document.querySelectorAll('.sizeBtn').forEach(function(b){
+ b.onclick=function(){
+  document.querySelectorAll('.sizeBtn').forEach(function(x){x.classList.remove('active');});
+  b.classList.add('active');sizeKey=b.dataset.size;zoom=1;px=0;py=0;
+  document.getElementById('zoom').value=100;draw();
+ };
+});
+document.getElementById('fileInput').onchange=function(e){
+ var f=e.target.files[0];if(!f)return;
+ var r=new FileReader();
+ r.onload=function(ev){
+  var im=new Image();
+  im.onload=function(){img=im;zoom=1;px=0;py=0;rot=0;
+   document.getElementById('dlBtn').disabled=false;draw();};
+  im.src=ev.target.result;
+ };
+ r.readAsDataURL(f);
+};
+document.getElementById('zoom').oninput=function(){zoom=this.value/100;draw();};
+function rotateImg(){rot=(rot+90)%360;draw();}
+function resetAll(){zoom=1;px=0;py=0;rot=0;document.getElementById('zoom').value=100;draw();}
+function toggleEnhance(){enhance=!enhance;
+ var b=document.getElementById('enhBtn');
+ b.textContent=enhance?'✨ HD Enhance: ON':'✨ HD Enhance: OFF';
+ b.classList.toggle('active',enhance);draw();}
+document.querySelectorAll('.sw').forEach(function(s){
+ s.onclick=function(){
+  document.querySelectorAll('.sw').forEach(function(x){x.classList.remove('active');});
+  s.classList.add('active');bg=s.dataset.bg;draw();
+ };
+});
+stage.addEventListener('pointerdown',function(e){dragging=true;lx=e.clientX;ly=e.clientY;stage.style.cursor='grabbing';});
+window.addEventListener('pointerup',function(){dragging=false;stage.style.cursor='grab';});
+window.addEventListener('pointermove',function(e){
+ if(!dragging||!img)return;
+ var r=stage.getBoundingClientRect();
+ px+=(e.clientX-lx)*(stage.width/r.width);
+ py+=(e.clientY-ly)*(stage.height/r.height);
+ lx=e.clientX;ly=e.clientY;draw();
+});
+function drawImage(c,cw,ch){
+ c.save();
+ if(bg==='original'){c.fillStyle='#05080f';}else{c.fillStyle=bg;}
+ c.fillRect(0,0,cw,ch);
+ if(img){
+  c.translate(cw/2,ch/2);
+  c.rotate(rot*Math.PI/180);
+  var iw=img.width,ih=img.height;
+  var fit=Math.max(cw/iw,ch/ih)*zoom;
+  var dw=iw*fit,dh=ih*fit;
+  c.translate(px,py);
+  c.drawImage(img,-dw/2,-dh/2,dw,dh);
+ }
+ c.restore();
+}
+function draw(){
+ var s=sizePx(),H=760,W=Math.round(H*s.w/s.h);
+ stage.width=W;stage.height=H;
+ drawImage(ctx,W,H);
+}
+function sharpen(c,w,h,amt){
+ var src=c.getImageData(0,0,w,h),out=c.createImageData(w,h);
+ var d=src.data,o=out.data;
+ var k=[0,-amt,0,-amt,1+4*amt,-amt,0,-amt,0];
+ for(var y=0;y<h;y++)for(var x=0;x<w;x++){
+  var r=0,g=0,b=0;
+  for(var ky=-1;ky<=1;ky++)for(var kx=-1;kx<=1;kx++){
+   var xx=Math.min(w-1,Math.max(0,x+kx)),yy=Math.min(h-1,Math.max(0,y+ky));
+   var idx=(yy*w+xx)*4,kk=k[(ky+1)*3+(kx+1)];
+   r+=d[idx]*kk;g+=d[idx+1]*kk;b+=d[idx+2]*kk;
+  }
+  var i2=(y*w+x)*4;
+  o[i2]=Math.min(255,Math.max(0,r));o[i2+1]=Math.min(255,Math.max(0,g));
+  o[i2+2]=Math.min(255,Math.max(0,b));o[i2+3]=d[i2+3];
+ }
+ c.putImageData(out,0,0);
+}
+function downloadHD(){
+ if(!img){alert('Please upload a photo first');return;}
+ var s=sizePx();
+ var cv=document.createElement('canvas');cv.width=s.w;cv.height=s.h;
+ var c=cv.getContext('2d');
+ if(enhance){
+  var tmp=document.createElement('canvas');tmp.width=s.w;tmp.height=s.h;
+  var t=tmp.getContext('2d');
+  drawImage(t,s.w,s.h);
+  c.filter='contrast(1.12) saturate(1.25) brightness(1.04)';
+  c.drawImage(tmp,0,0);
+  c.filter='none';
+  sharpen(c,s.w,s.h,0.35);
+ }else{
+  drawImage(c,s.w,s.h);
+ }
+ var a=document.createElement('a');
+ a.download='photo_'+sizeKey+'_HD.png';
+ a.href=cv.toDataURL('image/png');
+ a.click();
+}
+function goBack(){if(window.history.length>1){window.history.back();}else{window.location.href='index.html';}}
+draw();
+</script>
+</body>
+</html>
