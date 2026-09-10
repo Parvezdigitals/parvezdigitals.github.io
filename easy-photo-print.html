@@ -17,11 +17,12 @@ header{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:2px s
 .step{display:flex;gap:8px;align-items:center;font-size:14px;color:#cbd5e1;margin-top:8px}
 .secTitle{color:#fbbf24;font-weight:900;font-size:15px;margin:18px 0 10px}
 .bigBtn{width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;margin-bottom:10px}
-.uploadBtn{background:#2563eb;color:#fff}
+.uploadBtn{background:#2563eb;color:#fff;display:block;text-align:center}
 .rmBtn{background:#dc2626;color:#fff}
 .rmBtn:disabled{opacity:.4;cursor:not-allowed}
 #stage{width:100%;background:#05080f;border-radius:12px;display:block;touch-action:none;cursor:grab;margin-top:4px}
 .hint{font-size:12px;color:#94a3b8;text-align:center;margin-top:8px}
+#upStatus{font-size:14px;font-weight:800;text-align:center;margin-top:10px;min-height:20px;color:#94a3b8}
 .sizes{display:flex;flex-wrap:wrap;gap:10px}
 .sizeBtn{flex:1 1 30%;min-width:130px;padding:14px 8px;border-radius:14px;border:2px solid #2a3a5f;background:#141f36;color:#fff;font-weight:800;font-size:13px;cursor:pointer;text-align:center}
 .sizeBtn.active{background:#f59e0b;border-color:#f59e0b;color:#000}
@@ -43,7 +44,7 @@ input[type=range]{flex:1;accent-color:#f59e0b}
 .dlBtn{background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000}
 .dlBtn:disabled{opacity:.4;cursor:not-allowed}
 footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
-#fileInput{display:none}
+#fileInput{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
 #bgStatus{font-size:13px;font-weight:700;color:#94a3b8;margin-top:10px;text-align:center}
 #bgStatus.ok{color:#22c55e}
 .note{font-size:12px;color:#94a3b8;margin-top:8px;line-height:1.6}
@@ -65,9 +66,10 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
 </div>
 
 <div class="secTitle">📤 STEP 1 — UPLOAD PHOTO</div>
-<button class="bigBtn uploadBtn" onclick="document.getElementById('fileInput').click()">📤 Upload Photo</button>
+<label class="bigBtn uploadBtn" for="fileInput">📤 Upload Photo</label>
 <input type="file" id="fileInput" accept="image/*">
 <canvas id="stage"></canvas>
+<div id="upStatus">No photo selected</div>
 <div class="hint">Drag photo to adjust position • Face inside the guide</div>
 
 <div class="secTitle">📐 STEP 2 — SELECT SIZE</div>
@@ -125,11 +127,13 @@ var SIZES={
 var origImg=null,cutCanvas=null,bgRemoved=false;
 var sizeKey='passport',zoom=1,rot=0,px=0,py=0,enhance=true,bgColor='#ffffff',tolerance=55;
 var stage=document.getElementById('stage'),ctx=stage.getContext('2d');
+var upStatus=document.getElementById('upStatus');
 var dragging=false,lx=0,ly=0;
 
 function mmPx(v,unit){return unit==='mm'?v/25.4*300:v*300;}
 function sizePx(){var s=SIZES[sizeKey];return{w:Math.round(mmPx(s.w,s.unit)),h:Math.round(mmPx(s.h,s.unit))};}
 function activeImg(){return cutCanvas||origImg;}
+function setUpStatus(msg,ok){upStatus.textContent=msg;upStatus.style.color=ok?'#22c55e':'#f87171';}
 
 document.querySelectorAll('.sizeBtn').forEach(function(b){
  b.onclick=function(){
@@ -139,22 +143,41 @@ document.querySelectorAll('.sizeBtn').forEach(function(b){
  };
 });
 
-document.getElementById('fileInput').onchange=function(e){
- var f=e.target.files[0];if(!f)return;
- var r=new FileReader();
- r.onload=function(ev){
-  var im=new Image();
-  im.onload=function(){
-   origImg=im;cutCanvas=null;bgRemoved=false;zoom=1;px=0;py=0;rot=0;
-   document.getElementById('rmBtn').disabled=false;
-   document.getElementById('dlBtn').disabled=false;
-   setStatus('Photo uploaded. Now tap "Remove Background".',false);
-   draw();
-  };
-  im.src=ev.target.result;
+document.getElementById('fileInput').addEventListener('change',function(e){
+ var f=e.target.files[0];
+ e.target.value='';
+ if(!f)return;
+ setUpStatus('Reading photo...',true);
+ var url=URL.createObjectURL(f);
+ var im=new Image();
+ im.onload=function(){
+  var maxSide=2000;
+  var sc=Math.min(1,maxSide/Math.max(im.width,im.height));
+  if(sc<1){
+   var cv=document.createElement('canvas');
+   cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);
+   cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+   var im2=new Image();
+   im2.onload=function(){URL.revokeObjectURL(url);finishUpload(im2);};
+   im2.onerror=function(){URL.revokeObjectURL(url);setUpStatus('Could not read this photo. Try another one.',false);};
+   im2.src=cv.toDataURL('image/jpeg',0.92);
+  }else{
+   URL.revokeObjectURL(url);finishUpload(im);
+  }
  };
- r.readAsDataURL(f);
-};
+ im.onerror=function(){URL.revokeObjectURL(url);setUpStatus('Could not read this photo. Try another one.',false);};
+ im.src=url;
+});
+
+function finishUpload(im){
+ origImg=im;cutCanvas=null;bgRemoved=false;zoom=1;px=0;py=0;rot=0;
+ document.getElementById('zoom').value=100;
+ document.getElementById('rmBtn').disabled=false;
+ document.getElementById('dlBtn').disabled=false;
+ setUpStatus('✓ Photo loaded! Now tap Remove Background.',true);
+ setStatus('Photo ready. Tap "Remove Background".',false);
+ draw();
+}
 
 document.getElementById('zoom').oninput=function(){zoom=this.value/100;draw();};
 document.getElementById('tol').oninput=function(){
@@ -162,13 +185,13 @@ document.getElementById('tol').oninput=function(){
  document.getElementById('tolVal').textContent=tolerance;
 };
 document.getElementById('tol').onchange=function(){
- if(bgRemoved&&origImg){removeBackground(true);}
+ if(bgRemoved&&origImg){removeBackground();}
 };
 
 function setStatus(msg,ok){
  var el=document.getElementById('bgStatus');
- el.textContent=msg;el.className=ok?'ok':'';
- el.id='bgStatus';
+ el.textContent=msg;
+ if(ok){el.classList.add('ok');}else{el.classList.remove('ok');}
 }
 
 function rotateImg(){rot=(rot+90)%360;draw();}
@@ -201,7 +224,7 @@ window.addEventListener('pointermove',function(e){
  lx=e.clientX;ly=e.clientY;draw();
 });
 
-function sampleBgColor(c,w,h,d){
+function sampleBgColor(w,h,d){
  var pts=[[4,4],[w-5,4],[4,h-5],[w-5,h-5],[Math.floor(w/2),4],[Math.floor(w/2),h-5]];
  var r=0,g=0,b=0,n=0;
  pts.forEach(function(p){
@@ -209,3 +232,114 @@ function sampleBgColor(c,w,h,d){
    var x=Math.min(w-1,p[0]+dx),y=Math.min(h-1,p[1]+dy),i=(y*w+x)*4;
    r+=d[i];g+=d[i+1];b+=d[i+2];n++;
   }
+ });
+ return[r/n,g/n,b/n];
+}
+
+function removeBackground(){
+ if(!origImg)return;
+ setStatus('Removing background... please wait',false);
+ setTimeout(function(){
+  var maxSide=1000;
+  var sc=Math.min(1,maxSide/Math.max(origImg.width,origImg.height));
+  var w=Math.round(origImg.width*sc),h=Math.round(origImg.height*sc);
+  var cv=document.createElement('canvas');cv.width=w;cv.height=h;
+  var c=cv.getContext('2d');
+  c.drawImage(origImg,0,0,w,h);
+  var imgData=c.getImageData(0,0,w,h),d=imgData.data;
+  var bg=sampleBgColor(w,h,d);
+  var tol=tolerance,feather=30;
+  for(var i=0;i<d.length;i+=4){
+   var dr=d[i]-bg[0],dg=d[i+1]-bg[1],db=d[i+2]-bg[2];
+   var dist=Math.sqrt(dr*dr+dg*dg+db*db);
+   if(dist<tol){d[i+3]=0;}
+   else if(dist<tol+feather){d[i+3]=Math.round(255*(dist-tol)/feather);}
+  }
+  c.putImageData(imgData,0,0);
+  cutCanvas=cv;bgRemoved=true;
+  setStatus('✓ Background removed! Choose a background color above.',true);
+  draw();
+ },50);
+}
+
+function drawTransformed(c,cw,ch,image){
+ c.save();
+ c.fillStyle=bgColor;
+ c.fillRect(0,0,cw,ch);
+ if(image){
+  c.translate(cw/2,ch/2);
+  c.rotate(rot*Math.PI/180);
+  var iw=image.width,ih=image.height;
+  var fit=Math.max(cw/iw,ch/ih)*zoom;
+  var dw=iw*fit,dh=ih*fit;
+  c.translate(px,py);
+  c.drawImage(image,-dw/2,-dh/2,dw,dh);
+ }
+ c.restore();
+}
+
+function drawGuide(c,cw,ch){
+ c.save();
+ c.strokeStyle='rgba(251,191,36,0.85)';
+ c.setLineDash([10,8]);c.lineWidth=3;
+ c.beginPath();
+ c.ellipse(cw/2,ch/2,cw*0.31,ch*0.33,0,0,Math.PI*2);
+ c.stroke();c.restore();
+}
+
+function draw(){
+ var s=sizePx(),H=760,W=Math.round(H*s.w/s.h);
+ stage.width=W;stage.height=H;
+ drawTransformed(ctx,W,H,activeImg());
+ if(activeImg()){drawGuide(ctx,W,H);}
+}
+
+function sharpen(c,w,h,amt){
+ var src=c.getImageData(0,0,w,h),out=c.createImageData(w,h);
+ var d=src.data,o=out.data;
+ var k=[0,-amt,0,-amt,1+4*amt,-amt,0,-amt,0];
+ for(var y=0;y<h;y++)for(var x=0;x<w;x++){
+  var r=0,g=0,bl=0;
+  for(var ky=-1;ky<=1;ky++)for(var kx=-1;kx<=1;kx++){
+   var xx=Math.min(w-1,Math.max(0,x+kx)),yy=Math.min(h-1,Math.max(0,y+ky));
+   var idx=(yy*w+xx)*4,kk=k[(ky+1)*3+(kx+1)];
+   r+=d[idx]*kk;g+=d[idx+1]*kk;bl+=d[idx+2]*kk;
+  }
+  var i2=(y*w+x)*4;
+  o[i2]=Math.min(255,Math.max(0,r));o[i2+1]=Math.min(255,Math.max(0,g));
+  o[i2+2]=Math.min(255,Math.max(0,bl));o[i2+3]=d[i2+3];
+ }
+ c.putImageData(out,0,0);
+}
+
+function downloadHD(){
+ var image=activeImg();
+ if(!image){alert('Please upload a photo first');return;}
+ var s=sizePx();
+ var cv=document.createElement('canvas');cv.width=s.w;cv.height=s.h;
+ var c=cv.getContext('2d');
+ if(enhance){
+  var tmp=document.createElement('canvas');tmp.width=s.w;tmp.height=s.h;
+  var t=tmp.getContext('2d');
+  drawTransformed(t,s.w,s.h,image);
+  c.filter='contrast(1.12) saturate(1.25) brightness(1.04)';
+  c.drawImage(tmp,0,0);
+  c.filter='none';
+  sharpen(c,s.w,s.h,0.35);
+ }else{
+  drawTransformed(c,s.w,s.h,image);
+ }
+ cv.toBlob(function(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='passport_photo_'+sizeKey+'_HD.png';
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},2000);
+ },'image/png');
+}
+
+function goBack(){if(window.history.length>1){window.history.back();}else{window.location.href='index.html';}}
+draw();
+</script>
+</body>
+</html>
