@@ -24,8 +24,8 @@ body{background:#f1f5f9;color:#0f172a;overflow-x:hidden}
 .logoSub{color:#fbbf24;font-size:9px;font-weight:700}
 .menuDots{width:44px;height:44px;background:#1e293b;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:2px solid #f59e0b}
 .dotLine{width:20px;height:3px;background:#f59e0b;border-radius:2px}
-#sideMenu{position:fixed;top:56px;right:-100%;width:100%;max-width:400px;height:calc(100% - 56px);background:#0f172a;z-index:999;transition:right.3s ease;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
-#sideMenu.open{right:0}
+sideMenu{position:fixed;top:56px;right:-100%;width:100%;max-width:400px;height:calc(100% - 56px);background:#0f172a;z-index:999;transition:right.3s ease;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+sideMenu.open{right:0}
 .overlay{position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);background:rgba(0,0,0,.5);z-index:998;display:none}
 .overlay.open{display:block}
 .mainContent{margin-top:56px;padding:8px;max-width:500px;margin-left:auto;margin-right:auto;min-height:calc(100vh - 56px)}
@@ -39,7 +39,7 @@ body{background:#f1f5f9;color:#0f172a;overflow-x:hidden}
 .gl.open{display:block}
 .i{padding:8px;font-size:10px;font-weight:700;color:#1e293b;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin:5px 0;cursor:pointer;line-height:1.4;word-wrap:break-word}
 .i:hover{background:#fffbeb;border-color:#f59e0b}
-#welcomePopup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center}
+welcomePopup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center}
 .welcomeBox{background:#0f172a;border:2px solid #f59e0b;border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center}
 .welcomeBox h2{color:#fbbf24;font-size:20px;font-weight:900;margin-bottom:8px}
 .welcomeBox p{color:#fff;font-size:13px;margin-bottom:12px}
