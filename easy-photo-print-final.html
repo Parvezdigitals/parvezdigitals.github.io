@@ -85,7 +85,7 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
 <body>
 <header>
 <button class="backBtn" onclick="goBack()">&#8592; Portal</button>
-<div><div class="title">&#128247; Passport Photo Maker</div><div class="sub">Person Detect AI &bull; HD Enhance &bull; <b style="color:#4ade80">v2.2</b></div></div>
+<div><div class="title">&#128247; Passport Photo Maker</div><div class="sub">Person Detect AI &bull; HD Enhance &bull; <b style="color:#4ade80">v3.1</b></div></div>
 </header>
 <div class="wrap">
 
@@ -202,7 +202,7 @@ function setBusy(busy){
 document.querySelectorAll('.sizeBtn').forEach(function(b){
  b.onclick=function(){
   document.querySelectorAll('.sizeBtn').forEach(function(x){x.classList.remove('active');});
-  b.classList.add('active');sizeKey=b.dataset.size;zoom=1;px=0;py=0;
+  b.classList.add('active');sizeKey=b.dataset.size;if(bgRemoved&&lastFaceBox){autoFrame(lastFaceBox);}else{zoom=1;px=0;py=0;}
   document.getElementById('zoom').value=100;draw();
  };
 });
@@ -505,30 +505,56 @@ function personCutout(maskCanvas,faceBox){
  try{sx.drawImage(maskCanvas,0,0,sw,sh);}catch(e){return null;}
  var dd;
  try{dd=sx.getImageData(0,0,sw,sh).data;}catch(e){return null;}
- function avgIn(x0,y0,x1,y1){
-  x0=Math.max(0,Math.floor(x0));y0=Math.max(0,Math.floor(y0));
-  x1=Math.min(sw,Math.ceil(x1));y1=Math.min(sh,Math.ceil(y1));
-  var s=0,n=0;
-  for(var y=y0;y<y1;y++)for(var x=x0;x<x1;x++){s+=dd[(y*sw+x)*4];n++;}
-  return n>0?s/n:-1;
- }
- var tot=avgIn(0,0,sw,sh);
+ var bin=new Uint8Array(sw*sh),cnt=0;
+ for(var i=0;i<sw*sh;i++){var v=dd[i*4]>=128?1:0;bin[i]=v;cnt+=v;}
+ var tot=cnt/(sw*sh)*255;
  if(tot<8||tot>247){return null;}
  var invert=false;
  if(faceBox&&faceBox.width>0&&faceBox.height>0){
-  var fa=avgIn((faceBox.xCenter-faceBox.width/2)*sw,(faceBox.yCenter-faceBox.height/2)*sh,(faceBox.xCenter+faceBox.width/2)*sw,(faceBox.yCenter+faceBox.height/2)*sh);
-  if(fa>=0){invert=fa<128;}
+  var fx0=Math.max(0,Math.floor((faceBox.xCenter-faceBox.width/2)*sw));
+  var fy0=Math.max(0,Math.floor((faceBox.yCenter-faceBox.height/2)*sh));
+  var fx1=Math.min(sw,Math.ceil((faceBox.xCenter+faceBox.width/2)*sw));
+  var fy1=Math.min(sh,Math.ceil((faceBox.yCenter+faceBox.height/2)*sh));
+  var fs=0,fn=0;
+  for(var y=fy0;y<fy1;y++)for(var x=fx0;x<fx1;x++){fs+=bin[y*sw+x];fn++;}
+  if(fn>0){invert=(fs/fn)<0.5;}
  }
+ if(invert){for(var k=0;k<sw*sh;k++){bin[k]=bin[k]?0:1;}}
+ var comp=new Int32Array(sw*sh).fill(-1);
+ var compSize=[],nc=0,stack=[];
+ for(var p0=0;p0<sw*sh;p0++){
+  if(bin[p0]!==1||comp[p0]!==-1)continue;
+  var sz=0;stack.length=0;stack.push(p0);comp[p0]=nc;
+  while(stack.length){
+   var cpx=stack.pop();sz++;
+   var px=cpx%sw,py=(cpx/sw)|0;
+   if(px>0&&bin[cpx-1]===1&&comp[cpx-1]===-1){comp[cpx-1]=nc;stack.push(cpx-1);}
+   if(px<sw-1&&bin[cpx+1]===1&&comp[cpx+1]===-1){comp[cpx+1]=nc;stack.push(cpx+1);}
+   if(py>0&&bin[cpx-sw]===1&&comp[cpx-sw]===-1){comp[cpx-sw]=nc;stack.push(cpx-sw);}
+   if(py<sh-1&&bin[cpx+sw]===1&&comp[cpx+sw]===-1){comp[cpx+sw]=nc;stack.push(cpx+sw);}
+  }
+  compSize[nc]=sz;nc++;
+ }
+ var best=0;
+ for(var cc=1;cc<nc;cc++){if(compSize[cc]>compSize[best])best=cc;}
+ var keep=new Uint8Array(sw*sh);
+ for(var q=0;q<sw*sh;q++){
+  if(comp[q]===best){keep[q]=1;
+   var qx=q%sw,qy=(q/sw)|0;
+   if(qx>0)keep[q-1]=1;if(qx<sw-1)keep[q+1]=1;
+   if(qy>0)keep[q-sw]=1;if(qy<sh-1)keep[q+sw]=1;
+  }
+ }
+ var cl=document.createElement('canvas');cl.width=sw;cl.height=sh;
+ var cx=cl.getContext('2d');
+ var imd=cx.createImageData(sw,sh);
+ for(var m=0;m<sw*sh;m++){var vv=keep[m]?255:0;imd.data[m*4]=vv;imd.data[m*4+1]=vv;imd.data[m*4+2]=vv;imd.data[m*4+3]=255;}
+ cx.putImageData(imd,0,0);
  var mc=document.createElement('canvas');mc.width=W;mc.height=H;
  var mx=mc.getContext('2d');
  try{mx.filter='blur(2px)';}catch(e){}
- mx.drawImage(maskCanvas,0,0,W,H);
+ mx.drawImage(cl,0,0,W,H);
  try{mx.filter='none';}catch(e){}
- if(invert){
-  mx.globalCompositeOperation='difference';
-  mx.fillStyle='#ffffff';mx.fillRect(0,0,W,H);
-  mx.globalCompositeOperation='source-over';
- }
  var out=document.createElement('canvas');out.width=W;out.height=H;
  var o=out.getContext('2d');
  o.drawImage(origImg,0,0,W,H);
@@ -536,6 +562,32 @@ function personCutout(maskCanvas,faceBox){
  o.drawImage(mc,0,0);
  o.globalCompositeOperation='source-over';
  return out;
+}
+var lastFaceBox=null;
+function autoFrame(faceBox){
+ var s=sizePx(),H=760,W=Math.round(H*s.w/s.h);
+ var img=cutCanvas||origImg;if(!img)return;
+ var iw=img.width,ih=img.height;
+ var baseFit=Math.max(W/iw,H/ih);
+ var fx=0.5,fy=0.42,fh=0.30;
+ if(faceBox){
+  var sc2=smallForAI(origImg,640);
+  var bx=faceBox.xCenter,by=faceBox.yCenter,bw=faceBox.width,bh=faceBox.height;
+  if(bx>1.5||by>1.5){bx/=sc2.width;by/=sc2.height;bw/=sc2.width;bh/=sc2.height;}
+  if(bx>0&&bx<1)fx=Math.min(0.95,Math.max(0.05,bx));
+  if(by>0&&by<1)fy=Math.min(0.95,Math.max(0.05,by));
+  if(bw>0&&bw<1)fh=Math.max(0.06,bh);
+ }
+ var zm=(0.75*H)/(fh*ih*baseFit);
+ zm=Math.min(8,Math.max(0.5,zm));
+ var f=baseFit*zm,dw=iw*f,dh=ih*f;
+ px=-(fx*iw-iw/2)*f;
+ py=(0.42*H-H/2)-(fy*ih-ih/2)*f;
+ rot=0;
+ var mx=Math.max(0,(dw-W)/2),my=Math.max(0,(dh-H)/2);
+ if(px>mx)px=mx;if(px<-mx)px=-mx;
+ if(py>my)py=my;if(py<-my)py=-my;
+ zoom=zm;
 }
 async function removeBackground(){
  if(!origImg)return;
@@ -572,9 +624,9 @@ async function removeBackground(){
   if(myId!==bgRunId)return;
   var cut=personCutout(mask,faceBox);
   if(!cut)throw new Error('nocut');
-  cutCanvas=cut;bgRemoved=true;
+  cutCanvas=cut;bgRemoved=true;lastFaceBox=faceBox;autoFrame(faceBox);
   showProg(false);setBusy(false);
-  setStatus('\u2713 Person detected! Choose a background color.',true);
+  setStatus('\u2713 Person detected! Passport size e auto set hoye geche.',true);
   draw();
  }catch(err){
   if(myId!==bgRunId)return;
