@@ -85,7 +85,7 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
 <body>
 <header>
 <button class="backBtn" onclick="goBack()">&#8592; Portal</button>
-<div><div class="title">&#128247; Passport Photo Maker</div><div class="sub">Person Detect AI &bull; HD Enhance &bull; <b style="color:#4ade80">v3.1</b></div></div>
+<div><div class="title">&#128247; Passport Photo Maker</div><div class="sub">Person Detect AI &bull; HD Enhance &bull; <b style="color:#4ade80">v3.2</b></div></div>
 </header>
 <div class="wrap">
 
@@ -107,7 +107,7 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
 
 <div class="secTitle">&#128207; STEP 2 &mdash; SELECT SIZE</div>
 <div class="sizes">
-<button class="sizeBtn active" data-size="passport">Passport<br>35&times;45mm</button>
+<button class="sizeBtn active" data-size="passport">Passport<br>35&times;45mm</button> <button class="sizeBtn" data-size="stamp">Stamp<br>25&times;35mm</button>
 <button class="sizeBtn" data-size="visa">Visa<br>51&times;51mm</button>
 <button class="sizeBtn" data-size="r3">3R<br>3.5&times;5in</button>
 <button class="sizeBtn" data-size="r4">4R<br>4&times;6in</button>
@@ -159,6 +159,7 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
 <script>
 var SIZES={
  passport:{w:35,h:45,unit:'mm'},
+ stamp:{w:25,h:35,unit:'mm'},
  visa:{w:51,h:51,unit:'mm'},
  r3:{w:3.5,h:5,unit:'in'},
  r4:{w:4,h:6,unit:'in'}
@@ -203,7 +204,7 @@ document.querySelectorAll('.sizeBtn').forEach(function(b){
  b.onclick=function(){
   document.querySelectorAll('.sizeBtn').forEach(function(x){x.classList.remove('active');});
   b.classList.add('active');sizeKey=b.dataset.size;if(bgRemoved&&lastFaceBox){autoFrame(lastFaceBox);}else{zoom=1;px=0;py=0;}
-  document.getElementById('zoom').value=100;draw();
+  document.getElementById('zoom').value=Math.min(800,Math.max(100,Math.round(zoom*100)));draw();
  };
 });
 
@@ -242,9 +243,10 @@ function finishUpload(im){
  document.getElementById('faceBtn').disabled=false;
  document.getElementById('dlBtn').disabled=false;
  setUpStatus('\u2713 Photo loaded! Now tap Detect Person (AI).',true);
- setStatus('Photo ready. Tap "Detect Person (AI)".',false);
+ setStatus('AI kaj korche, ektu wait koro...',false);
  setFaceStatus('');
  draw();
+ removeBackground();
 }
 
 document.getElementById('zoom').oninput=function(){zoom=this.value/100;draw();};
@@ -579,7 +581,7 @@ function autoFrame(faceBox){
   if(bw>0&&bw<1)fh=Math.max(0.06,bh);
  }
  var zm=(0.75*H)/(fh*ih*baseFit);
- zm=Math.min(8,Math.max(0.5,zm));
+ zm=Math.min(6,Math.max(0.5,zm));
  var f=baseFit*zm,dw=iw*f,dh=ih*f;
  px=-(fx*iw-iw/2)*f;
  py=(0.42*H-H/2)-(fy*ih-ih/2)*f;
@@ -588,6 +590,7 @@ function autoFrame(faceBox){
  if(px>mx)px=mx;if(px<-mx)px=-mx;
  if(py>my)py=my;if(py<-my)py=-my;
  zoom=zm;
+ var zsl=document.getElementById('zoom');if(zsl)zsl.value=Math.min(800,Math.max(100,Math.round(zm*100)));
 }
 async function removeBackground(){
  if(!origImg)return;
