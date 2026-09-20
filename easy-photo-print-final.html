@@ -85,7 +85,7 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:18px}
 <body>
 <header>
 <button class="backBtn" onclick="goBack()">&#8592; Portal</button>
-<div><div class="title">&#128247; Passport Photo Maker</div><div class="sub">Person Detect AI &bull; HD Enhance &bull; <b style="color:#4ade80">v2.1-fixed</b></div></div>
+<div><div class="title">&#128247; Passport Photo Maker</div><div class="sub">Person Detect AI &bull; HD Enhance &bull; <b style="color:#4ade80">v2.2</b></div></div>
 </header>
 <div class="wrap">
 
@@ -316,7 +316,7 @@ function detectFaceOnce(){
    if(!done){done=true;clearTimeout(to);resolve(r);}
   };
   try{
-   var p=faceDet.send({image:origImg});
+   var p=faceDet.send({image:smallForAI(origImg,640)});
    if(p&&p.catch){p.catch(function(){if(!done){done=true;clearTimeout(to);faceResolve=null;reject(new Error('send'));}});}
   }catch(e){
    if(!done){done=true;clearTimeout(to);faceResolve=null;reject(e);}
@@ -464,12 +464,21 @@ function ensureSelfie(){
   waitForSelfieLib().then(function(){
    try{
     var ss=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1/'+f;}});
-    ss.setOptions({modelSelection:1});
+    ss.setOptions({modelSelection:0});
     ss.onResults(onSelfieResults);
     selfieSeg=ss;res(ss);
    }catch(e){rej(e);}
   },rej);
  });
+}
+function smallForAI(img,maxSide){
+ maxSide=maxSide||640;
+ var w=img.width,h=img.height;
+ var s=Math.min(1,maxSide/Math.max(w,h));
+ var cv=document.createElement('canvas');
+ cv.width=Math.max(1,Math.round(w*s));cv.height=Math.max(1,Math.round(h*s));
+ cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+ return cv;
 }
 function detectPersonOnce(){
  return new Promise(function(resolve,reject){
@@ -481,7 +490,7 @@ function detectPersonOnce(){
    if(!done){done=true;clearTimeout(to);resolve(r);}
   };
   try{
-   var p=selfieSeg.send({image:origImg});
+   var p=selfieSeg.send({image:smallForAI(origImg,640)});
    if(p&&p.catch){p.catch(function(){if(!done){done=true;clearTimeout(to);selfieResolve=null;reject(new Error('send'));}});}
   }catch(e){
    if(!done){done=true;clearTimeout(to);selfieResolve=null;reject(e);}
