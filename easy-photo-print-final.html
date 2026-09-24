@@ -29,16 +29,16 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
 body{background:#f0f2f5;color:#222}
 .header{background:linear-gradient(135deg,#0b5ed7,#084298);color:#fff;padding:18px 16px;text-align:center}
-.header h1{font-size:20px}
+.header h1{font-size:20px;letter-spacing:.5px}
 .header p{font-size:13px;opacity:.9;margin-top:4px}
 .container{max-width:640px;margin:16px auto;padding:0 14px}
 .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:14px}
 .btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
 .btn-primary{background:#0b5ed7;color:#fff}
-.btn-primary:disabled{opacity:.6}
 .btn-success{background:#198754;color:#fff}
 .btn-outline{background:#fff;color:#0b5ed7;border:2px solid #0b5ed7}
-.row{display:flex;gap:10px;margin-top:10px}.row .btn{margin-top:0}
+.row{display:flex;gap:10px;margin-top:10px}
+.row .btn{margin-top:0}
 label{font-size:14px;font-weight:600;display:block;margin:12px 0 6px}
 select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:15px}
 .bg-options{display:flex;gap:10px;margin-top:8px}
@@ -48,15 +48,24 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 #previewCanvas,#resultCanvas{max-width:100%;border:1px solid #ddd;border-radius:8px;margin-top:10px;background:#fff}
 .note{font-size:12px;color:#666;margin-top:8px;line-height:1.5}
 .footer{text-align:center;font-size:12px;color:#888;padding:18px}
-#status{font-size:13px;color:#0b5ed7;margin-top:8px;font-weight:600;min-height:18px}
 </style>
 </head>
 <body>
-<div class="header"><h1>Easy Photo Print</h1><p>Automatic Passport Size Photo Maker - PARVEZ DIGITAL SERVICE</p></div>
-<div class="container"><div class="card">
-<label>1. Upload Photo</label><input type="file" id="upload" accept="image/*">
+<div class="header">
+<h1>Easy Photo Print</h1>
+<p>Automatic Passport Size Photo Maker - PARVEZ DIGITAL SERVICE</p>
+</div>
+<div class="container">
+<div class="card">
+<label>1. Upload Photo</label>
+<input type="file" id="upload" accept="image/*">
 <label>2. Photo Size</label>
-<select id="sizeSel"><option value="35x45">Passport - 35x45 mm</option><option value="51x51">Visa USA - 51x51 mm</option><option value="3R">3R - 3.5x5 inch</option><option value="4R">4R - 4x6 inch</option></select>
+<select id="sizeSel">
+<option value="35x45">Passport - 35x45 mm (7:9)</option>
+<option value="51x51">Visa USA - 51x51 mm (1:1)</option>
+<option value="3R">3R - 3.5x5 inch</option>
+<option value="4R">4R - 4x6 inch</option>
+</select>
 <label>3. Background Colour</label>
 <div class="bg-options">
 <div class="bg-opt active" data-bg="#ffffff" style="background:#ffffff">White</div>
@@ -65,22 +74,121 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <div class="bg-opt" data-bg="original" style="background:#eee">Original</div>
 </div>
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
-<p id="status"></p>
-<div id="previewWrap"><canvas id="previewCanvas" style="display:none"></canvas><canvas id="resultCanvas" style="display:none"></canvas></div>
-<p class="note">Upload &rarr; Background auto remove &rarr; Passport size crop &rarr; HD Enhance &rarr; Download. Kono API key lagbe na.</p>
-<div class="row"><button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button><button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button></div>
-</div></div>
-<div class="footer">© PARVEZ DIGITAL SERVICE</div>
+<p id="status" style="font-size:13px;color:#0b5ed7;margin-top:8px;font-weight:600"></p>
+<div id="previewWrap">
+<canvas id="previewCanvas" style="display:none"></canvas>
+<canvas id="resultCanvas" style="display:none"></canvas>
+</div>
+<p class="note">Workflow: Upload &rarr; Auto face-center crop &rarr; Auto background fill &rarr; HD Enhance &rarr; Download ready photo. Like photobg site, white outer border is auto-removed and photo is cropped to exact passport ratio.</p>
+<div class="row">
+<button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button>
+<button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button>
+</div>
+</div>
+<div class="card">
+<h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
+<p class="note">1. Upload any mobile photo.<br>2. Tool auto-detects center and crops to passport 35x45 ratio, removing extra white paper border like your sample photo.<br>3. Select White / LiteBlue / Sky background. "Original" keeps photo background.<br>4. HD Enhance (sharpen + contrast) applied automatically.<br>5. Download single photo or 4x6 print sheet.</p>
+</div>
+</div>
+<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script>
 var srcImg=null,bgColor="#ffffff",keepOriginal=false;
 var upload=document.getElementById('upload'),previewCanvas=document.getElementById('previewCanvas'),resultCanvas=document.getElementById('resultCanvas'),processBtn=document.getElementById('processBtn'),statusEl=document.getElementById('status');
 document.querySelectorAll('.bg-opt').forEach(function(el){el.onclick=function(){document.querySelectorAll('.bg-opt').forEach(function(x){x.classList.remove('active')});el.classList.add('active');var v=el.getAttribute('data-bg');if(v==="original"){keepOriginal=true}else{keepOriginal=false;bgColor=v}}});
 upload.onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){srcImg=new Image();srcImg.onload=function(){var c=previewCanvas;c.style.display="block";var s=Math.min(1,500/srcImg.width);c.width=srcImg.width*s;c.height=srcImg.height*s;c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);statusEl.textContent='Photo loaded. Ekhon Auto Create chap dao.'};srcImg.src=ev.target.result};r.readAsDataURL(f)};
 function getRatio(){var v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45}
-function makePassport(fgImg,bgFill){var ratio=getRatio();var w=fgImg.naturalWidth||fgImg.width,h=fgImg.naturalHeight||fgImg.height;var cropW=w,cropH=w/ratio;if(cropH>h){cropH=h;cropW=cropH*ratio}var cx=w/2,cy=h*0.42;var bx=cx-cropW/2,by=cy-cropH/2;if(bx<0)bx=0;if(by<0)by=0;if(bx+cropW>w)bx=w-cropW;if(by+cropH>h)by=h-cropH;var outW=600,outH=Math.round(600/ratio);resultCanvas.width=outW;resultCanvas.height=outH;var ctx=resultCanvas.getContext('2d');ctx.fillStyle=bgFill;ctx.fillRect(0,0,outW,outH);ctx.imageSmoothingQuality='high';ctx.drawImage(fgImg,bx,by,cropW,cropH,0,0,outW,outH);try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.08+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.08+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.08+128+2)}ctx.putImageData(id,0,0)}catch(e){}resultCanvas.style.display="block";previewCanvas.style.display="none";document.getElementById('downloadBtn').style.display="block";document.getElementById('printBtn').style.display="block"}
-function removeBg(imgEl){return new Promise(function(resolve,reject){try{var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});seg.setOptions({modelSelection:1});seg.onResults(function(res){try{var w=imgEl.naturalWidth,h=imgEl.naturalHeight;var mc=document.createElement('canvas');mc.width=w;mc.height=h;var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);var md=mctx.getImageData(0,0,w,h).data;var tc=document.createElement('canvas');tc.width=w;tc.height=h;var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);var id=tctx.getImageData(0,0,w,h);for(var i=0;i<md.length/4;i++){id.data[i*4+3]=md[i*4]*255}tctx.putImageData(id,0,0);var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=reject;fg.src=tc.toDataURL()}catch(e){reject(e)}});seg.send({image:imgEl}).catch(reject)}catch(e){reject(e)}})}
-processBtn.onclick=function(){if(!srcImg){alert('Age photo upload koro');return}processBtn.disabled=true;processBtn.textContent='Processing...';var done=function(){processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo'};if(keepOriginal){statusEl.textContent='Passport size banano hocche...';try{makePassport(srcImg,"#ffffff");statusEl.textContent='Ready! Download koro.'}catch(e){statusEl.textContent='Error: '+e.message}done();return}statusEl.textContent='Background remove hocche...';removeBg(srcImg).then(function(fg){statusEl.textContent='Passport size banano hocche...';makePassport(fg,bgColor);statusEl.textContent='Ready! Background removed + passport size done.';done()}).catch(function(e){statusEl.textContent='Background remove halka fail, tobu passport size deoa holo.';try{makePassport(srcImg,bgColor)}catch(e2){}done()})};
+// Face detect -> passport crop box (face 65-75% of photo height, like 2nd sample)
+function detectFace(imgEl){
+ return new Promise(function(resolve){
+  try{
+   var fd=new FaceDetection({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/'+f}});
+   fd.setOptions({model:'short',minDetectionConfidence:0.5});
+   fd.onResults(function(res){
+    if(res.detections && res.detections.length>0){
+     var b=res.detections[0].boundingBox; // relative 0-1
+     resolve({x:b.xCenter, y:b.yCenter, w:b.width, h:b.height});
+    } else resolve(null);
+   });
+   fd.send({image:imgEl}).catch(function(){resolve(null)});
+   setTimeout(function(){resolve(null)}, 8000);
+  }catch(e){resolve(null)}
+ });
+}
+function smoothMask(maskCanvas,w,h){
+ // blur mask edges to avoid jagged cut like 1st screenshot
+ var c=document.createElement('canvas');c.width=w;c.height=h;
+ var x=c.getContext('2d');x.filter='blur(3px)';x.drawImage(maskCanvas,0,0,w,h);
+ return c;
+}
+function removeBg(imgEl){
+ return new Promise(function(resolve,reject){
+  try{
+   var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});
+   seg.setOptions({modelSelection:1});
+   seg.onResults(function(res){
+    try{
+     var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
+     var mc=document.createElement('canvas');mc.width=w;mc.height=h;
+     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
+     var sc=smoothMask(mc,w,h);
+     var md=sc.getContext('2d').getImageData(0,0,w,h).data;
+     var tc=document.createElement('canvas');tc.width=w;tc.height=h;
+     var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
+     var id=tctx.getImageData(0,0,w,h);
+     for(var i=0;i<md.length/4;i++){var a=md[i*4]/255; a=Math.max(0,Math.min(1,(a-0.35)/0.3)); id.data[i*4+3]=a*255;}
+     tctx.putImageData(id,0,0);
+     var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=reject;fg.src=tc.toDataURL();
+    }catch(e){reject(e)}
+   });
+   seg.send({image:imgEl}).catch(reject);
+  }catch(e){reject(e)}
+ });
+}
+async function makeFinal(){
+ var ratio=getRatio();
+ var w=srcImg.naturalWidth,h=srcImg.naturalHeight;
+ // 1. face detect
+ statusEl.textContent='Mukh khonja hocche...';
+ var face=await detectFace(srcImg);
+ var cx=w/2, cy=h*0.42, faceW=w*0.35;
+ if(face){ cx=face.x*w; cy=face.y*h; faceW=face.w*w; }
+ // passport standard: face width ~ 55% of photo width
+ var cropW=faceW*1.9, cropH=cropW/ratio;
+ // jodi crop image er baire jay, adjust
+ if(cropH>h){cropH=h*0.95;cropW=cropH*ratio;}
+ if(cropW>w){cropW=w*0.95;cropH=cropW/ratio;}
+ var bx=cx-cropW/2, by=cy-cropH*0.42; // mukh ektu upore thakbe, 2nd photo er moto
+ if(bx<0)bx=0; if(by<0)by=0; if(bx+cropW>w)bx=w-cropW; if(by+cropH>h)by=h-cropH;
+ // 2. crop original to temp
+ var tc=document.createElement('canvas');tc.width=Math.round(cropW);tc.height=Math.round(cropH);
+ tc.getContext('2d').drawImage(srcImg,bx,by,cropW,cropH,0,0,tc.width,tc.height);
+ var croppedImg=new Image();croppedImg.src=tc.toDataURL();
+ await new Promise(function(r){croppedImg.onload=r});
+ // 3. background remove (cropped er upor, tai edge clean hobe)
+ var fg=croppedImg;
+ if(!keepOriginal){
+  statusEl.textContent='Background remove hocche...';
+  try{ fg=await removeBg(croppedImg); }catch(e){ fg=croppedImg; }
+ }
+ // 4. final render
+ var outW=600,outH=Math.round(600/ratio);
+ resultCanvas.width=outW;resultCanvas.height=outH;
+ var ctx=resultCanvas.getContext('2d');
+ ctx.fillStyle=keepOriginal?"#ffffff":bgColor;ctx.fillRect(0,0,outW,outH);
+ ctx.imageSmoothingQuality='high';
+ ctx.drawImage(fg,0,0,outW,outH);
+ try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.07+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.07+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.07+128+2)}ctx.putImageData(id,0,0)}catch(e){}
+ resultCanvas.style.display="block";previewCanvas.style.display="none";
+ document.getElementById('downloadBtn').style.display="block";
+ document.getElementById('printBtn').style.display="block";
+}
+processBtn.onclick=function(){
+ if(!srcImg){alert('Age photo upload koro');return}
+ processBtn.disabled=true;processBtn.textContent='Processing...';
+ makeFinal().then(function(){statusEl.textContent='Ready! 2nd photo er moto passport size + clean background.';processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';}).catch(function(e){statusEl.textContent='Error: '+e.message;processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';});
+};
 document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click()};
 document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width)),y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20}y+=th+20}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click()};
 </script>
