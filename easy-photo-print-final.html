@@ -59,6 +59,13 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <div class="card">
 <label>1. Upload Photo</label>
 <input type="file" id="upload" accept="image/*">
+<label>1b. Chobi soja koro (tuti baka hole)</label>
+<div class="row">
+<button class="btn btn-outline" id="rotL" type="button">↺ 90°</button>
+<button class="btn btn-outline" id="rotR" type="button">↻ 90°</button>
+</div>
+<label style="margin-top:8px;font-weight:400;font-size:13px">Sukkho ghurano: <span id="rotVal">0°</span></label>
+<input type="range" id="rotFine" min="-20" max="20" value="0" step="0.5" style="width:100%">
 <label>2. Photo Size</label>
 <select id="sizeSel">
 <option value="35x45">Passport - 35x45 mm (7:9)</option>
@@ -103,12 +110,27 @@ document.querySelectorAll('.bg-opt').forEach(el=>{
   if(v==="original"){keepOriginal=true;}else{keepOriginal=false;bgColor=v;}
  };
 });
+let rotDeg=0, baseImg=null;
+function applyRotation(){
+ if(!baseImg){return}
+ const rad=rotDeg*Math.PI/180;
+ const w=baseImg.naturalWidth, hh=baseImg.naturalHeight;
+ const c=Math.abs(Math.cos(rad)), s=Math.abs(Math.sin(rad));
+ const cw=Math.round(w*c+hh*s), ch=Math.round(w*s+hh*c);
+ const tmp=document.createElement('canvas');tmp.width=cw;tmp.height=ch;
+ const x=tmp.getContext('2d');x.translate(cw/2,ch/2);x.rotate(rad);x.drawImage(baseImg,-w/2,-hh/2);
+ srcImg=new Image();srcImg.onload=()=>{drawPreview();};srcImg.src=tmp.toDataURL('image/png');
+ document.getElementById('rotVal').textContent=rotDeg+'°';
+}
 upload.onchange=e=>{
  const f=e.target.files[0]; if(!f) return;
  const r=new FileReader();
- r.onload=ev=>{ srcImg=new Image(); srcImg.onload=()=>{drawPreview();}; srcImg.src=ev.target.result; };
+ r.onload=ev=>{ baseImg=new Image(); baseImg.onload=()=>{rotDeg=0;document.getElementById('rotFine').value=0;document.getElementById('rotVal').textContent='0°';applyRotation();}; baseImg.src=ev.target.result; };
  r.readAsDataURL(f);
 };
+document.getElementById('rotL').onclick=()=>{rotDeg=(rotDeg-90)%360;applyRotation();};
+document.getElementById('rotR').onclick=()=>{rotDeg=(rotDeg+90)%360;applyRotation();};
+document.getElementById('rotFine').oninput=e=>{rotDeg=parseFloat(e.target.value);applyRotation();};
 function getRatio(){
  const v=document.getElementById('sizeSel').value;
  if(v==="51x51") return 1;
