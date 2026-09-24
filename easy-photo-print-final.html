@@ -29,16 +29,16 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
 body{background:#f0f2f5;color:#222}
 .header{background:linear-gradient(135deg,#0b5ed7,#084298);color:#fff;padding:18px 16px;text-align:center}
-.header h1{font-size:20px;letter-spacing:.5px}
+.header h1{font-size:20px}
 .header p{font-size:13px;opacity:.9;margin-top:4px}
 .container{max-width:640px;margin:16px auto;padding:0 14px}
 .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:14px}
 .btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
 .btn-primary{background:#0b5ed7;color:#fff}
+.btn-primary:disabled{opacity:.6}
 .btn-success{background:#198754;color:#fff}
 .btn-outline{background:#fff;color:#0b5ed7;border:2px solid #0b5ed7}
-.row{display:flex;gap:10px;margin-top:10px}
-.row .btn{margin-top:0}
+.row{display:flex;gap:10px;margin-top:10px}.row .btn{margin-top:0}
 label{font-size:14px;font-weight:600;display:block;margin:12px 0 6px}
 select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:15px}
 .bg-options{display:flex;gap:10px;margin-top:8px}
@@ -48,24 +48,15 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 #previewCanvas,#resultCanvas{max-width:100%;border:1px solid #ddd;border-radius:8px;margin-top:10px;background:#fff}
 .note{font-size:12px;color:#666;margin-top:8px;line-height:1.5}
 .footer{text-align:center;font-size:12px;color:#888;padding:18px}
+#status{font-size:13px;color:#0b5ed7;margin-top:8px;font-weight:600;min-height:18px}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>Easy Photo Print</h1>
-<p>Automatic Passport Size Photo Maker - PARVEZ DIGITAL SERVICE</p>
-</div>
-<div class="container">
-<div class="card">
-<label>1. Upload Photo</label>
-<input type="file" id="upload" accept="image/*">
+<div class="header"><h1>Easy Photo Print</h1><p>Automatic Passport Size Photo Maker - PARVEZ DIGITAL SERVICE</p></div>
+<div class="container"><div class="card">
+<label>1. Upload Photo</label><input type="file" id="upload" accept="image/*">
 <label>2. Photo Size</label>
-<select id="sizeSel">
-<option value="35x45">Passport - 35x45 mm (7:9)</option>
-<option value="51x51">Visa USA - 51x51 mm (1:1)</option>
-<option value="3R">3R - 3.5x5 inch</option>
-<option value="4R">4R - 4x6 inch</option>
-</select>
+<select id="sizeSel"><option value="35x45">Passport - 35x45 mm</option><option value="51x51">Visa USA - 51x51 mm</option><option value="3R">3R - 3.5x5 inch</option><option value="4R">4R - 4x6 inch</option></select>
 <label>3. Background Colour</label>
 <div class="bg-options">
 <div class="bg-opt active" data-bg="#ffffff" style="background:#ffffff">White</div>
@@ -74,88 +65,24 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <div class="bg-opt" data-bg="original" style="background:#eee">Original</div>
 </div>
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
-<p id="status" style="font-size:13px;color:#0b5ed7;margin-top:8px;font-weight:600"></p>
-<div id="previewWrap">
-<canvas id="previewCanvas" style="display:none"></canvas>
-<canvas id="resultCanvas" style="display:none"></canvas>
-</div>
-<p class="note">Workflow: Upload &rarr; Auto face-center crop &rarr; Auto background fill &rarr; HD Enhance &rarr; Download ready photo. Like photobg site, white outer border is auto-removed and photo is cropped to exact passport ratio.</p>
-<div class="row">
-<button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button>
-<button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button>
-</div>
-</div>
-<div class="card">
-<h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Tool auto-detects center and crops to passport 35x45 ratio, removing extra white paper border like your sample photo.<br>3. Select White / LiteBlue / Sky background. "Original" keeps photo background.<br>4. HD Enhance (sharpen + contrast) applied automatically.<br>5. Download single photo or 4x6 print sheet.</p>
-</div>
-</div>
-<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
-<script type="module">
-import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2/+esm";
-env.allowLocalModels = false;
-let srcImg=null, bgColor="#ffffff", keepOriginal=false, srcFile=null, segmenter=null;
-const upload=document.getElementById('upload');
-const previewCanvas=document.getElementById('previewCanvas');
-const resultCanvas=document.getElementById('resultCanvas');
-const processBtn=document.getElementById('processBtn');
-const statusEl=document.getElementById('status');
-document.querySelectorAll('.bg-opt').forEach(el=>{el.onclick=()=>{document.querySelectorAll('.bg-opt').forEach(x=>x.classList.remove('active'));el.classList.add('active');const v=el.getAttribute('data-bg');if(v==="original"){keepOriginal=true;}else{keepOriginal=false;bgColor=v;};};});
-upload.onchange=function(e){var f=e.target.files[0];if(!f)return;srcFile=f;var r=new FileReader();r.onload=function(ev){srcImg=new Image();srcImg.onload=function(){var c=previewCanvas;c.style.display="block";var s=Math.min(1,500/srcImg.width);c.width=srcImg.width*s;c.height=srcImg.height*s;c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);statusEl.textContent='Photo loaded. Ekhon Auto Create chap dao.';};srcImg.src=ev.target.result;};r.readAsDataURL(f);};
-function getRatio(){var v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45;}
-async function removeBgLocal(imgEl){
-  statusEl.textContent='Nijer AI load hocche (prothom bar ektu somoy lagbe)...';
-  if(!segmenter){ segmenter = await pipeline('image-segmentation', 'briaai/RMBG-1.4', { dtype: 'fp32' }); }
-  statusEl.textContent='Background remove hocche (nijer portal er vitore)...';
-  const out = await segmenter(imgEl.src);
-  // out[0].mask -> canvas
-  const mask = out[0].mask;
-  const tmp=document.createElement('canvas'); tmp.width=imgEl.naturalWidth; tmp.height=imgEl.naturalHeight;
-  const tctx=tmp.getContext('2d');
-  tctx.drawImage(imgEl,0,0);
-  const id=tctx.getImageData(0,0,tmp.width,tmp.height);
-  const mdata=mask.data;
-  for(let i=0;i<mdata.length;i++){ id.data[i*4+3] = mdata[i]*255; }
-  tctx.putImageData(id,0,0);
-  const fg=new Image(); fg.src=tmp.toDataURL();
-  await new Promise(r=>fg.onload=r);
-  return fg;
-}
-function makePassport(fgImg,bgFill){
-  var ratio=getRatio();
-  var w=fgImg.naturalWidth||fgImg.width, h=fgImg.naturalHeight||fgImg.height;
-  var cropW=w, cropH=w/ratio;
-  if(cropH>h){cropH=h;cropW=cropH*ratio;}
-  var cx=w/2, cy=h*0.48;
-  var bx=Math.max(0,cx-cropW/2), by=Math.max(0,cy-cropH/2);
-  if(bx+cropW>w) bx=w-cropW; if(by+cropH>h) by=h-cropH;
-  var outW=600, outH=Math.round(600/ratio);
-  resultCanvas.width=outW; resultCanvas.height=outH;
-  var ctx=resultCanvas.getContext('2d');
-  ctx.fillStyle=bgFill; ctx.fillRect(0,0,outW,outH);
-  ctx.imageSmoothingQuality='high';
-  ctx.drawImage(fgImg,bx,by,cropW,cropH,0,0,outW,outH);
-  try{ var id=ctx.getImageData(0,0,outW,outH); var d=id.data;
-  for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.08+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.08+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.08+128+2);}
-  ctx.putImageData(id,0,0);}catch(e){}
-  resultCanvas.style.display="block"; previewCanvas.style.display="none";
-  document.getElementById('downloadBtn').style.display="block";
-  document.getElementById('printBtn').style.display="block";
-}
-processBtn.onclick=async function(){
- if(!srcImg){alert('Age photo upload koro');return;}
- processBtn.disabled=true; processBtn.textContent='Processing...';
- try{
-  if(keepOriginal){ statusEl.textContent='Passport size banano hocche...'; makePassport(srcImg,"#ffffff"); statusEl.textContent='Ready!'; }
-  else{
-   try{ const fg=await removeBgLocal(srcImg); makePassport(fg,bgColor); statusEl.textContent='Ready! Nijer AI diye background removed + passport size done.'; }
-   catch(e2){ console.error(e2); statusEl.textContent='AI fail: '+e2.message+' — sudhu passport size deoa holo.'; makePassport(srcImg,bgColor); }
-  }
- }catch(err){statusEl.textContent='Error: '+err.message;}
- processBtn.disabled=false; processBtn.textContent='Auto Create Passport Photo';
-};
-document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click();};
-document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width));var y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20;}y+=th+20;}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click();};
+<p id="status"></p>
+<div id="previewWrap"><canvas id="previewCanvas" style="display:none"></canvas><canvas id="resultCanvas" style="display:none"></canvas></div>
+<p class="note">Upload &rarr; Background auto remove &rarr; Passport size crop &rarr; HD Enhance &rarr; Download. Kono API key lagbe na.</p>
+<div class="row"><button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button><button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button></div>
+</div></div>
+<div class="footer">© PARVEZ DIGITAL SERVICE</div>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
+<script>
+var srcImg=null,bgColor="#ffffff",keepOriginal=false;
+var upload=document.getElementById('upload'),previewCanvas=document.getElementById('previewCanvas'),resultCanvas=document.getElementById('resultCanvas'),processBtn=document.getElementById('processBtn'),statusEl=document.getElementById('status');
+document.querySelectorAll('.bg-opt').forEach(function(el){el.onclick=function(){document.querySelectorAll('.bg-opt').forEach(function(x){x.classList.remove('active')});el.classList.add('active');var v=el.getAttribute('data-bg');if(v==="original"){keepOriginal=true}else{keepOriginal=false;bgColor=v}}});
+upload.onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){srcImg=new Image();srcImg.onload=function(){var c=previewCanvas;c.style.display="block";var s=Math.min(1,500/srcImg.width);c.width=srcImg.width*s;c.height=srcImg.height*s;c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);statusEl.textContent='Photo loaded. Ekhon Auto Create chap dao.'};srcImg.src=ev.target.result};r.readAsDataURL(f)};
+function getRatio(){var v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45}
+function makePassport(fgImg,bgFill){var ratio=getRatio();var w=fgImg.naturalWidth||fgImg.width,h=fgImg.naturalHeight||fgImg.height;var cropW=w,cropH=w/ratio;if(cropH>h){cropH=h;cropW=cropH*ratio}var cx=w/2,cy=h*0.42;var bx=cx-cropW/2,by=cy-cropH/2;if(bx<0)bx=0;if(by<0)by=0;if(bx+cropW>w)bx=w-cropW;if(by+cropH>h)by=h-cropH;var outW=600,outH=Math.round(600/ratio);resultCanvas.width=outW;resultCanvas.height=outH;var ctx=resultCanvas.getContext('2d');ctx.fillStyle=bgFill;ctx.fillRect(0,0,outW,outH);ctx.imageSmoothingQuality='high';ctx.drawImage(fgImg,bx,by,cropW,cropH,0,0,outW,outH);try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.08+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.08+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.08+128+2)}ctx.putImageData(id,0,0)}catch(e){}resultCanvas.style.display="block";previewCanvas.style.display="none";document.getElementById('downloadBtn').style.display="block";document.getElementById('printBtn').style.display="block"}
+function removeBg(imgEl){return new Promise(function(resolve,reject){try{var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});seg.setOptions({modelSelection:1});seg.onResults(function(res){try{var w=imgEl.naturalWidth,h=imgEl.naturalHeight;var mc=document.createElement('canvas');mc.width=w;mc.height=h;var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);var md=mctx.getImageData(0,0,w,h).data;var tc=document.createElement('canvas');tc.width=w;tc.height=h;var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);var id=tctx.getImageData(0,0,w,h);for(var i=0;i<md.length/4;i++){id.data[i*4+3]=md[i*4]*255}tctx.putImageData(id,0,0);var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=reject;fg.src=tc.toDataURL()}catch(e){reject(e)}});seg.send({image:imgEl}).catch(reject)}catch(e){reject(e)}})}
+processBtn.onclick=function(){if(!srcImg){alert('Age photo upload koro');return}processBtn.disabled=true;processBtn.textContent='Processing...';var done=function(){processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo'};if(keepOriginal){statusEl.textContent='Passport size banano hocche...';try{makePassport(srcImg,"#ffffff");statusEl.textContent='Ready! Download koro.'}catch(e){statusEl.textContent='Error: '+e.message}done();return}statusEl.textContent='Background remove hocche...';removeBg(srcImg).then(function(fg){statusEl.textContent='Passport size banano hocche...';makePassport(fg,bgColor);statusEl.textContent='Ready! Background removed + passport size done.';done()}).catch(function(e){statusEl.textContent='Background remove halka fail, tobu passport size deoa holo.';try{makePassport(srcImg,bgColor)}catch(e2){}done()})};
+document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click()};
+document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width)),y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20}y+=th+20}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click()};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
