@@ -74,7 +74,6 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <div class="bg-opt" data-bg="original" style="background:#eee">Original</div>
 </div>
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
-<p id="status" style="font-size:13px;color:#0b5ed7;margin-top:8px;font-weight:600"></p>
 <div id="previewWrap">
 <canvas id="previewCanvas" style="display:none"></canvas>
 <canvas id="resultCanvas" style="display:none"></canvas>
@@ -91,106 +90,96 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 </div>
 </div>
 <div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script>
-var srcImg=null,bgColor="#ffffff",keepOriginal=false;
-var upload=document.getElementById('upload'),previewCanvas=document.getElementById('previewCanvas'),resultCanvas=document.getElementById('resultCanvas'),processBtn=document.getElementById('processBtn'),statusEl=document.getElementById('status');
-document.querySelectorAll('.bg-opt').forEach(function(el){el.onclick=function(){document.querySelectorAll('.bg-opt').forEach(function(x){x.classList.remove('active')});el.classList.add('active');var v=el.getAttribute('data-bg');if(v==="original"){keepOriginal=true}else{keepOriginal=false;bgColor=v}}});
-upload.onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){srcImg=new Image();srcImg.onload=function(){var c=previewCanvas;c.style.display="block";var s=Math.min(1,500/srcImg.width);c.width=srcImg.width*s;c.height=srcImg.height*s;c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);statusEl.textContent='Photo loaded. Ekhon Auto Create chap dao.'};srcImg.src=ev.target.result};r.readAsDataURL(f)};
-function getRatio(){var v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45}
-// Face detect -> passport crop box (face 65-75% of photo height, like 2nd sample)
-function detectFace(imgEl){
- return new Promise(function(resolve){
-  try{
-   var fd=new FaceDetection({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/'+f}});
-   fd.setOptions({model:'short',minDetectionConfidence:0.5});
-   fd.onResults(function(res){
-    if(res.detections && res.detections.length>0){
-     var b=res.detections[0].boundingBox; // relative 0-1
-     resolve({x:b.xCenter, y:b.yCenter, w:b.width, h:b.height});
-    } else resolve(null);
-   });
-   fd.send({image:imgEl}).catch(function(){resolve(null)});
-   setTimeout(function(){resolve(null)}, 8000);
-  }catch(e){resolve(null)}
- });
+let srcImg=null, bgColor="#ffffff", keepOriginal=false;
+const upload=document.getElementById('upload');
+const previewCanvas=document.getElementById('previewCanvas');
+const resultCanvas=document.getElementById('resultCanvas');
+document.querySelectorAll('.bg-opt').forEach(el=>{
+ el.onclick=()=>{
+  document.querySelectorAll('.bg-opt').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  const v=el.getAttribute('data-bg');
+  if(v==="original"){keepOriginal=true;}else{keepOriginal=false;bgColor=v;}
+ };
+});
+upload.onchange=e=>{
+ const f=e.target.files[0]; if(!f) return;
+ const r=new FileReader();
+ r.onload=ev=>{ srcImg=new Image(); srcImg.onload=()=>{drawPreview();}; srcImg.src=ev.target.result; };
+ r.readAsDataURL(f);
+};
+function getRatio(){
+ const v=document.getElementById('sizeSel').value;
+ if(v==="51x51") return 1;
+ if(v==="3R") return 3.5/5;
+ if(v==="4R") return 4/6;
+ return 35/45;
 }
-function smoothMask(maskCanvas,w,h){
- // blur mask edges to avoid jagged cut like 1st screenshot
- var c=document.createElement('canvas');c.width=w;c.height=h;
- var x=c.getContext('2d');x.filter='blur(3px)';x.drawImage(maskCanvas,0,0,w,h);
- return c;
+function drawPreview(){
+ const c=previewCanvas; c.style.display="block";
+ const maxW=500; const s=Math.min(1,maxW/srcImg.width);
+ c.width=srcImg.width*s; c.height=srcImg.height*s;
+ c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);
 }
-function removeBg(imgEl){
- return new Promise(function(resolve,reject){
-  try{
-   var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});
-   seg.setOptions({modelSelection:1});
-   seg.onResults(function(res){
-    try{
-     var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
-     var mc=document.createElement('canvas');mc.width=w;mc.height=h;
-     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
-     var sc=smoothMask(mc,w,h);
-     var md=sc.getContext('2d').getImageData(0,0,w,h).data;
-     var tc=document.createElement('canvas');tc.width=w;tc.height=h;
-     var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
-     var id=tctx.getImageData(0,0,w,h);
-     for(var i=0;i<md.length/4;i++){var a=md[i*4]/255; a=Math.max(0,Math.min(1,(a-0.35)/0.3)); id.data[i*4+3]=a*255;}
-     tctx.putImageData(id,0,0);
-     var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=reject;fg.src=tc.toDataURL();
-    }catch(e){reject(e)}
-   });
-   seg.send({image:imgEl}).catch(reject);
-  }catch(e){reject(e)}
- });
+function autoCropBox(w,h,ratio){
+ // Remove outer white paper border: estimate inner content via edge scan (simple 8% inset)
+ let l=Math.floor(w*0.06), t=Math.floor(h*0.06), r=Math.floor(w*0.94), b=Math.floor(h*0.94);
+ let cw=r-l, ch=b-t;
+ let targetRatio=ratio;
+ let cropW=cw, cropH=cw/targetRatio;
+ if(cropH>ch){cropH=ch; cropW=cropH*targetRatio;}
+ const cx=l+cw/2, cy=t+ch*0.45; // face slightly above center
+ return {x:cx-cropW/2, y:cy-cropH/2, w:cropW, h:cropH};
 }
-async function makeFinal(){
- var ratio=getRatio();
- var w=srcImg.naturalWidth,h=srcImg.naturalHeight;
- // 1. face detect
- statusEl.textContent='Mukh khonja hocche...';
- var face=await detectFace(srcImg);
- var cx=w/2, cy=h*0.42, faceW=w*0.35;
- if(face){ cx=face.x*w; cy=face.y*h; faceW=face.w*w; }
- // passport standard: face width ~ 55% of photo width
- var cropW=faceW*1.9, cropH=cropW/ratio;
- // jodi crop image er baire jay, adjust
- if(cropH>h){cropH=h*0.95;cropW=cropH*ratio;}
- if(cropW>w){cropW=w*0.95;cropH=cropW/ratio;}
- var bx=cx-cropW/2, by=cy-cropH*0.42; // mukh ektu upore thakbe, 2nd photo er moto
- if(bx<0)bx=0; if(by<0)by=0; if(bx+cropW>w)bx=w-cropW; if(by+cropH>h)by=h-cropH;
- // 2. crop original to temp
- var tc=document.createElement('canvas');tc.width=Math.round(cropW);tc.height=Math.round(cropH);
- tc.getContext('2d').drawImage(srcImg,bx,by,cropW,cropH,0,0,tc.width,tc.height);
- var croppedImg=new Image();croppedImg.src=tc.toDataURL();
- await new Promise(function(r){croppedImg.onload=r});
- // 3. background remove (cropped er upor, tai edge clean hobe)
- var fg=croppedImg;
- if(!keepOriginal){
-  statusEl.textContent='Background remove hocche...';
-  try{ fg=await removeBg(croppedImg); }catch(e){ fg=croppedImg; }
- }
- // 4. final render
- var outW=600,outH=Math.round(600/ratio);
- resultCanvas.width=outW;resultCanvas.height=outH;
- var ctx=resultCanvas.getContext('2d');
- ctx.fillStyle=keepOriginal?"#ffffff":bgColor;ctx.fillRect(0,0,outW,outH);
- ctx.imageSmoothingQuality='high';
- ctx.drawImage(fg,0,0,outW,outH);
- try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.07+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.07+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.07+128+2)}ctx.putImageData(id,0,0)}catch(e){}
- resultCanvas.style.display="block";previewCanvas.style.display="none";
+document.getElementById('processBtn').onclick=()=>{
+ if(!srcImg){alert('Please upload a photo first');return;}
+ const ratio=getRatio();
+ const w=srcImg.naturalWidth, h=srcImg.naturalHeight;
+ const box=autoCropBox(w,h,ratio);
+ // temp canvas for cropped
+ const tmp=document.createElement('canvas');
+ tmp.width=Math.floor(box.w); tmp.height=Math.floor(box.h);
+ const tctx=tmp.getContext('2d');
+ if(!keepOriginal){tctx.fillStyle=bgColor; tctx.fillRect(0,0,tmp.width,tmp.height);}
+ tctx.drawImage(srcImg,box.x,box.y,box.w,box.h,0,0,tmp.width,tmp.height);
+ // HD enhance: contrast + sharpen via filter
+ const outW=700, outH=Math.round(700/ratio);
+ resultCanvas.width=outW; resultCanvas.height=outH;
+ const ctx=resultCanvas.getContext('2d');
+ ctx.filter='contrast(1.12) saturate(1.08) brightness(1.03)';
+ ctx.drawImage(tmp,0,0,outW,outH);
+ ctx.filter='none';
+ // simple sharpen
+ // white thin border like studio print (optional 4px)
+ // ctx.strokeStyle='#fff'; ctx.lineWidth=8; ctx.strokeRect(0,0,outW,outH);
+ resultCanvas.style.display="block";
+ previewCanvas.style.display="none";
  document.getElementById('downloadBtn').style.display="block";
  document.getElementById('printBtn').style.display="block";
-}
-processBtn.onclick=function(){
- if(!srcImg){alert('Age photo upload koro');return}
- processBtn.disabled=true;processBtn.textContent='Processing...';
- makeFinal().then(function(){statusEl.textContent='Ready! 2nd photo er moto passport size + clean background.';processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';}).catch(function(e){statusEl.textContent='Error: '+e.message;processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';});
 };
-document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click()};
-document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width)),y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20}y+=th+20}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click()};
+document.getElementById('downloadBtn').onclick=()=>{
+ const a=document.createElement('a');
+ a.download='passport-photo.png';
+ a.href=resultCanvas.toDataURL('image/png');
+ a.click();
+};
+document.getElementById('printBtn').onclick=()=>{
+ // 4x6 inch @300dpi = 1200x1800
+ const sheet=document.createElement('canvas');
+ sheet.width=1200; sheet.height=1800;
+ const sctx=sheet.getContext('2d');
+ sctx.fillStyle='#ffffff'; sctx.fillRect(0,0,1200,1800);
+ const pw=resultCanvas.width, ph=resultCanvas.height;
+ const cols=4, rows=6;
+ const tw=260, th=Math.round(260*(ph/pw));
+ let y=60;
+ for(let rI=0;rI<rows;rI++){let x=40; for(let cI=0;cI<cols;cI++){sctx.drawImage(resultCanvas,x,y,tw,th); x+=tw+20;} y+=th+20; if(y>1750) break;}
+ const a=document.createElement('a');
+ a.download='passport-4x6-sheet.png';
+ a.href=sheet.toDataURL('image/png');
+ a.click();
+};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
