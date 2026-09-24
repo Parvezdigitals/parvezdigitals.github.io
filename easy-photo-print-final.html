@@ -91,70 +91,71 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 </div>
 </div>
 <div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
-
 <script type="module">
-import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal-js@1.4.5/+esm";
-let srcImg=null, bgColor="#ffffff", keepOriginal=false;
+import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2/+esm";
+env.allowLocalModels = false;
+let srcImg=null, bgColor="#ffffff", keepOriginal=false, srcFile=null, segmenter=null;
 const upload=document.getElementById('upload');
 const previewCanvas=document.getElementById('previewCanvas');
 const resultCanvas=document.getElementById('resultCanvas');
 const processBtn=document.getElementById('processBtn');
 const statusEl=document.getElementById('status');
 document.querySelectorAll('.bg-opt').forEach(el=>{el.onclick=()=>{document.querySelectorAll('.bg-opt').forEach(x=>x.classList.remove('active'));el.classList.add('active');const v=el.getAttribute('data-bg');if(v==="original"){keepOriginal=true;}else{keepOriginal=false;bgColor=v;};};});
-upload.onchange=e=>{const f=e.target.files[0];if(!f)return;window._srcFile=f;const r=new FileReader();r.onload=ev=>{srcImg=new Image();srcImg.onload=()=>{const c=previewCanvas;c.style.display="block";const s=Math.min(1,500/srcImg.width);c.width=srcImg.width*s;c.height=srcImg.height*s;c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);statusEl.textContent='Photo loaded. Ekhon Auto Create chap dao.';};srcImg.src=ev.target.result;};r.readAsDataURL(f);};
-function getRatio(){const v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45;}
-function makePassport(fgImg,bgFill){
- const ratio=getRatio();
- const w=fgImg.naturalWidth||fgImg.width, h=fgImg.naturalHeight||fgImg.height;
- // AUTO PASSPORT SIZE: center crop to exact ratio, no 6% inset logic
- let cropW=w, cropH=w/ratio;
- if(cropH>h){cropH=h;cropW=cropH*ratio;}
- const cx=w/2, cy=h*0.48;
- const bx=Math.max(0,cx-cropW/2), by=Math.max(0,cy-cropH/2);
- const outW=600, outH=Math.round(600/ratio);
- resultCanvas.width=outW; resultCanvas.height=outH;
- const ctx=resultCanvas.getContext('2d');
- ctx.fillStyle=bgFill; ctx.fillRect(0,0,outW,outH);
- ctx.imageSmoothingQuality='high';
- ctx.drawImage(fgImg,bx,by,cropW,cropH,0,0,outW,outH);
- // HD enhance
- const id=ctx.getImageData(0,0,outW,outH); const d=id.data;
- for(let i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.08+128+3);d[i+1]=Math.min(255,(d[i+1]-128)*1.08+128+3);d[i+2]=Math.min(255,(d[i+2]-128)*1.08+128+3);}
- ctx.putImageData(id,0,0);
- resultCanvas.style.display="block"; previewCanvas.style.display="none";
- document.getElementById('downloadBtn').style.display="block";
- document.getElementById('printBtn').style.display="block";
+upload.onchange=function(e){var f=e.target.files[0];if(!f)return;srcFile=f;var r=new FileReader();r.onload=function(ev){srcImg=new Image();srcImg.onload=function(){var c=previewCanvas;c.style.display="block";var s=Math.min(1,500/srcImg.width);c.width=srcImg.width*s;c.height=srcImg.height*s;c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);statusEl.textContent='Photo loaded. Ekhon Auto Create chap dao.';};srcImg.src=ev.target.result;};r.readAsDataURL(f);};
+function getRatio(){var v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45;}
+async function removeBgLocal(imgEl){
+  statusEl.textContent='Nijer AI load hocche (prothom bar ektu somoy lagbe)...';
+  if(!segmenter){ segmenter = await pipeline('image-segmentation', 'briaai/RMBG-1.4', { dtype: 'fp32' }); }
+  statusEl.textContent='Background remove hocche (nijer portal er vitore)...';
+  const out = await segmenter(imgEl.src);
+  // out[0].mask -> canvas
+  const mask = out[0].mask;
+  const tmp=document.createElement('canvas'); tmp.width=imgEl.naturalWidth; tmp.height=imgEl.naturalHeight;
+  const tctx=tmp.getContext('2d');
+  tctx.drawImage(imgEl,0,0);
+  const id=tctx.getImageData(0,0,tmp.width,tmp.height);
+  const mdata=mask.data;
+  for(let i=0;i<mdata.length;i++){ id.data[i*4+3] = mdata[i]*255; }
+  tctx.putImageData(id,0,0);
+  const fg=new Image(); fg.src=tmp.toDataURL();
+  await new Promise(r=>fg.onload=r);
+  return fg;
 }
-processBtn.onclick=async()=>{
+function makePassport(fgImg,bgFill){
+  var ratio=getRatio();
+  var w=fgImg.naturalWidth||fgImg.width, h=fgImg.naturalHeight||fgImg.height;
+  var cropW=w, cropH=w/ratio;
+  if(cropH>h){cropH=h;cropW=cropH*ratio;}
+  var cx=w/2, cy=h*0.48;
+  var bx=Math.max(0,cx-cropW/2), by=Math.max(0,cy-cropH/2);
+  if(bx+cropW>w) bx=w-cropW; if(by+cropH>h) by=h-cropH;
+  var outW=600, outH=Math.round(600/ratio);
+  resultCanvas.width=outW; resultCanvas.height=outH;
+  var ctx=resultCanvas.getContext('2d');
+  ctx.fillStyle=bgFill; ctx.fillRect(0,0,outW,outH);
+  ctx.imageSmoothingQuality='high';
+  ctx.drawImage(fgImg,bx,by,cropW,cropH,0,0,outW,outH);
+  try{ var id=ctx.getImageData(0,0,outW,outH); var d=id.data;
+  for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.08+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.08+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.08+128+2);}
+  ctx.putImageData(id,0,0);}catch(e){}
+  resultCanvas.style.display="block"; previewCanvas.style.display="none";
+  document.getElementById('downloadBtn').style.display="block";
+  document.getElementById('printBtn').style.display="block";
+}
+processBtn.onclick=async function(){
  if(!srcImg){alert('Age photo upload koro');return;}
  processBtn.disabled=true; processBtn.textContent='Processing...';
  try{
-  if(keepOriginal){
-   statusEl.textContent='Passport size banano hocche...';
-   makePassport(srcImg,"#ffffff");
-   statusEl.textContent='Ready! Eta original background soho passport size.';
-  }else{
-   statusEl.textContent='Step 1/2: Passport size crop hocche...';
-   // First show size result instantly so user sees it works
-   makePassport(srcImg,bgColor);
-   statusEl.textContent='Step 2/2: Background remove hocche...';
-   try{
-    const blob=await removeBackground(window._srcFile);
-    const url=URL.createObjectURL(blob);
-    const fg=await new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=url;});
-    makePassport(fg,bgColor);
-    statusEl.textContent='Ready! Background removed + passport size done.';
-   }catch(e2){
-    console.error(e2);
-    statusEl.textContent='Background remove fail, kintu passport size hoye geche. Original mode try koro.';
-   }
+  if(keepOriginal){ statusEl.textContent='Passport size banano hocche...'; makePassport(srcImg,"#ffffff"); statusEl.textContent='Ready!'; }
+  else{
+   try{ const fg=await removeBgLocal(srcImg); makePassport(fg,bgColor); statusEl.textContent='Ready! Nijer AI diye background removed + passport size done.'; }
+   catch(e2){ console.error(e2); statusEl.textContent='AI fail: '+e2.message+' — sudhu passport size deoa holo.'; makePassport(srcImg,bgColor); }
   }
  }catch(err){statusEl.textContent='Error: '+err.message;}
  processBtn.disabled=false; processBtn.textContent='Auto Create Passport Photo';
 };
-document.getElementById('downloadBtn').onclick=()=>{const a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click();};
-document.getElementById('printBtn').onclick=()=>{const sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;const s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);const tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width));let y=60;for(let r=0;r<6;r++){let x=40;for(let c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20;}y+=th+20;}const a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click();};
+document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click();};
+document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width));var y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20;}y+=th+20;}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click();};
 </script>
-
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
