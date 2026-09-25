@@ -74,12 +74,12 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
 <p id="status"></p>
 <div id="previewWrap"><canvas id="previewCanvas" style="display:none"></canvas><canvas id="resultCanvas" style="display:none"></canvas></div>
-<p class="note">Upload &rarr; Straighten if tilted &rarr; Auto face detect &rarr; Background remove &rarr; Passport size crop &rarr; HD Enhance &rarr; Download. No API key needed.</p>
+<p class="note">Upload &rarr; Straighten if tilted &rarr; Auto face detect &rarr; Background remove &rarr; Studio-style passport framing &rarr; HD Enhance &rarr; Download. No API key needed.</p>
 <div class="row"><button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button><button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button></div>
 </div>
 <div class="card">
 <h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Tool auto-detects the face and crops to passport 35x45 ratio without cutting the face.<br>4. Background is removed automatically. Select White / Lite Blue / Sky background. "Original" keeps photo background.<br>5. HD Enhance applied automatically.<br>6. Download single photo or 4x6 print sheet.</p>
+<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Tool auto-detects the face and frames head-and-shoulders like a studio passport photo.<br>4. Background is removed automatically with clean edges. Select White / Lite Blue / Sky background. "Original" keeps photo background.<br>5. HD Enhance (sharpen + clarity) applied automatically.<br>6. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
 <div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
@@ -121,141 +121,117 @@ function detectFace(imgEl){
   }catch(e){fin(null)}
  });
 }
-function removeBgMediapipe(imgEl){
+function removeBg(imgEl){
  return new Promise(function(resolve,reject){
-  if(typeof SelfieSegmentation==="undefined"){reject(new Error('network error'));return}
+  if(typeof SelfieSegmentation==="undefined"){reject(new Error('network'));return}
+  var settled=false;
+  var timer=setTimeout(function(){if(!settled){settled=true;reject(new Error('timeout'))}},25000);
   try{
-   var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
-   // upscale 2x for finer mask edges
-   var UW=w*2,UH=h*2;
-   var up=document.createElement('canvas');up.width=UW;up.height=UH;
-   up.getContext('2d').drawImage(imgEl,0,0,UW,UH);
    var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});
    seg.setOptions({modelSelection:1});
    seg.onResults(function(res){
+    if(settled)return;settled=true;clearTimeout(timer);
     try{
-     var mc=document.createElement('canvas');mc.width=UW;mc.height=UH;
-     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,UW,UH);
-     // erode 6px at 2x (=3px) around person to cut halo
-     var er=6;
+     var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
+     var mc=document.createElement('canvas');mc.width=w;mc.height=h;
+     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
+     var er=Math.max(2,Math.round(w/300));
      mctx.globalCompositeOperation='destination-in';
      mctx.drawImage(mc,er,0);mctx.drawImage(mc,-er,0);mctx.drawImage(mc,0,er);mctx.drawImage(mc,0,-er);
      mctx.globalCompositeOperation='source-over';
-     mctx.filter='blur(3px)';mctx.drawImage(mc,0,0);mctx.filter='none';
-     var md=mctx.getImageData(0,0,UW,UH).data;
-     var tc=document.createElement('canvas');tc.width=UW;tc.height=UH;
-     var tctx=tc.getContext('2d');tctx.drawImage(up,0,0);
-     var id=tctx.getImageData(0,0,UW,UH);
+     mctx.filter='blur(2px)';mctx.drawImage(mc,0,0);mctx.filter='none';
+     var md=mctx.getImageData(0,0,w,h).data;
+     var tc=document.createElement('canvas');tc.width=w;tc.height=h;
+     var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
+     var id=tctx.getImageData(0,0,w,h),dd=id.data;
      for(var i=0;i<md.length/4;i++){
-       var a=md[i*4]/255;
-       a=Math.max(0,Math.min(1,(a-0.5)/0.25));
-       var o=i*4;
-       // green despill on edge pixels
-       if(a>0.02&&a<0.98){
-        var r=id.data[o],g=id.data[o+1],b=id.data[o+2];
-        var ex=g-Math.max(r,b);
-        if(ex>0){id.data[o+1]=Math.max(0,g-ex*0.8);}
-       }
-       id.data[o+3]=a*255;
+      var a=md[i*4]/255;
+      a=a<0.35?0:(a>0.65?1:(a-0.35)/0.3);
+      var o=i*4;
+      if(a>0.02&&a<0.98){
+       var r=dd[o],g=dd[o+1],b=dd[o+2],ex=g-Math.max(r,b);
+       if(ex>0)dd[o+1]=Math.max(0,g-ex*0.85);
+      }
+      dd[o+3]=Math.round(a*255);
      }
      tctx.putImageData(id,0,0);
-     var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=reject;fg.src=tc.toDataURL();
+     var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=function(){reject(new Error('img'))};fg.src=tc.toDataURL('image/png');
     }catch(e){reject(e)}
    });
-   seg.send({image:up}).catch(reject);
-  }catch(e){reject(e)}
+   seg.send({image:imgEl}).catch(function(){if(!settled){settled=true;clearTimeout(timer);reject(new Error('send'))}});
+  }catch(e){if(!settled){settled=true;clearTimeout(timer);reject(e)}}
  });
 }
-async function removeBg(imgEl){
- // High-quality AI first (clean edges, no green halo), MediaPipe as fallback
- try{
-  statusEl.textContent='Removing background (high quality, first time may take a while)...';
-  var mod=await Promise.race([
-   import('https://esm.sh/@imgly/background-removal-js@1.5.5'),
-   new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'))},60000)})
-  ]);
-  var blob=await mod.removeBackground(imgEl.src,{output:{format:'image/png'}});
-  var url=URL.createObjectURL(blob);
-  var fg=new Image();
-  await new Promise(function(res,rej){fg.onload=res;fg.onerror=rej;fg.src=url;});
-  return fg;
- }catch(e){
-  return await removeBgMediapipe(imgEl);
- }
-}
-// Bounding box of the person (non-transparent pixels), measured on small scale for speed
-function getFgBbox(imgEl){
- var sw=300, sh=Math.max(1,Math.round(300*imgEl.naturalHeight/imgEl.naturalWidth));
- var c=document.createElement('canvas');c.width=sw;c.height=sh;
- var x=c.getContext('2d');x.drawImage(imgEl,0,0,sw,sh);
- var d=x.getImageData(0,0,sw,sh).data;
- var minX=sw,minY=sh,maxX=-1,maxY=-1;
- for(var j=0;j<sh;j++){for(var i=0;i<sw;i++){
-  if(d[(j*sw+i)*4+3]>12){if(i<minX)minX=i;if(i>maxX)maxX=i;if(j<minY)minY=j;if(j>maxY)maxY=j;}
+function sharpen(ctx,w,h,amount){
+ var src=ctx.getImageData(0,0,w,h),s=src.data;
+ var out=ctx.createImageData(w,h),d=out.data;
+ for(var y=1;y<h-1;y++){for(var x=1;x<w-1;x++){
+  var o=(y*w+x)*4;
+  for(var c=0;c<3;c++){
+   var v=s[((y-1)*w+x)*4+c]*-1+s[(y*w+x-1)*4+c]*-1+s[o+c]*5+s[(y*w+x+1)*4+c]*-1+s[((y+1)*w+x)*4+c]*-1;
+   d[o+c]=Math.max(0,Math.min(255,s[o+c]+(v-s[o+c])*amount));
+  }
+  d[o+3]=s[o+3];
  }}
- if(maxX<0)return null;
- var kx=imgEl.naturalWidth/sw, ky=imgEl.naturalHeight/sh;
- return {x:minX*kx, y:minY*ky, w:(maxX-minX+1)*kx, h:(maxY-minY+1)*ky};
-}
-function drawResult(fgImg,bx,by,bw,bh,ratio){
- var outW=600,outH=Math.round(600/ratio);
- resultCanvas.width=outW;resultCanvas.height=outH;
- var ctx=resultCanvas.getContext('2d');
- ctx.fillStyle=keepOriginal?"#ffffff":bgColor;ctx.fillRect(0,0,outW,outH);
- ctx.imageSmoothingQuality='high';
- ctx.drawImage(fgImg,bx,by,bw,bh,0,0,outW,outH);
- try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.07+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.07+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.07+128+2)}ctx.putImageData(id,0,0)}catch(e){}
- resultCanvas.style.display="block";previewCanvas.style.display="none";
- document.getElementById('downloadBtn').style.display="block";
- document.getElementById('printBtn').style.display="block";
+ for(var x=0;x<w;x++){for(var c=0;c<4;c++){d[x*4+c]=s[x*4+c];d[((h-1)*w+x)*4+c]=s[((h-1)*w+x)*4+c];}}
+ for(var y=0;y<h;y++){for(var c=0;c<4;c++){d[(y*w)*4+c]=s[(y*w)*4+c];d[(y*w+w-1)*4+c]=s[(y*w+w-1)*4+c];}}
+ ctx.putImageData(out,0,0);
 }
 async function makeFinal(){
  var ratio=getRatio();
  var w=srcImg.naturalWidth,h=srcImg.naturalHeight;
- if(!keepOriginal){
-  // 1) remove background on full photo
-  var fg=null;
-  try{fg=await removeBg(srcImg);}catch(e){fg=null;}
-  if(fg){
-   // 2) measure the person, center them in passport frame
-   statusEl.textContent='Centering photo...';
-   var bb=getFgBbox(fg);
-   if(bb){
-    var frameW=bb.w/0.72, frameH=frameW/ratio;
-    if(frameW>w){frameW=w;frameH=frameW/ratio;}
-    if(frameH>h){frameH=h;frameW=frameH*ratio;}
-    var bx=bb.x+bb.w/2-frameW/2;
-    var by=bb.y-frameH*0.10;
-    if(bx<0)bx=0; if(by<0)by=0;
-    if(bx+frameW>w)bx=w-frameW; if(by+frameH>h)by=h-frameH;
-    drawResult(fg,bx,by,frameW,frameH,ratio);
-    return;
-   }
-  }
-  statusEl.textContent='Background removal failed (check internet). Trying face crop...';
- }
- // Fallback / Original background: face-detect crop
+ // Studio-style framing: face ~45% of frame width, head top ~8% margin, shoulders at bottom
  statusEl.textContent='Detecting face...';
- var face=await detectFace(srcImg);
- var cx=w/2,cy=h*0.35,faceW=w*0.30;
- if(face){cx=face.x*w;cy=face.y*h;faceW=face.w*w;}
- var cropW=faceW*2.8,cropH=cropW/ratio;
- if(cropH>h){cropH=h*0.95;cropW=cropH*ratio;}
- if(cropW>w){cropW=w*0.95;cropH=cropW/ratio;}
- var bx2=cx-cropW/2,by2=cy-cropH*0.42;
- if(bx2<0)bx2=0;if(by2<0)by2=0;if(bx2+cropW>w)bx2=w-cropW;if(by2+cropH>h)by2=h-cropH;
- var tc=document.createElement('canvas');tc.width=Math.round(cropW);tc.height=Math.round(cropH);
- tc.getContext('2d').drawImage(srcImg,bx2,by2,cropW,cropH,0,0,tc.width,tc.height);
- var ci=new Image();ci.src=tc.toDataURL();
- await new Promise(function(r){ci.onload=r});
- drawResult(ci,0,0,tc.width,tc.height,ratio);
+ var face=null;
+ try{face=await detectFace(srcImg);}catch(e){face=null;}
+ var cx=w/2,cy=h*0.36,fw=w*0.30;
+ if(face){cx=face.x*w;cy=face.y*h;fw=face.w*w;}
+ var cw=fw*2.2,ch=cw/ratio;
+ if(ch>h*0.96){ch=h*0.96;cw=ch*ratio;}
+ if(cw>w*0.96){cw=w*0.96;ch=cw/ratio;}
+ var bx=cx-cw/2,by=cy-ch*0.37;
+ if(bx<0)bx=0;if(by<0)by=0;if(bx+cw>w)bx=w-cw;if(by+ch>h)by=h-ch;
+ var crop=document.createElement('canvas');crop.width=Math.round(cw);crop.height=Math.round(ch);
+ crop.getContext('2d').drawImage(srcImg,bx,by,cw,ch,0,0,crop.width,crop.height);
+ var cropImg=new Image();cropImg.src=crop.toDataURL('image/png');
+ await new Promise(function(r){cropImg.onload=r;});
+ var fg=cropImg,bgOk=true;
+ if(!keepOriginal){
+  statusEl.textContent='Removing background...';
+  try{fg=await removeBg(cropImg);}
+  catch(e){bgOk=false;fg=cropImg;}
+ }
+ statusEl.textContent='Enhancing quality...';
+ var outW=900,outH=Math.round(900/ratio);
+ resultCanvas.width=outW;resultCanvas.height=outH;
+ var ctx=resultCanvas.getContext('2d');
+ ctx.fillStyle=keepOriginal?'#ffffff':bgColor;ctx.fillRect(0,0,outW,outH);
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+ ctx.drawImage(fg,0,0,outW,outH);
+ try{
+  var id=ctx.getImageData(0,0,outW,outH),d=id.data;
+  for(var i=0;i<d.length;i+=4){
+   d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.08+128+3));
+   d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.08+128+3));
+   d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.08+128+3));
+  }
+  ctx.putImageData(id,0,0);
+  sharpen(ctx,outW,outH,0.7);
+ }catch(e){}
+ resultCanvas.style.display='block';previewCanvas.style.display='none';
+ document.getElementById('downloadBtn').style.display='block';
+ document.getElementById('printBtn').style.display='block';
+ if(!bgOk)statusEl.textContent='Background remove failed (check internet) — passport size ready.';
 }
 processBtn.onclick=function(){
  if(!srcImg){alert('Please upload a photo first');return}
  processBtn.disabled=true;processBtn.textContent='Processing...';
- makeFinal().then(function(){statusEl.textContent='Ready! Face detected, background removed, passport size done.';processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';}).catch(function(e){statusEl.textContent='Error: '+e.message;processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';});
+ makeFinal().then(function(){
+  if(statusEl.textContent.indexOf('failed')<0)statusEl.textContent='Ready! Passport photo created with HD enhance.';
+  processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';
+ }).catch(function(e){statusEl.textContent='Error: '+e.message;processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';});
 };
-document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo.png';a.href=resultCanvas.toDataURL('image/png');a.click()};
+document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo-hd.png';a.href=resultCanvas.toDataURL('image/png');a.click()};
 document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width)),y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20}y+=th+20;if(y>1750)break}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click()};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
