@@ -125,43 +125,54 @@ function removeBgMediapipe(imgEl){
  return new Promise(function(resolve,reject){
   if(typeof SelfieSegmentation==="undefined"){reject(new Error('network error'));return}
   try{
+   var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
+   // upscale 2x for finer mask edges
+   var UW=w*2,UH=h*2;
+   var up=document.createElement('canvas');up.width=UW;up.height=UH;
+   up.getContext('2d').drawImage(imgEl,0,0,UW,UH);
    var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});
    seg.setOptions({modelSelection:1});
    seg.onResults(function(res){
     try{
-     var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
-     var mc=document.createElement('canvas');mc.width=w;mc.height=h;
-     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
-     // erode mask 3px around person to cut green halo
-     var er=3;
+     var mc=document.createElement('canvas');mc.width=UW;mc.height=UH;
+     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,UW,UH);
+     // erode 6px at 2x (=3px) around person to cut halo
+     var er=6;
      mctx.globalCompositeOperation='destination-in';
      mctx.drawImage(mc,er,0);mctx.drawImage(mc,-er,0);mctx.drawImage(mc,0,er);mctx.drawImage(mc,0,-er);
      mctx.globalCompositeOperation='source-over';
-     mctx.filter='blur(2px)';mctx.drawImage(mc,0,0);mctx.filter='none';
-     var md=mctx.getImageData(0,0,w,h).data;
-     var tc=document.createElement('canvas');tc.width=w;tc.height=h;
-     var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
-     var id=tctx.getImageData(0,0,w,h);
+     mctx.filter='blur(3px)';mctx.drawImage(mc,0,0);mctx.filter='none';
+     var md=mctx.getImageData(0,0,UW,UH).data;
+     var tc=document.createElement('canvas');tc.width=UW;tc.height=UH;
+     var tctx=tc.getContext('2d');tctx.drawImage(up,0,0);
+     var id=tctx.getImageData(0,0,UW,UH);
      for(var i=0;i<md.length/4;i++){
        var a=md[i*4]/255;
        a=Math.max(0,Math.min(1,(a-0.5)/0.25));
-       id.data[i*4+3]=a*255;
+       var o=i*4;
+       // green despill on edge pixels
+       if(a>0.02&&a<0.98){
+        var r=id.data[o],g=id.data[o+1],b=id.data[o+2];
+        var ex=g-Math.max(r,b);
+        if(ex>0){id.data[o+1]=Math.max(0,g-ex*0.8);}
+       }
+       id.data[o+3]=a*255;
      }
      tctx.putImageData(id,0,0);
      var fg=new Image();fg.onload=function(){resolve(fg)};fg.onerror=reject;fg.src=tc.toDataURL();
     }catch(e){reject(e)}
    });
-   seg.send({image:imgEl}).catch(reject);
+   seg.send({image:up}).catch(reject);
   }catch(e){reject(e)}
  });
 }
 async function removeBg(imgEl){
  // High-quality AI first (clean edges, no green halo), MediaPipe as fallback
  try{
-  statusEl.textContent='Removing background (high quality)...';
+  statusEl.textContent='Removing background (high quality, first time may take a while)...';
   var mod=await Promise.race([
    import('https://esm.sh/@imgly/background-removal-js@1.5.5'),
-   new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'))},20000)})
+   new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'))},60000)})
   ]);
   var blob=await mod.removeBackground(imgEl.src,{output:{format:'image/png'}});
   var url=URL.createObjectURL(blob);
@@ -172,9 +183,58 @@ async function removeBg(imgEl){
   return await removeBgMediapipe(imgEl);
  }
 }
+// Bounding box of the person (non-transparent pixels), measured on small scale for speed
+function getFgBbox(imgEl){
+ var sw=300, sh=Math.max(1,Math.round(300*imgEl.naturalHeight/imgEl.naturalWidth));
+ var c=document.createElement('canvas');c.width=sw;c.height=sh;
+ var x=c.getContext('2d');x.drawImage(imgEl,0,0,sw,sh);
+ var d=x.getImageData(0,0,sw,sh).data;
+ var minX=sw,minY=sh,maxX=-1,maxY=-1;
+ for(var j=0;j<sh;j++){for(var i=0;i<sw;i++){
+  if(d[(j*sw+i)*4+3]>12){if(i<minX)minX=i;if(i>maxX)maxX=i;if(j<minY)minY=j;if(j>maxY)maxY=j;}
+ }}
+ if(maxX<0)return null;
+ var kx=imgEl.naturalWidth/sw, ky=imgEl.naturalHeight/sh;
+ return {x:minX*kx, y:minY*ky, w:(maxX-minX+1)*kx, h:(maxY-minY+1)*ky};
+}
+function drawResult(fgImg,bx,by,bw,bh,ratio){
+ var outW=600,outH=Math.round(600/ratio);
+ resultCanvas.width=outW;resultCanvas.height=outH;
+ var ctx=resultCanvas.getContext('2d');
+ ctx.fillStyle=keepOriginal?"#ffffff":bgColor;ctx.fillRect(0,0,outW,outH);
+ ctx.imageSmoothingQuality='high';
+ ctx.drawImage(fgImg,bx,by,bw,bh,0,0,outW,outH);
+ try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.07+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.07+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.07+128+2)}ctx.putImageData(id,0,0)}catch(e){}
+ resultCanvas.style.display="block";previewCanvas.style.display="none";
+ document.getElementById('downloadBtn').style.display="block";
+ document.getElementById('printBtn').style.display="block";
+}
 async function makeFinal(){
  var ratio=getRatio();
  var w=srcImg.naturalWidth,h=srcImg.naturalHeight;
+ if(!keepOriginal){
+  // 1) remove background on full photo
+  var fg=null;
+  try{fg=await removeBg(srcImg);}catch(e){fg=null;}
+  if(fg){
+   // 2) measure the person, center them in passport frame
+   statusEl.textContent='Centering photo...';
+   var bb=getFgBbox(fg);
+   if(bb){
+    var frameW=bb.w/0.72, frameH=frameW/ratio;
+    if(frameW>w){frameW=w;frameH=frameW/ratio;}
+    if(frameH>h){frameH=h;frameW=frameH*ratio;}
+    var bx=bb.x+bb.w/2-frameW/2;
+    var by=bb.y-frameH*0.10;
+    if(bx<0)bx=0; if(by<0)by=0;
+    if(bx+frameW>w)bx=w-frameW; if(by+frameH>h)by=h-frameH;
+    drawResult(fg,bx,by,frameW,frameH,ratio);
+    return;
+   }
+  }
+  statusEl.textContent='Background removal failed (check internet). Trying face crop...';
+ }
+ // Fallback / Original background: face-detect crop
  statusEl.textContent='Detecting face...';
  var face=await detectFace(srcImg);
  var cx=w/2,cy=h*0.35,faceW=w*0.30;
@@ -182,27 +242,13 @@ async function makeFinal(){
  var cropW=faceW*2.8,cropH=cropW/ratio;
  if(cropH>h){cropH=h*0.95;cropW=cropH*ratio;}
  if(cropW>w){cropW=w*0.95;cropH=cropW/ratio;}
- var bx=cx-cropW/2,by=cy-cropH*0.42;
- if(bx<0)bx=0;if(by<0)by=0;if(bx+cropW>w)bx=w-cropW;if(by+cropH>h)by=h-cropH;
+ var bx2=cx-cropW/2,by2=cy-cropH*0.42;
+ if(bx2<0)bx2=0;if(by2<0)by2=0;if(bx2+cropW>w)bx2=w-cropW;if(by2+cropH>h)by2=h-cropH;
  var tc=document.createElement('canvas');tc.width=Math.round(cropW);tc.height=Math.round(cropH);
- tc.getContext('2d').drawImage(srcImg,bx,by,cropW,cropH,0,0,tc.width,tc.height);
- var croppedImg=new Image();croppedImg.src=tc.toDataURL();
- await new Promise(function(r){croppedImg.onload=r});
- var fg=croppedImg;
- if(!keepOriginal){
-  try{fg=await removeBg(croppedImg);statusEl.textContent='Creating passport size...';}
-  catch(e){statusEl.textContent='Background removal failed (check internet). Passport size created anyway.';fg=croppedImg;}
- }else{statusEl.textContent='Creating passport size...';}
- var outW=600,outH=Math.round(600/ratio);
- resultCanvas.width=outW;resultCanvas.height=outH;
- var ctx=resultCanvas.getContext('2d');
- ctx.fillStyle=keepOriginal?"#ffffff":bgColor;ctx.fillRect(0,0,outW,outH);
- ctx.imageSmoothingQuality='high';
- ctx.drawImage(fg,0,0,outW,outH);
- try{var id=ctx.getImageData(0,0,outW,outH),d=id.data;for(var i=0;i<d.length;i+=4){d[i]=Math.min(255,(d[i]-128)*1.07+128+2);d[i+1]=Math.min(255,(d[i+1]-128)*1.07+128+2);d[i+2]=Math.min(255,(d[i+2]-128)*1.07+128+2)}ctx.putImageData(id,0,0)}catch(e){}
- resultCanvas.style.display="block";previewCanvas.style.display="none";
- document.getElementById('downloadBtn').style.display="block";
- document.getElementById('printBtn').style.display="block";
+ tc.getContext('2d').drawImage(srcImg,bx2,by2,cropW,cropH,0,0,tc.width,tc.height);
+ var ci=new Image();ci.src=tc.toDataURL();
+ await new Promise(function(r){ci.onload=r});
+ drawResult(ci,0,0,tc.width,tc.height,ratio);
 }
 processBtn.onclick=function(){
  if(!srcImg){alert('Please upload a photo first');return}
