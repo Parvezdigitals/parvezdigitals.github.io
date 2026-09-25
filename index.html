@@ -110,7 +110,7 @@ select.dtInp{width:auto;padding:8px}
 <div id="welcomePopup"><div class="welcomeBox"><div style="font-size:36px;margin-bottom:12px">👋</div><h2>Welcome Friend!</h2><p>PARVEZ DIGITAL SERVICE</p><div class="sub">55+ Government Services • West Bengal<br>Trusted • Professional • Secure • Official</div><button class="welcomeBtn" onclick="closeWelcome()">✅ Continue to Portal</button></div></div>
 <div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-<!-- PARVEZ DAILY POSTER v9 - AJKER BIRTHDAY + USER NAM/CHOBI -->
+<!-- PARVEZ DAILY POSTER v12 - AJKER BIRTHDAY + USER NAM/CHOBI -->
 <div id="pd-home" style="margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
   <div style="font-size:15px;color:#f5b301;font-weight:800">🎉 ডেইলি পোস্টার স্টুডিও</div>
   <div style="font-size:12px;margin:4px 0 10px;opacity:.85;line-height:1.5">আজ যার জন্মদিন/বিশেষ দিন, তার নামের পোস্টার বানাও — <b>নিজের ছবি ও নাম সহ</b>, মাত্র ₹2-তে।</div>
@@ -127,12 +127,20 @@ select.dtInp{width:auto;padding:8px}
   <div id="pd-carousel" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px"></div>
   <div style="display:flex;gap:8px;margin-bottom:8px">
     <label for="pd-photo-input" style="flex:1;background:#2563eb;color:#fff;border-radius:10px;padding:11px;font-weight:800;font-size:13px;cursor:pointer;text-align:center">📷 আপনার ছবি লাগান</label>
-    <input type="file" id="pd-photo-input" accept="image/*" style="display:none">
+    <input type="file" id="pd-photo-input" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
     <button id="pd-photo-remove" style="background:#64748b;color:#fff;border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer">❌</button>
   </div>
   <div id="pd-photo-name" style="font-size:12px;color:#22c55e;font-weight:700;margin-bottom:8px"></div>
+  <div style="display:flex;gap:8px;margin-bottom:8px">
+    <label for="pd-logo-input" style="flex:1;background:#7c3aed;color:#fff;border-radius:10px;padding:11px;font-weight:800;font-size:13px;cursor:pointer;text-align:center">⭐ লোগো লাগান (ঐচ্ছিক)</label>
+    <input type="file" id="pd-logo-input" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
+    <button id="pd-logo-remove" style="background:#64748b;color:#fff;border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer">❌</button>
+  </div>
+  <div id="pd-logo-name" style="font-size:12px;color:#22c55e;font-weight:700;margin-bottom:8px"></div>
+  <input id="pd-user-title" placeholder="✍️ পদবি লিখুন (ঐচ্ছিক - নামের নিচে দেখাবে)" style="width:100%;background:#1e293b;color:#fff;border:2px solid #f5b301;border-radius:10px;padding:11px;font-size:14px;font-weight:700;margin-bottom:10px">
   <input id="pd-user-name" placeholder="✍️ আপনার নাম লিখুন (পোস্টারে দেখাবে)" style="width:100%;background:#1e293b;color:#fff;border:2px solid #f5b301;border-radius:10px;padding:11px;font-size:14px;font-weight:700;margin-bottom:10px">
   <div style="font-size:13px;font-weight:800;color:#f5b301;margin-bottom:6px">👁️ লাইভ প্রিভিউ</div>
+  <div style="font-size:11px;color:#22c55e;font-weight:700;margin-bottom:6px">👆 প্রিভিউতে ছবির বক্সে ট্যাপ করলেও ছবি লাগাতে পারবে</div>
   <canvas id="pd-canvas" width="1080" height="1350" style="width:100%;border-radius:12px;display:block;background:#000"></canvas>
   <div style="margin-top:8px;font-size:13px">সিলেক্ট: <b id="pd-sel-b">—</b></div>
   <button id="pd-pay-btn" style="margin-top:8px;width:100%;background:#f5b301;color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer">₹2 দিয়ে ডাউনলোড করো</button>
@@ -272,7 +280,7 @@ festival:{title:"🎉 উৎসব ও বিশেষ দিন", items:[
 var GRAD=[["#7c2d12","#431407"],["#0f5132","#052e16"],["#1e3a8a","#172554"],["#6b21a8","#3b0764"],["#9a3412","#7c2d12"],["#0e7490","#164e63"]];
 function evSel(key){var d=DATA[key];var h=0;for(var i=0;i<key.length;i++)h+=key.charCodeAt(i);var g=GRAD[h%GRAD.length];return{n:d.n,t:d.d,e:d.e,g1:g[0],g2:g[1],isEvent:true};}
 
-var sel=null,userName='',userPhoto=null,curCat='islamic',curEventKey=null,locked=true;
+var sel=null,userName='',userPhoto=null,userTitle='',userLogo=null,curCat='islamic',curEventKey=null,locked=true;
 var bnDate=new Date().toLocaleDateString('bn-IN',{day:'numeric',month:'long',year:'numeric'});
 
 function wrap(x,text,cx,y,maxW,lh){
@@ -292,39 +300,195 @@ function drawCover(x,img,px,py,pw,ph){
   x.drawImage(img,sx,sy,sw,sh,px,py,pw,ph);
 }
 
+function star(x,cx,cy,r,col){
+  x.fillStyle=col;x.beginPath();
+  for(var i=0;i<10;i++){
+    var rr=(i%2===0)?r:r*0.45,a=-Math.PI/2+i*Math.PI/5;
+    var px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr;
+    if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+  }
+  x.closePath();x.fill();
+}
+function drawStars(x){
+  var pts=[[80,230],[210,430],[900,250],[985,470],[110,700],[965,650],[420,120],[700,110],[250,950],[840,920],[620,200],[90,1050]];
+  for(var i=0;i<pts.length;i++)star(x,pts[i][0],pts[i][1],7,'rgba(255,235,170,0.75)');
+}
+function crescent(x,cx,cy,r,col){
+  var t=0.8,x2=cx+r*Math.cos(t),y2=cy+r*Math.sin(t);
+  x.fillStyle=col;x.beginPath();
+  x.moveTo(x2,y2);
+  x.arc(cx,cy,r,t,Math.PI*2-t);
+  x.quadraticCurveTo(cx+r*1.05,cy,x2,y2);
+  x.closePath();x.fill();
+}
+function lantern(x,lx){
+  x.strokeStyle='rgba(245,183,49,0.8)';x.lineWidth=3;
+  x.beginPath();x.moveTo(lx,0);x.lineTo(lx,120);x.stroke();
+  x.fillStyle='#d4a017';
+  x.beginPath();x.arc(lx,132,9,0,7);x.fill();
+  x.beginPath();x.moveTo(lx-30,158);x.quadraticCurveTo(lx,112,lx+30,158);x.closePath();x.fill();
+  var grd=x.createLinearGradient(lx-26,0,lx+26,0);
+  grd.addColorStop(0,'rgba(255,200,80,0.25)');grd.addColorStop(0.5,'rgba(255,235,170,0.8)');grd.addColorStop(1,'rgba(255,200,80,0.25)');
+  x.fillStyle=grd;
+  roundRect(x,lx-26,158,52,70,10);x.fill();
+  x.strokeStyle='#d4a017';x.lineWidth=3;roundRect(x,lx-26,158,52,70,10);x.stroke();
+  var gl=x.createRadialGradient(lx,193,4,lx,193,80);
+  gl.addColorStop(0,'rgba(255,222,130,0.55)');gl.addColorStop(1,'rgba(255,222,130,0)');
+  x.fillStyle=gl;x.beginPath();x.arc(lx,193,80,0,7);x.fill();
+  x.fillStyle='#fff3c4';x.beginPath();x.ellipse(lx,193,8,14,0,0,7);x.fill();
+  x.fillStyle='#d4a017';x.fillRect(lx-3,228,6,26);
+  x.beginPath();x.arc(lx,262,7,0,7);x.fill();
+}
+function hangCrescent(x,hx){
+  x.strokeStyle='rgba(245,183,49,0.8)';x.lineWidth=3;
+  x.beginPath();x.moveTo(hx,0);x.lineTo(hx,80);x.stroke();
+  crescent(x,hx,140,44,'#f5d76e');
+  star(x,hx+52,108,9,'#ffe9a8');
+}
+function diya(x,dx,dy,s){
+  x.fillStyle='#8a5a17';
+  x.beginPath();x.ellipse(dx,dy,36*s,15*s,0,0,7);x.fill();
+  x.fillStyle='#c98a2b';
+  x.beginPath();x.ellipse(dx,dy-5*s,27*s,10*s,0,0,7);x.fill();
+  var fg=x.createRadialGradient(dx,dy-30*s,2,dx,dy-30*s,24*s);
+  fg.addColorStop(0,'rgba(255,246,201,0.9)');fg.addColorStop(0.5,'rgba(255,170,40,0.55)');fg.addColorStop(1,'rgba(255,140,0,0)');
+  x.fillStyle=fg;x.beginPath();x.arc(dx,dy-30*s,24*s,0,7);x.fill();
+  x.fillStyle='#ffdf80';
+  x.beginPath();x.ellipse(dx,dy-34*s,7*s,13*s,0,0,7);x.fill();
+}
+function garland(x){
+  for(var i=0;i<=26;i++){
+    var px=50+i*(980/26),py=80+Math.sin(i/26*Math.PI)*64;
+    x.fillStyle=(i%2)?'#ff9d2e':'#ffc53d';
+    x.beginPath();x.arc(px,py,15,0,7);x.fill();
+    x.fillStyle='#7a4d0f';x.beginPath();x.arc(px,py,5,0,7);x.fill();
+  }
+}
+function rays(x){
+  x.save();x.globalAlpha=0.06;x.fillStyle='#ffffff';
+  for(var i=0;i<9;i++){
+    var a1=Math.PI*0.12+i*(Math.PI*0.76/8),a2=a1+0.05;
+    x.beginPath();x.moveTo(540,-40);
+    x.lineTo(540+Math.cos(a1)*1500,Math.sin(a1)*1500);
+    x.lineTo(540+Math.cos(a2)*1500,Math.sin(a2)*1500);
+    x.closePath();x.fill();
+  }
+  x.restore();
+}
+function archPath(x,cx,top,w,h){
+  var x0=cx-w/2,x1=cx+w/2,yb=top+h,ys=top+h*0.36;
+  x.beginPath();
+  x.moveTo(x0,yb);x.lineTo(x0,ys);
+  x.quadraticCurveTo(x0,top+h*0.10,cx,top);
+  x.quadraticCurveTo(x1,top+h*0.10,x1,ys);
+  x.lineTo(x1,yb);
+  x.quadraticCurveTo(cx,yb+h*0.06,x0,yb);
+  x.closePath();
+}
+function drawArch(x,cx,top,w,h,col){
+  archPath(x,cx,top,w,h);
+  x.fillStyle='rgba(0,0,0,0.30)';x.fill();
+  x.strokeStyle=col;x.lineWidth=10;x.stroke();
+  x.fillStyle=col;
+  x.beginPath();x.arc(cx,top-12,9,0,7);x.fill();
+  x.beginPath();x.moveTo(cx,top-20);x.lineTo(cx-7,top-40);x.lineTo(cx+7,top-40);x.closePath();x.fill();
+}
+function archPattern(x,cx,top,w,h){
+  x.save();archPath(x,cx,top,w,h);x.clip();
+  x.strokeStyle='rgba(245,200,100,0.12)';x.lineWidth=2;
+  for(var yy=top+50;yy<top+h-20;yy+=58){
+    for(var xx=cx-w/2+30;xx<cx+w/2-10;xx+=58){
+      x.beginPath();
+      x.moveTo(xx,yy-13);x.lineTo(xx+13,yy);x.lineTo(xx,yy+13);x.lineTo(xx-13,yy);
+      x.closePath();x.stroke();
+      x.beginPath();x.arc(xx,yy,4,0,7);x.stroke();
+    }
+  }
+  x.restore();
+}
+function drawRectFrame(x,fx,fy,fw,fh,col){
+  x.fillStyle='rgba(0,0,0,0.30)';
+  roundRect(x,fx,fy,fw,fh,26);x.fill();
+  x.strokeStyle=col;x.lineWidth=10;roundRect(x,fx,fy,fw,fh,26);x.stroke();
+  x.strokeStyle='rgba(255,255,255,0.35)';x.lineWidth=3;roundRect(x,fx+18,fy+18,fw-36,fh-36,16);x.stroke();
+}
+function containBox(x,img,px,py,pw,ph){
+  var sc=Math.min(pw/img.width,ph/img.height);
+  var dw=img.width*sc,dh=img.height*sc;
+  return [px+(pw-dw)/2,py+(ph-dh)/2,dw,dh];
+}
 function pdDraw(){
   var c=document.getElementById('pd-canvas');if(!c||!sel)return;
   var x=c.getContext('2d'),W=1080,H=1350;
-  var g=x.createLinearGradient(0,0,W,H);
-  g.addColorStop(0,sel.g1);g.addColorStop(1,sel.g2);
+  var cat=curCat;
+  var g=x.createLinearGradient(0,0,0,H);
+  if(cat==='islamic'){g.addColorStop(0,'#7a5218');g.addColorStop(1,'#241304');}
+  else{g.addColorStop(0,sel.g1);g.addColorStop(1,sel.g2);}
   x.fillStyle=g;x.fillRect(0,0,W,H);
-  x.globalAlpha=0.10;x.fillStyle='#ffffff';
-  x.beginPath();x.arc(920,200,260,0,7);x.fill();
-  x.beginPath();x.arc(150,1150,210,0,7);x.fill();
-  x.globalAlpha=1;x.textAlign='center';
-  x.fillStyle='#f5b301';x.font='bold 40px sans-serif';
-  x.fillText('PARVEZ DIGITAL SERVICE',W/2,100);
-  x.font='90px serif';x.fillText(sel.e,W/2,225);
-  x.fillStyle='#ffffff';x.font='bold 78px sans-serif';
-  var y=wrap(x,sel.n,W/2,305,920,94);
-  x.font='44px sans-serif';x.fillStyle='#f1f5f9';
-  y=wrap(x,sel.t,W/2,y+36,920,66);
-  var photoY=y+50;
-  var remain=1190-photoY;
-  var ph=Math.max(200,Math.min(360,remain-240));
-  var px=90,pw=900;
-  roundRect(x,px,photoY,pw,ph,28);
-  if(userPhoto){x.save();x.clip();drawCover(x,userPhoto,px,photoY,pw,ph);x.restore();}
-  else{x.fillStyle='rgba(255,255,255,0.07)';x.fill();x.fillStyle='rgba(255,255,255,0.8)';x.font='40px sans-serif';x.fillText('📷 আপনার ছবি এখানে বসবে',W/2,photoY+ph/2+14);}
-  x.strokeStyle='#f5b301';x.lineWidth=6;roundRect(x,px,photoY,pw,ph,28);x.stroke();
-  var ly=photoY+ph+60;
-  x.fillStyle='#f5b301';x.font='bold 36px sans-serif';x.fillText('🙏 শুভেচ্ছান্তে',W/2,ly);
-  x.fillStyle='#ffffff';x.font='bold 58px sans-serif';
-  wrap(x,userName||'আপনার নাম',W/2,ly+74,920,70);
-  x.fillStyle='#f5b301';x.font='bold 40px sans-serif';x.fillText(bnDate,W/2,ly+150);
-  x.fillStyle='rgba(0,0,0,0.55)';x.fillRect(0,H-140,W,140);
-  x.fillStyle='#f5b301';x.font='bold 38px sans-serif';x.fillText('PARVEZ DIGITAL SERVICE',W/2,H-85);
-  x.fillStyle='#ffffff';x.font='30px sans-serif';x.fillText('parvezdigitals.github.io',W/2,H-40);
+  if(cat!=='political'){
+    var glw=x.createRadialGradient(540,200,60,540,200,720);
+    glw.addColorStop(0,'rgba(255,214,130,0.38)');
+    glw.addColorStop(1,'rgba(255,214,130,0)');
+    x.fillStyle=glw;x.fillRect(0,0,W,800);
+  }
+  x.textAlign='center';
+  x.fillStyle='rgba(245,179,1,0.95)';x.font='bold 30px sans-serif';
+  x.fillText('PARVEZ DIGITAL SERVICE',W/2,52);
+  drawStars(x);
+  var fx=200,fy=300,fw=680,fh=600;
+  if(cat==='islamic'){
+    lantern(x,150);lantern(x,930);hangCrescent(x,330);
+    crescent(x,872,205,50,'#f5d76e');star(x,795,150,10,'#ffe9a8');
+    drawArch(x,540,fy,fw,fh,'#f5b301');
+    archPattern(x,540,fy,fw,fh);
+    crescent(x,540,fy+130,42,'#f5d76e');
+  }else if(cat==='festival'){
+    garland(x);diya(x,150,215,1);diya(x,930,215,1);
+    drawArch(x,540,fy,fw,fh,'#ffb830');
+    archPattern(x,540,fy,fw,fh);
+    x.font='80px serif';x.fillStyle='#ffffff';x.fillText(sel.e,540,fy+150);
+  }else{
+    rays(x);
+    drawRectFrame(x,fx,fy,fw,fh,'#f5b301');
+    x.font='80px serif';x.fillStyle='#ffffff';x.fillText(sel.e,540,fy+150);
+  }
+  x.save();
+  x.shadowColor='rgba(0,0,0,0.55)';x.shadowBlur=20;x.shadowOffsetY=6;
+  x.fillStyle='#f5d76e';x.font='bold 92px sans-serif';
+  var y=wrap(x,sel.n,540,fy+250,580,108);
+  x.restore();
+  star(x,470,y+10,10,'rgba(255,255,255,0.9)');
+  star(x,610,y+10,10,'rgba(255,255,255,0.9)');
+  x.fillStyle='#ffffff';x.font='40px sans-serif';
+  y=wrap(x,sel.t,540,y+42,580,58);
+  x.fillStyle='#f8f1de';x.fillRect(0,1150,W,200);
+  x.fillStyle='#f5b301';x.fillRect(0,1150,W,8);
+  var nx=userPhoto?430:540;
+  x.fillStyle='#a31212';x.font='bold 60px sans-serif';
+  x.fillText(userName||'আপনার নাম',nx,1232);
+  x.fillStyle='#5b4a1e';x.font='32px sans-serif';
+  if(userTitle)x.fillText(userTitle,nx,1286);
+  var ppx=630,ppy=770,ppw=420,pph=430;
+  if(userPhoto){
+    var r=containBox(x,userPhoto,ppx,ppy,ppw,pph);
+    x.save();roundRect(x,r[0],r[1],r[2],r[3],22);x.clip();
+    x.drawImage(userPhoto,r[0],r[1],r[2],r[3]);x.restore();
+    x.strokeStyle='#f5b301';x.lineWidth=6;roundRect(x,r[0],r[1],r[2],r[3],22);x.stroke();
+  }else{
+    x.setLineDash([12,9]);x.strokeStyle='rgba(90,60,10,0.55)';x.lineWidth=4;
+    roundRect(x,ppx,ppy,ppw,pph,22);x.stroke();x.setLineDash([]);
+    x.fillStyle='rgba(90,60,10,0.7)';x.font='34px sans-serif';
+    x.fillText('আপনার ছবি',ppx+ppw/2,ppy+pph/2-10);
+    x.fillText('এখানে বসবে',ppx+ppw/2,ppy+pph/2+38);
+  }
+  if(userLogo){
+    var lr=containBox(x,userLogo,64,1084,152,152);
+    x.save();x.beginPath();x.arc(140,1160,88,0,7);x.clip();
+    x.fillStyle='#ffffff';x.fillRect(52,1072,176,176);
+    x.drawImage(userLogo,lr[0],lr[1],lr[2],lr[3]);x.restore();
+    x.strokeStyle='#f5b301';x.lineWidth=6;
+    x.beginPath();x.arc(140,1160,88,0,7);x.stroke();
+  }
 }
 
 function selectTpl(t,el){
@@ -396,7 +560,28 @@ document.getElementById('pd-photo-remove').onclick=function(){
   userPhoto=null;document.getElementById('pd-photo-input').value='';
   document.getElementById('pd-photo-name').textContent='';pdDraw();
 };
+document.getElementById('pd-canvas').addEventListener('click',function(e){
+  try{
+    var r=this.getBoundingClientRect();
+    var px=(e.clientX-r.left)*(1080/r.width);
+    var py=(e.clientY-r.top)*(1350/r.height);
+    if(px>=620&&px<=1060&&py>=760&&py<=1210){
+      document.getElementById('pd-photo-input').click();
+    }
+  }catch(err){}
+});
 document.getElementById('pd-user-name').addEventListener('input',function(){userName=this.value;pdDraw();});
+document.getElementById('pd-user-title').addEventListener('input',function(){userTitle=this.value;pdDraw();});
+document.getElementById('pd-logo-input').addEventListener('change',function(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){var im=new Image();im.onload=function(){userLogo=im;document.getElementById('pd-logo-name').textContent='✅ লোগো লেগেছে!';pdDraw();};im.src=r.result;};
+  r.readAsDataURL(f);
+});
+document.getElementById('pd-logo-remove').onclick=function(){
+  userLogo=null;document.getElementById('pd-logo-input').value='';
+  document.getElementById('pd-logo-name').textContent='';pdDraw();
+};
 
 document.getElementById('pd-studio').addEventListener('contextmenu',function(e){if(locked)e.preventDefault();});
 document.getElementById('pd-pay-btn').onclick=function(){document.getElementById('pd-pay-box').style.display='block';this.style.display='none';};
