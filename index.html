@@ -90,11 +90,12 @@ select.dtInp{width:auto;padding:8px}
 <div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 <div id="sideMenu"><div style="color:#f59e0b;font-weight:900;font-size:12px;padding:10px 4px;letter-spacing:0.5px">📋 MAIN MENU</div>
-  <!-- PARVEZ DAILY POSTER v4 - Islamic status + dua + mahan baktider -->
+<!-- PARVEZ DAILY POSTER v5 - FRONT PAGE + REAL HD DOWNLOAD -->
+<!-- বসানোর জায়গা: index.html-এ topBar div-এর পরে, sideMenu div-এর আগে (front page-এ) -->
 <div id="pd-wrap" style="margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
   <div style="font-size:14px;color:#f5b301;font-weight:800">🔥 আজকের বিশেষ পোস্টার</div>
   <div style="font-size:13px;margin:4px 0 10px;line-height:1.5">
-    ইসলামিক স্ট্যাটাস, দোয়া, মহান ব্যক্তিদের জন্মদিন, পূজা-পার্বণ — প্রতিদিন নতুন ডিজাইন <b>মাত্র ₹2</b>-তে। পেমেন্ট করলেই সঙ্গে সঙ্গে HD ডাউনলোড + WhatsApp শেয়ার!
+    ইসলামিক স্ট্যাটাস, দোয়া, মহান ব্যক্তিদের জন্মদিন — প্রতিদিন নতুন HD পোস্টার <b>মাত্র ₹2</b>-তে। পেমেন্ট করলেই সঙ্গে সঙ্গে ডাউনলোড + WhatsApp শেয়ার!
   </div>
 
   <div id="pd-today-event" style="background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;text-align:center">
@@ -108,10 +109,12 @@ select.dtInp{width:auto;padding:8px}
 
   <div style="font-size:13px;font-weight:800;color:#f5b301;margin:8px 0 6px">🎨 সব টেমপ্লেট</div>
   <div id="pd-carousel" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory"></div>
-  <div style="font-size:11px;opacity:.7;text-align:center">👉 পাশে টেনে সব ডিজাইন দেখো</div>
+  <div style="font-size:11px;opacity:.7;text-align:center">👉 পাশে টেনে ডিজাইন বেছে নাও</div>
+
+  <div style="font-size:13px;font-weight:800;color:#f5b301;margin:10px 0 6px">👁️ লাইভ প্রিভিউ</div>
+  <canvas id="pd-canvas" width="1080" height="1350" style="width:100%;border-radius:12px;display:block"></canvas>
 
   <div id="pd-sel-name" style="margin-top:8px;font-size:13px">সিলেক্ট: <b id="pd-sel-b">—</b></div>
-  <div id="pd-sel-dua" style="font-size:12px;background:#1e293b;border-radius:8px;padding:8px;margin-top:6px;line-height:1.6"></div>
   <button id="pd-pay-btn" style="margin-top:8px;width:100%;background:#f5b301;color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;font-size:15px">₹2 দিয়ে ডাউনলোড করো</button>
 
   <div id="pd-pay-box" style="display:none;margin-top:10px;text-align:center">
@@ -120,8 +123,8 @@ select.dtInp{width:auto;padding:8px}
     <button id="pd-unlock-btn" style="background:#22c55e;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:700">পেমেন্ট হয়ে গেছে, আনলক করো</button>
   </div>
   <div id="pd-action-box" style="display:none;margin-top:10px;text-align:center">
-    <button onclick="alert('HD ডাউনলোড শুরু...')" style="padding:10px 16px;border-radius:8px;border:0;background:#fff;font-weight:700">⬇ ডাউনলোড</button>
-    <button onclick="alert('WhatsApp শেয়ার...')" style="padding:10px 16px;border-radius:8px;border:0;background:#25D366;color:#fff;font-weight:700">WhatsApp শেয়ার</button>
+    <button id="pd-dl-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#f5b301;color:#000;font-weight:800">⬇ HD ডাউনলোড</button>
+    <button id="pd-wa-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#25D366;color:#fff;font-weight:700">WhatsApp শেয়ার</button>
   </div>
 </div>
 
@@ -146,36 +149,77 @@ var DATA = {
 };
 
 var ISLAMIC = [
-{n:"জুম্মা মোবারক",e:"🕌",t:"জুম্মা মোবারক! আল্লাহ আপনার সব দোয়া কবুল করুন। আমিন 🤲",g:"linear-gradient(135deg,#0f5132,#0a3d2e)"},
-{n:"আলহামদুলিল্লাহ",e:"🤲",t:"প্রতিটা নিশ্বাসের জন্য আলহামদুলিল্লাহ। আল্লাহ মহান।",g:"linear-gradient(135deg,#1a5d1a,#0d3320)"},
-{n:"সকালের দোয়া",e:"🌅",t:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ - নতুন সকাল, নতুন রহমত। শুভ সকাল।",g:"linear-gradient(135deg,#2d6a4f,#1b4332)"},
-{n:"আয়াতুল কুরসি",e:"📖",t:"আয়াতুল কুরসি পাঠ করুন - আল্লাহর হেফাজতে থাকুন।",g:"linear-gradient(135deg,#6b4d1f,#3d2c0a)"},
-{n:"সবর",e:"💚",t:"নিশ্চয়ই আল্লাহ সবরকারীদের সাথে আছেন। (সূরা বাকারা ১৫৩)",g:"linear-gradient(135deg,#14532d,#052e16)"},
-{n:"ঈদ মোবারক",e:"🌙",t:"ঈদ মোবারক! তাকাব্বালাল্লাহু মিন্না ওয়া মিনকুম।",g:"linear-gradient(135deg,#0f9b0f,#000000)"},
-{n:"রমজান",e:"🌙",t:"রমজান মোবারক! রোজা ও ইবাদতে কাটুক পবিত্র মাস।",g:"linear-gradient(135deg,#1e3a5f,#0d1b2a)"},
-{n:"দোয়া",e:"🤲",t:"রাব্বানা আতিনা ফিদ্দুনিয়া হাসানাহ - হে আল্লাহ আমাদের মঙ্গল দান করুন। আমিন।",g:"linear-gradient(135deg,#4a3728,#2a1f14)"}
+{n:"জুম্মা মোবারক",e:"🕌",t:"জুম্মা মোবারক! আল্লাহ আপনার সব দোয়া কবুল করুন। আমিন।",g1:"#0f5132",g2:"#062a1e"},
+{n:"আলহামদুলিল্লাহ",e:"🤲",t:"প্রতিটা নিশ্বাসের জন্য আলহামদুলিল্লাহ। আল্লাহ মহান।",g1:"#1a5d1a",g2:"#0a2e12"},
+{n:"সকালের দোয়া",e:"🌅",t:"বিসমিল্লাহির রাহমানির রাহিম। নতুন সকাল, নতুন রহমত। শুভ সকাল।",g1:"#2d6a4f",g2:"#122e20"},
+{n:"আয়াতুল কুরসি",e:"📖",t:"আয়াতুল কুরসি পাঠ করুন, আল্লাহর হেফাজতে থাকুন।",g1:"#6b4d1f",g2:"#33230a"},
+{n:"সবর",e:"💚",t:"নিশ্চয়ই আল্লাহ সবরকারীদের সাথে আছেন। (সূরা বাকারা ১৫৩)",g1:"#14532d",g2:"#062a14"},
+{n:"ঈদ মোবারক",e:"🌙",t:"ঈদ মোবারক! তাকাব্বালাল্লাহু মিন্না ওয়া মিনকুম।",g1:"#0f9b0f",g2:"#063006"},
+{n:"রমজান",e:"🌙",t:"রমজান মোবারক! রোজা ও ইবাদতে কাটুক পবিত্র মাস।",g1:"#1e3a5f",g2:"#0a1626"},
+{n:"দোয়া",e:"🤲",t:"রাব্বানা আতিনা ফিদ্দুনিয়া হাসানাহ। হে আল্লাহ আমাদের মঙ্গল দান করুন। আমিন।",g1:"#4a3728",g2:"#241a10"}
 ];
 
 var CARDS = [
-{n:"জন্মদিন স্পেশাল",e:"🎂",g:"linear-gradient(135deg,#ff9a3c,#ff5e62)"},
-{n:"শ্রদ্ধাঞ্জলি",e:"🙏",g:"linear-gradient(135deg,#434343,#000000)"},
-{n:"দুর্গাপূজা",e:"🪔",g:"linear-gradient(135deg,#8e2de2,#4a00e0)"},
-{n:"নেতাজি জন্মদিন",e:"🇮🇳",g:"linear-gradient(135deg,#ff8008,#ffc837)"},
-{n:"রবীন্দ্র জয়ন্তী",e:"🎼",g:"linear-gradient(135deg,#654ea3,#eaafc8)"},
-{n:"স্বাধীনতা দিবস",e:"🇮🇳",g:"linear-gradient(135deg,#1e9600,#ff9800)"}
+{n:"জন্মদিন স্পেশাল",e:"🎂",t:"শুভ জন্মদিন! সুখ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক জীবন।",g1:"#ff9a3c",g2:"#c23b3b"},
+{n:"শ্রদ্ধাঞ্জলি",e:"🙏",t:"বিনম্র শ্রদ্ধাঞ্জলি।",g1:"#4a4a4a",g2:"#0d0d0d"},
+{n:"দুর্গাপূজা",e:"🪔",t:"শারদীয়ার প্রীতি ও শুভেচ্ছা।",g1:"#8e2de2",g2:"#2a0066"},
+{n:"নেতাজি জন্মদিন",e:"🇮🇳",t:"তুমি আমাকে রক্ত দাও, আমি তোমাকে স্বাধীনতা দেবো।",g1:"#ff8008",g2:"#8a3d00"},
+{n:"রবীন্দ্র জয়ন্তী",e:"🎼",t:"আনন্দলোকে মঙ্গলালোকে বিরাজ সত্যসুন্দর।",g1:"#654ea3",g2:"#2e2154"},
+{n:"স্বাধীনতা দিবস",e:"🇮🇳",t:"স্বাধীনতা দিবসের শুভেচ্ছা। জয় হিন্দ!",g1:"#1e9600",g2:"#073d00"}
 ];
 
-function makeCard(c, duaText){
+var sel = ISLAMIC[0];
+var bnDate = new Date().toLocaleDateString('bn-IN',{day:'numeric',month:'long',year:'numeric'});
+
+function wrap(x,text,cx,y,maxW,lh){
+  var words=text.split(' '),line='',yy=y;
+  for(var i=0;i<words.length;i++){
+    var t=line+words[i]+' ';
+    if(x.measureText(t).width>maxW && i>0){x.fillText(line,cx,yy);line=words[i]+' ';yy+=lh;}
+    else{line=t;}
+  }
+  x.fillText(line,cx,yy);
+  return yy+lh;
+}
+
+function pdDraw(){
+  var c=document.getElementById('pd-canvas'); if(!c) return;
+  var x=c.getContext('2d'),W=1080,H=1350;
+  var g=x.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,sel.g1); g.addColorStop(1,sel.g2);
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.globalAlpha=0.12; x.fillStyle='#ffffff';
+  x.beginPath(); x.arc(900,180,260,0,7); x.fill();
+  x.beginPath(); x.arc(140,1150,200,0,7); x.fill();
+  x.globalAlpha=1;
+  x.textAlign='center';
+  x.fillStyle='#f5b301'; x.font='bold 40px sans-serif';
+  x.fillText('PARVEZ DIGITAL SERVICE',W/2,110);
+  x.font='200px serif'; x.fillText(sel.e,W/2,400);
+  x.fillStyle='#ffffff'; x.font='bold 84px sans-serif';
+  var y=wrap(x,sel.n,W/2,600,920,100);
+  x.font='46px sans-serif'; x.fillStyle='#f8f8f8';
+  y=wrap(x,sel.t,W/2,y+40,920,72);
+  x.fillStyle='#f5b301'; x.font='bold 42px sans-serif';
+  x.fillText(bnDate,W/2,y+60);
+  x.fillStyle='rgba(0,0,0,0.55)'; x.fillRect(0,H-140,W,140);
+  x.fillStyle='#f5b301'; x.font='bold 38px sans-serif';
+  x.fillText('PARVEZ DIGITAL SERVICE',W/2,H-85);
+  x.fillStyle='#ffffff'; x.font='30px sans-serif';
+  x.fillText('parvezdigitals.github.io',W/2,H-40);
+}
+
+function makeCard(c){
   var d=document.createElement('div');
-  d.className='pd-card'; d.setAttribute('data-name',c.n);
-  d.setAttribute('data-dua', duaText||c.n);
-  d.style.cssText="min-width:140px;scroll-snap-align:start;border-radius:12px;background:"+c.g+";padding:12px;text-align:center;cursor:pointer";
+  d.className='pd-card';
+  d.style.cssText="min-width:140px;scroll-snap-align:start;border-radius:12px;background:linear-gradient(135deg,"+c.g1+","+c.g2+");padding:12px;text-align:center;cursor:pointer";
   d.innerHTML='<div style="font-size:28px">'+c.e+'</div><div style="font-weight:800;font-size:13px">'+c.n+'</div><div style="margin-top:6px;background:#000;color:#f5b301;font-weight:800;border-radius:8px;padding:4px;font-size:12px">₹2</div>';
   d.onclick=function(){
+    sel=c;
     document.getElementById('pd-sel-b').textContent=c.n;
-    document.getElementById('pd-sel-dua').textContent="📝 "+(duaText||c.n);
-    document.querySelectorAll('.pd-card').forEach(x=>x.style.outline='');
+    document.querySelectorAll('.pd-card').forEach(function(o){o.style.outline='';});
     d.style.outline='3px solid #f5b301';
+    pdDraw();
   };
   return d;
 }
@@ -189,14 +233,43 @@ else if(today.getDay()===5){document.getElementById('pd-event-name').textContent
 else{document.getElementById('pd-event-desc').textContent="আজকের স্পেশাল পোস্টার";}
 
 var ic=document.getElementById('pd-islamic-carousel');
-ISLAMIC.forEach(function(c,i){ var el=makeCard(c,c.t); ic.appendChild(el); if(i===0){document.getElementById('pd-sel-b').textContent=c.n;document.getElementById('pd-sel-dua').textContent="📝 "+c.t; el.style.outline='3px solid #25D366';} });
+ISLAMIC.forEach(function(c,i){var el=makeCard(c);ic.appendChild(el);if(i===0){document.getElementById('pd-sel-b').textContent=c.n;el.style.outline='3px solid #25D366';}});
 var car=document.getElementById('pd-carousel');
-CARDS.forEach(function(c){ car.appendChild(makeCard(c)); });
+CARDS.forEach(function(c){car.appendChild(makeCard(c));});
+pdDraw();
 
 var locked=true;
 document.getElementById('pd-wrap').addEventListener('contextmenu',function(e){if(locked)e.preventDefault();});
 document.getElementById('pd-pay-btn').onclick=function(){document.getElementById('pd-pay-box').style.display='block';this.style.display='none';};
-document.getElementById('pd-unlock-btn').onclick=function(){locked=false;document.getElementById('pd-pay-box').style.display='none';document.getElementById('pd-action-box').style.display='block';alert('আনলক হয়ে গেছে! এখন ডাউনলোড / স্ক্রিনশট / শেয়ার করতে পারবে।');};
+document.getElementById('pd-unlock-btn').onclick=function(){
+  locked=false;
+  document.getElementById('pd-pay-box').style.display='none';
+  document.getElementById('pd-action-box').style.display='block';
+  alert('আনলক হয়ে গেছে! এখন HD ডাউনলোড / WhatsApp শেয়ার করতে পারবে।');
+};
+document.getElementById('pd-dl-btn').onclick=function(){
+  pdDraw();
+  var c=document.getElementById('pd-canvas');
+  var a=document.createElement('a');
+  a.download='parvez-poster-'+Date.now()+'.png';
+  a.href=c.toDataURL('image/png');
+  document.body.appendChild(a); a.click(); a.remove();
+};
+document.getElementById('pd-wa-btn').onclick=function(){
+  pdDraw();
+  var c=document.getElementById('pd-canvas');
+  var txt=sel.e+' '+sel.n+'\n'+sel.t+'\n— PARVEZ DIGITAL SERVICE';
+  function waText(){location.href='https://wa.me/?text='+encodeURIComponent(txt);}
+  try{
+    c.toBlob(function(b){
+      if(!b){waText();return;}
+      var f=new File([b],'parvez-poster.png',{type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[f]})){
+        navigator.share({files:[f],title:sel.n,text:sel.t}).catch(function(){});
+      }else{waText();}
+    });
+  }catch(e){waText();}
+};
 })();
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><style>
@@ -220,6 +293,7 @@ document.getElementById('pd-unlock-btn').onclick=function(){locked=false;documen
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style>
 </style>
 <div class="g" style="border-color:#3b82f6"><div class="gh" style="background:linear-gradient(90deg,#3b82f6,#06b6d4);color:#fff" onclick="tg('a')"><span>🅰️ Aadhaar</span><span>▼</span></div><div id="a" class="gl"><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official - myaadhaar.uidai.gov.in</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/check-aadhaar-validity')">✅ Check Validity - Official</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/verify-email-mobile')">📧 Verify Email/Mobile - Official</div><div class="i" onclick="go('https://uidai.gov.in/')">🏛️ UIDAI Official - uidai.gov.in</div></div></div>
 <div class="g" style="border-color:#f59e0b"><div class="gh" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000" onclick="tg('pvc')"><span>🪪 Auto PVC</span><span>▼</span></div><div id="pvc" class="gl"><div class="i" onclick="openPVC()">🪪 PVC Maker - Auto Crop - Parvez Tool</div><div class="i" onclick="openPhotoPrint()">📸 Easy Photo Print - All Sizes</div><div class="i" onclick="openPanSize()">🖼️ PAN Photo & Sign Resizer</div><div class="i" onclick="openDocTools()">🧰 Document Tools - All in One</div></div></div><a href="document-tools.html" style="display:block;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:900;font-size:15px;padding:14px 16px;border-radius:14px;text-decoration:none;margin:8px 0">🛠️ Document Tools - JPG to PDF, Compress, Merge - Free</a>
