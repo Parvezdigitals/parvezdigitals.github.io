@@ -419,9 +419,7 @@ document.getElementById('pd-dl-btn').onclick=function(){
 document.getElementById('pd-wa-btn').onclick=function(){
   pdDraw();
   var c=document.getElementById('pd-canvas');
-  var txt=(sel.e||'')+' '+(sel.n||'')+(userName?'
-🙏 শুভেচ্ছান্তে: '+userName:'')+'
-— PARVEZ DIGITAL SERVICE';
+  var txt=(sel.e||'')+' '+(sel.n||'')+(userName?'\n🙏 শুভেচ্ছান্তে: '+userName:'')+'\n— PARVEZ DIGITAL SERVICE';
   function waText(){location.href='https://wa.me/?text='+encodeURIComponent(txt);}
   try{
     c.toBlob(function(b){
