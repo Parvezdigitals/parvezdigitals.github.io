@@ -110,7 +110,7 @@ select.dtInp{width:auto;padding:8px}
 <div id="welcomePopup"><div class="welcomeBox"><div style="font-size:36px;margin-bottom:12px">👋</div><h2>Welcome Friend!</h2><p>PARVEZ DIGITAL SERVICE</p><div class="sub">55+ Government Services • West Bengal<br>Trusted • Professional • Secure • Official</div><button class="welcomeBtn" onclick="closeWelcome()">✅ Continue to Portal</button></div></div>
 <div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-<!-- PARVEZ DAILY POSTER v15 - AJKER BIRTHDAY + USER NAM/CHOBI -->
+<!-- PARVEZ DAILY POSTER v16 - AJKER BIRTHDAY + USER NAM/CHOBI -->
 <div id="pd-home" style="margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
   <div style="font-size:15px;color:#f5b301;font-weight:800">🎉 ডেইলি পোস্টার স্টুডিও</div>
   <div style="font-size:12px;margin:4px 0 10px;opacity:.85;line-height:1.5">আজ যার জন্মদিন/বিশেষ দিন, তার নামের পোস্টার বানাও — <b>নিজের ছবি ও নাম সহ</b>, মাত্র ₹2-তে।</div>
@@ -196,7 +196,7 @@ var DATA = {
 "06-21":[{n:"আন্তর্জাতিক যোগ দিবস",d:"যোগ করুন, সুস্থ থাকুন",e:"🧘"}],
 "06-23":[{n:"শ্যামাপ্রসাদ মুখার্জি",d:"মৃত্যুদিন (1953)",e:"🙏"}],
 "06-27":[{n:"বঙ্কিমচন্দ্র চট্টোপাধ্যায়",d:"জন্মদিন (1838)",e:"📚"}],
-"07-01":[{n:"ডঃ বিধানচন্দ্র রায়",d:"জন্মদিন ও মৃত্যুদিন (1882/1962) - চিকিৎসক দিবস",e:"⚕️"}],
+"07-01":[{n:"ডঃ বিধানচন্দ্র রায়",d:"জন্মদিন ও মৃত্যুদিন (1882/1962) - চিকিৎসক দিবস",e:"⚕️",th:"medical"}],
 "07-06":[{n:"শ্যামাপ্রসাদ মুখার্জি",d:"জন্মদিন (1901)",e:"🙏"}],
 "07-08":[{n:"জ্যোতি বসু",d:"জন্মদিন (1914)",e:"🙏"}],
 "07-19":[{n:"মঙ্গল পান্ডে",d:"জন্মদিন (1827)",e:"🇮🇳"}],
@@ -220,7 +220,7 @@ var DATA = {
 "09-11":[{n:"স্বামী বিবেকানন্দ",d:"শিকাগো বক্তৃতা (1893) - বিশ্ব ভ্রাতৃত্ব দিবস",e:"🧘"}],
 "09-15":[{n:"শরৎচন্দ্র চট্টোপাধ্যায় ও এম. বিশ্বেশ্বরায়া",d:"জন্মদিন (1876 ও 1861) - প্রকৌশলী দিবস",e:"📚"}],
 "09-24":[{n:"প্রীতিলতা ওয়াদ্দেদার",d:"মৃত্যুদিন (1932)",e:"🇮🇳"}],
-"09-25":[{n:"দীনদয়াল উপাধ্যায়",d:"জন্মদিন (1916)",e:"🙏"},{n:"অন্ত্যোদয় দিবস",d:"দীনদয়াল উপাধ্যায়ের জন্মবার্ষিকী - গরিবের উন্নয়নের দিন",e:"🌾"},{n:"বিশ্ব ফার্মাসিস্ট দিবস",d:"World Pharmacists Day - ওষুধ বিশেষজ্ঞদের সম্মান",e:"💊"}],
+"09-25":[{n:"দীনদয়াল উপাধ্যায়",d:"জন্মদিন (1916)",e:"🙏"},{n:"অন্ত্যোদয় দিবস",d:"দীনদয়াল উপাধ্যায়ের জন্মবার্ষিকী - গরিবের উন্নয়নের দিন",e:"🌾"},{n:"বিশ্ব ফার্মাসিস্ট দিবস",d:"World Pharmacists Day - ওষুধ বিশেষজ্ঞদের সম্মান",e:"💊",th:"medical"}],
 "09-26":[{n:"ঈশ্বরচন্দ্র বিদ্যাসাগর",d:"জন্মদিন (1820)",e:"📚"}],
 "09-27":[{n:"ভগৎ সিং",d:"জন্মদিন (1907)",e:"🇮🇳"}],
 "09-28":[{n:"লতা মঙ্গেশকর",d:"জন্মদিন (1929)",e:"🎵"}],
@@ -286,7 +286,7 @@ festival:{title:"🎉 উৎসব ও বিশেষ দিন", items:[
 };
 
 var GRAD=[["#7c2d12","#431407"],["#0f5132","#052e16"],["#1e3a8a","#172554"],["#6b21a8","#3b0764"],["#9a3412","#7c2d12"],["#0e7490","#164e63"]];
-function evSel(key,idx){var d=DATA[key][idx||0];var h=0;for(var i=0;i<key.length;i++)h+=key.charCodeAt(i);var g=GRAD[h%GRAD.length];return{n:d.n,t:d.d,e:d.e,g1:g[0],g2:g[1],isEvent:true};}
+function evSel(key,idx){var d=DATA[key][idx||0];var h=0;for(var i=0;i<key.length;i++)h+=key.charCodeAt(i);var g=GRAD[h%GRAD.length];return{n:d.n,t:d.d,e:d.e,th:d.th,g1:g[0],g2:g[1],isEvent:true};}
 
 var sel=null,userName='',userPhoto=null,userTitle='',userLogo=null,curCat='islamic',curEventKey=null,locked=true;
 var bnDate=new Date().toLocaleDateString('bn-IN',{day:'numeric',month:'long',year:'numeric'});
@@ -425,12 +425,45 @@ function containBox(x,img,px,py,pw,ph){
   var dw=img.width*sc,dh=img.height*sc;
   return [px+(pw-dw)/2,py+(ph-dh)/2,dw,dh];
 }
+function capsule(x,cx,cy,len,wid,ang,c1,c2){
+  x.save();x.translate(cx,cy);x.rotate(ang);
+  x.fillStyle=c1;roundRect(x,-len/2,-wid/2,len,wid,wid/2);x.fill();
+  x.save();x.beginPath();x.rect(0,-wid/2,len/2,wid);x.clip();
+  x.fillStyle=c2;roundRect(x,-len/2,-wid/2,len,wid,wid/2);x.fill();x.restore();
+  x.strokeStyle='rgba(255,255,255,0.55)';x.lineWidth=3;
+  roundRect(x,-len/2,-wid/2,len,wid,wid/2);x.stroke();
+  x.restore();
+}
+function tablet(x,cx,cy,r,col){
+  x.fillStyle=col;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();
+  x.strokeStyle='rgba(0,0,0,0.18)';x.lineWidth=4;
+  x.beginPath();x.moveTo(cx-r,cy);x.lineTo(cx+r,cy);x.stroke();
+  x.fillStyle='rgba(255,255,255,0.35)';
+  x.beginPath();x.arc(cx-r*0.3,cy-r*0.3,r*0.25,0,7);x.fill();
+}
+function medBadge(x,cx,cy,r){
+  x.fillStyle='#ffffff';x.beginPath();x.arc(cx,cy,r,0,7);x.fill();
+  x.strokeStyle='#0e7490';x.lineWidth=6;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();
+  x.fillStyle='#e11d48';
+  var w=r*0.36,l=r*1.05;
+  x.fillRect(cx-w/2,cy-l/2,w,l);
+  x.fillRect(cx-l/2,cy-w/2,l,w);
+}
+function heartbeat(x,y0,col){
+  x.strokeStyle=col;x.lineWidth=6;x.lineJoin='round';x.beginPath();
+  var pts=[[40,y0],[180,y0],[230,y0-55],[280,y0+55],[330,y0-18],[380,y0],[700,y0],[750,y0-55],[800,y0+55],[850,y0-18],[900,y0],[1040,y0]];
+  x.moveTo(pts[0][0],pts[0][1]);
+  for(var i=1;i<pts.length;i++)x.lineTo(pts[i][0],pts[i][1]);
+  x.stroke();
+}
 function pdDraw(){
   var c=document.getElementById('pd-canvas');if(!c||!sel)return;
   var x=c.getContext('2d'),W=1080,H=1350;
   var cat=curCat;
+  var theme=sel.th||null;
   var g=x.createLinearGradient(0,0,0,H);
-  if(cat==='islamic'){g.addColorStop(0,'#7a5218');g.addColorStop(1,'#241304');}
+  if(theme==='medical'){g.addColorStop(0,'#0e7490');g.addColorStop(1,'#164e63');}
+  else if(cat==='islamic'){g.addColorStop(0,'#7a5218');g.addColorStop(1,'#241304');}
   else{g.addColorStop(0,sel.g1);g.addColorStop(1,sel.g2);}
   x.fillStyle=g;x.fillRect(0,0,W,H);
   if(cat!=='political'){
@@ -444,7 +477,19 @@ function pdDraw(){
   x.fillText('PARVEZ DIGITAL SERVICE',W/2,52);
   drawStars(x);
   var fx=200,fy=300,fw=680,fh=600;
-  if(cat==='islamic'){
+  if(theme==='medical'){
+    heartbeat(x,120,'rgba(255,255,255,0.45)');
+    capsule(x,150,300,120,46,-0.5,'#ffffff','#0ea5e9');
+    capsule(x,930,320,120,46,0.55,'#ffffff','#e11d48');
+    tablet(x,220,520,36,'#fbbf24');
+    tablet(x,860,540,30,'#ffffff');
+    capsule(x,130,780,100,40,0.35,'#ffffff','#10b981');
+    capsule(x,950,800,100,40,-0.4,'#ffffff','#8b5cf6');
+    tablet(x,180,1000,28,'#f472b6');
+    tablet(x,900,1010,32,'#a3e635');
+    drawRectFrame(x,fx,fy,fw,fh,'#22d3ee');
+    medBadge(x,540,fy+130,46);
+  }else if(cat==='islamic'){
     lantern(x,150);lantern(x,930);hangCrescent(x,330);
     crescent(x,872,205,50,'#f5d76e');star(x,795,150,10,'#ffe9a8');
     drawArch(x,540,fy,fw,fh,'#f5b301');
@@ -462,7 +507,7 @@ function pdDraw(){
   }
   x.save();
   x.shadowColor='rgba(0,0,0,0.55)';x.shadowBlur=20;x.shadowOffsetY=6;
-  x.fillStyle='#f5d76e';x.font='bold 92px sans-serif';
+  x.fillStyle=(theme==='medical')?'#ffffff':'#f5d76e';x.font='bold 92px sans-serif';
   var y=wrap(x,sel.n,540,fy+250,580,108);
   x.restore();
   star(x,470,y+10,10,'rgba(255,255,255,0.9)');
