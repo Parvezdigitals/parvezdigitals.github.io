@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>PARVEZ DIGITAL SERVICE - 55+ Services</title>
@@ -89,66 +110,164 @@ select.dtInp{width:auto;padding:8px}
 <div id="welcomePopup"><div class="welcomeBox"><div style="font-size:36px;margin-bottom:12px">👋</div><h2>Welcome Friend!</h2><p>PARVEZ DIGITAL SERVICE</p><div class="sub">55+ Government Services • West Bengal<br>Trusted • Professional • Secure • Official</div><button class="welcomeBtn" onclick="closeWelcome()">✅ Continue to Portal</button></div></div>
 <div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-<div id="sideMenu"><div style="color:#f59e0b;font-weight:900;font-size:12px;padding:10px 4px;letter-spacing:0.5px">📋 MAIN MENU</div>
-<!-- PARVEZ DAILY POSTER v5 - FRONT PAGE + REAL HD DOWNLOAD -->
-<!-- বসানোর জায়গা: index.html-এ topBar div-এর পরে, sideMenu div-এর আগে (front page-এ) -->
+<!-- PARVEZ DAILY POSTER v8 - FRONT PAGE 3 CARDS + FULL STUDIO INSIDE -->
 <div id="pd-wrap" style="margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
-  <div style="font-size:14px;color:#f5b301;font-weight:800">🔥 আজকের বিশেষ পোস্টার</div>
-  <div style="font-size:13px;margin:4px 0 10px;line-height:1.5">
-    ইসলামিক স্ট্যাটাস, দোয়া, মহান ব্যক্তিদের জন্মদিন — প্রতিদিন নতুন HD পোস্টার <b>মাত্র ₹2</b>-তে। পেমেন্ট করলেই সঙ্গে সঙ্গে ডাউনলোড + WhatsApp শেয়ার!
+
+  <!-- ===== HOME: শুধু ৩টা কার্ড ===== -->
+  <div id="pd-home">
+    <div style="font-size:15px;color:#f5b301;font-weight:800">🔥 আজকের পোস্টার</div>
+    <div style="font-size:12px;margin:4px 0 10px;opacity:.85;line-height:1.5">যেকোনো একটা বেছে নাও — <b>নিজের ছবি লাগাও</b>, মাত্র <b>₹2</b>-তে HD পোস্টার বানিয়ে সোশ্যাল মিডিয়ায় শেয়ার করো!</div>
+    <div style="display:flex;gap:10px">
+      <div class="pd-cat" data-cat="islamic" style="flex:1;border-radius:12px;background:linear-gradient(135deg,#0f5132,#062a1e);padding:14px 6px;text-align:center;cursor:pointer">
+        <div style="font-size:32px">🕌</div><div style="font-weight:800;font-size:13px">ইসলামিক</div><div style="font-size:11px;opacity:.8">দোয়া ও স্ট্যাটাস</div>
+      </div>
+      <div class="pd-cat" data-cat="political" style="flex:1;border-radius:12px;background:linear-gradient(135deg,#b91c1c,#450a0a);padding:14px 6px;text-align:center;cursor:pointer">
+        <div style="font-size:32px">🏛️</div><div style="font-weight:800;font-size:13px">রাজনৈতিক</div><div style="font-size:11px;opacity:.8">নেতা ও প্রচার</div>
+      </div>
+      <div class="pd-cat" data-cat="festival" style="flex:1;border-radius:12px;background:linear-gradient(135deg,#8e2de2,#2a0066);padding:14px 6px;text-align:center;cursor:pointer">
+        <div style="font-size:32px">🎉</div><div style="font-weight:800;font-size:13px">উৎসব</div><div style="font-size:11px;opacity:.8">বিশেষ দিন</div>
+      </div>
+    </div>
   </div>
 
-  <div id="pd-today-event" style="background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;text-align:center">
-    <div style="font-size:11px;opacity:.7">আজ <span id="pd-date"></span></div>
-    <div id="pd-event-name" style="font-size:17px;font-weight:800;color:#f5b301">শুভ সকাল</div>
-    <div id="pd-event-desc" style="font-size:12px;opacity:.85"></div>
-  </div>
+  <!-- ===== STUDIO: কার্ডে ট্যাপ করলে ভেতরে খুলবে ===== -->
+  <div id="pd-studio" style="display:none">
+    <button id="pd-back" style="background:#1e293b;color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:700;margin-bottom:8px">← সব পোস্টার</button>
+    <div id="pd-studio-title" style="font-size:15px;color:#f5b301;font-weight:800;margin-bottom:6px"></div>
 
-  <div style="font-size:13px;font-weight:800;color:#25D366;margin:6px 0">🕌 ইসলামিক স্ট্যাটাস ও দোয়া</div>
-  <div id="pd-islamic-carousel" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory"></div>
+    <div id="pd-today-event" style="background:#1e293b;border-radius:10px;padding:10px;margin-bottom:10px;text-align:center">
+      <div style="font-size:11px;opacity:.7">আজ <span id="pd-date"></span></div>
+      <div id="pd-event-name" style="font-size:17px;font-weight:800;color:#f5b301">শুভ সকাল</div>
+      <div id="pd-event-desc" style="font-size:12px;opacity:.85"></div>
+    </div>
 
-  <div style="font-size:13px;font-weight:800;color:#f5b301;margin:8px 0 6px">🎨 সব টেমপ্লেট</div>
-  <div id="pd-carousel" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory"></div>
-  <div style="font-size:11px;opacity:.7;text-align:center">👉 পাশে টেনে ডিজাইন বেছে নাও</div>
+    <div id="pd-tpl-label" style="font-size:13px;font-weight:800;color:#f5b301;margin:6px 0">🎨 ডিজাইন বেছে নাও</div>
+    <div id="pd-templates" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory"></div>
+    <div style="font-size:11px;opacity:.7;text-align:center">👉 পাশে টেনে সব ডিজাইন দেখো</div>
 
-  <div style="font-size:13px;font-weight:800;color:#f5b301;margin:10px 0 6px">👁️ লাইভ প্রিভিউ</div>
-  <canvas id="pd-canvas" width="1080" height="1350" style="width:100%;border-radius:12px;display:block"></canvas>
+    <div id="pd-custom-box" style="display:none;margin-top:8px">
+      <div style="font-size:12px;margin-bottom:4px">✏️ নাম লিখুন (পোস্টারে বসবে):</div>
+      <input id="pd-custom-name" type="text" placeholder="যেমন: মাননীয় বিধায়ক..." style="width:100%;padding:10px;border-radius:8px;border:1px solid #444;background:#1e293b;color:#fff;font-size:14px;box-sizing:border-box">
+    </div>
 
-  <div id="pd-sel-name" style="margin-top:8px;font-size:13px">সিলেক্ট: <b id="pd-sel-b">—</b></div>
-  <button id="pd-pay-btn" style="margin-top:8px;width:100%;background:#f5b301;color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;font-size:15px">₹2 দিয়ে ডাউনলোড করো</button>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <label for="pd-photo-input" style="flex:1;text-align:center;background:#1e293b;color:#fff;padding:10px;border-radius:8px;font-weight:700;cursor:pointer">📷 নিজের ছবি লাগাও</label>
+      <input id="pd-photo-input" type="file" accept="image/*" style="display:none">
+      <button id="pd-photo-remove" style="display:none;background:#7f1d1d;color:#fff;border:0;padding:10px 14px;border-radius:8px;font-weight:700">❌ বাদ দাও</button>
+    </div>
+    <div style="font-size:11px;opacity:.7;margin-top:4px">ছবি দিলে পোস্টারের উপরে বসবে — তারপর ডাউনলোড/শেয়ার করো!</div>
+    <div style="font-size:13px;font-weight:800;color:#f5b301;margin:10px 0 6px">👁️ লাইভ প্রিভিউ</div>
+    <canvas id="pd-canvas" width="1080" height="1350" style="width:100%;border-radius:12px;display:block"></canvas>
 
-  <div id="pd-pay-box" style="display:none;margin-top:10px;text-align:center">
-    <div>UPI ID: <b>8609754876@ptsbi</b> <button onclick="navigator.clipboard.writeText('8609754876@ptsbi')">কপি</button></div>
-    <a href="upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock" style="display:inline-block;margin:10px;background:#fff;color:#000;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">UPI দিয়ে ₹2 পে করো</a><br>
-    <button id="pd-unlock-btn" style="background:#22c55e;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:700">পেমেন্ট হয়ে গেছে, আনলক করো</button>
-  </div>
-  <div id="pd-action-box" style="display:none;margin-top:10px;text-align:center">
-    <button id="pd-dl-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#f5b301;color:#000;font-weight:800">⬇ HD ডাউনলোড</button>
-    <button id="pd-wa-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#25D366;color:#fff;font-weight:700">WhatsApp শেয়ার</button>
+    <div style="margin-top:8px;font-size:13px">সিলেক্ট: <b id="pd-sel-b">—</b></div>
+    <button id="pd-pay-btn" style="margin-top:8px;width:100%;background:#f5b301;color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;font-size:15px">₹2 দিয়ে ডাউনলোড করো</button>
+
+    <div id="pd-pay-box" style="display:none;margin-top:10px;text-align:center">
+      <div>UPI ID: <b>8609754876@ptsbi</b> <button onclick="navigator.clipboard.writeText('8609754876@ptsbi')">কপি</button></div>
+      <a href="upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock" style="display:inline-block;margin:10px;background:#fff;color:#000;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">UPI দিয়ে ₹2 পে করো</a><br>
+      <button id="pd-unlock-btn" style="background:#22c55e;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:700">পেমেন্ট হয়ে গেছে, আনলক করো</button>
+    </div>
+    <div id="pd-action-box" style="display:none;margin-top:10px;text-align:center">
+      <button id="pd-dl-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#f5b301;color:#000;font-weight:800">⬇ HD ডাউনলোড</button>
+      <button id="pd-wa-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#25D366;color:#fff;font-weight:700">WhatsApp শেয়ার</button>
+    </div>
   </div>
 </div>
 
 <script>
 (function(){
 var DATA = {
+"01-01":{n:"সত্যেন্দ্রনাথ বসু",d:"জন্মদিন (1894) - বিশিষ্ট বিজ্ঞানী",e:"🔬"},
 "01-12":{n:"স্বামী বিবেকানন্দ",d:"জন্মদিন (1863) - জাতীয় যুব দিবস",e:"🧘"},
-"01-23":{n:"নেতাজি সুভাষচন্দ্র বসু",d:"জন্মদিন (1897)",e:"🇮🇳"},
+"01-16":{n:"শরৎচন্দ্র চট্টোপাধ্যায়",d:"মৃত্যুদিন (1938)",e:"📚"},
+"01-17":{n:"জ্যোতি বসু",d:"মৃত্যুদিন (2010)",e:"🙏"},
+"01-23":{n:"নেতাজি সুভাষচন্দ্র বসু",d:"জন্মদিন (1897) - পরাক্রম দিবস",e:"🇮🇳"},
+"01-24":{n:"হোমি জাহাঙ্গীর ভাবা",d:"মৃত্যুদিন (1966)",e:"⚛️"},
+"01-25":{n:"মাইকেল মধুসূদন দত্ত",d:"জন্মদিন (1824)",e:"✒️"},
 "01-26":{n:"প্রজাতন্ত্র দিবস",d:"ভারতের প্রজাতন্ত্র দিবস",e:"🏛️"},
-"01-30":{n:"মহাত্মা গান্ধী",d:"মৃত্যুদিন (1948)",e:"🕊️"},
+"01-28":{n:"লালা লাজপত রাই",d:"জন্মদিন (1865)",e:"🇮🇳"},
+"01-30":{n:"মহাত্মা গান্ধী",d:"মৃত্যুদিন (1948) - শহীদ দিবস",e:"🕊️"},
+"02-13":{n:"সরোজিনী নাইডু",d:"জন্মদিন (1879)",e:"🌸"},
+"02-17":{n:"জীবনানন্দ দাশ",d:"জন্মদিন (1899)",e:"📝"},
+"02-27":{n:"চন্দ্রশেখর আজাদ",d:"মৃত্যুদিন (1931)",e:"🇮🇳"},
+"02-28":{n:"জাতীয় বিজ্ঞান দিবস",d:"সি.ভি. রমন - রমন এফেক্ট (1928)",e:"🔬"},
+"03-08":{n:"আন্তর্জাতিক নারী দিবস",d:"নারী শক্তির প্রতি শ্রদ্ধা",e:"👩"},
+"03-22":{n:"সূর্য সেন (মাস্টারদা)",d:"জন্মদিন (1894)",e:"🇮🇳"},
+"03-23":{n:"ভগৎ সিং, রাজগুরু ও সুখদেব",d:"মৃত্যুদিন (1931) - শহীদ দিবস",e:"🙏"},
+"04-08":{n:"মঙ্গল পান্ডে",d:"মৃত্যুদিন (1857)",e:"🇮🇳"},
+"04-13":{n:"জালিয়ানওয়ালাবাগ",d:"শহীদ স্মরণ দিবস (1919)",e:"🕯️"},
 "04-14":{n:"ডঃ বি.আর. আম্বেদকর",d:"জন্মদিন (1891)",e:"📖"},
-"05-09":{n:"রবীন্দ্রনাথ ঠাকুর",d:"জন্মদিন (1861)",e:"🎼"},
+"04-23":{n:"সত্যজিৎ রায়",d:"মৃত্যুদিন (1992)",e:"🎬"},
+"04-24":{n:"শচীন তেন্ডুলকার",d:"জন্মদিন (1973)",e:"🏏"},
+"05-02":{n:"সত্যজিৎ রায়",d:"জন্মদিন (1921)",e:"🎬"},
+"05-05":{n:"প্রীতিলতা ওয়াদ্দেদার",d:"জন্মদিন (1911)",e:"🇮🇳"},
+"05-09":{n:"রবীন্দ্রনাথ ঠাকুর",d:"জন্মদিন (1861) - পঁচিশে বৈশাখ",e:"🎼"},
+"05-13":{n:"সুকান্ত ভট্টাচার্য",d:"মৃত্যুদিন (1947)",e:"📝"},
+"05-21":{n:"রাজীব গান্ধী",d:"মৃত্যুদিন (1991) - সন্ত্রাসবিরোধী দিবস",e:"🕊️"},
+"05-22":{n:"রাজা রামমোহন রায়",d:"জন্মদিন (1772)",e:"📚"},
 "05-24":{n:"কাজী নজরুল ইসলাম",d:"জন্মদিন (1899)",e:"✒️"},
+"05-28":{n:"বীর সাভারকর",d:"জন্মদিন (1883)",e:"🇮🇳"},
+"06-05":{n:"বিশ্ব পরিবেশ দিবস",d:"প্রকৃতি বাঁচাও, ভবিষ্যৎ বাঁচাও",e:"🌳"},
+"06-09":{n:"বিরসা মুন্ডা",d:"মৃত্যুদিন (1900)",e:"🏹"},
+"06-16":{n:"হেমন্ত মুখোপাধ্যায়",d:"জন্মদিন (1920)",e:"🎵"},
+"06-18":{n:"রানি লক্ষ্মীবাঈ",d:"মৃত্যুদিন (1858)",e:"⚔️"},
+"06-21":{n:"আন্তর্জাতিক যোগ দিবস",d:"যোগ করুন, সুস্থ থাকুন",e:"🧘"},
+"06-23":{n:"শ্যামাপ্রসাদ মুখার্জি",d:"মৃত্যুদিন (1953)",e:"🙏"},
+"06-27":{n:"বঙ্কিমচন্দ্র চট্টোপাধ্যায়",d:"জন্মদিন (1838)",e:"📚"},
+"07-01":{n:"ডঃ বিধানচন্দ্র রায়",d:"জন্মদিন ও মৃত্যুদিন (1882/1962) - চিকিৎসক দিবস",e:"⚕️"},
+"07-06":{n:"শ্যামাপ্রসাদ মুখার্জি",d:"জন্মদিন (1901)",e:"🙏"},
+"07-08":{n:"জ্যোতি বসু",d:"জন্মদিন (1914)",e:"🙏"},
+"07-19":{n:"মঙ্গল পান্ডে",d:"জন্মদিন (1827)",e:"🇮🇳"},
+"07-23":{n:"বাল গঙ্গাধর তিলক ও চন্দ্রশেখর আজাদ",d:"জন্মদিন (1856 ও 1906)",e:"🇮🇳"},
+"07-24":{n:"উত্তম কুমার",d:"মৃত্যুদিন (1980)",e:"🎬"},
 "07-27":{n:"এ.পি.জে. আব্দুল কালাম",d:"মৃত্যুদিন (2015)",e:"🚀"},
-"08-07":{n:"রবীন্দ্রনাথ ঠাকুর",d:"মৃত্যুদিন (1941)",e:"🙏"},
-"08-15":{n:"স্বাধীনতা দিবস",d:"ভারতের স্বাধীনতা দিবস",e:"🇮🇳"},
-"09-05":{n:"শিক্ষক দিবস",d:"ডঃ রাধাকৃষ্ণণ জন্মদিন",e:"👨‍🏫"},
+"07-29":{n:"ঈশ্বরচন্দ্র বিদ্যাসাগর",d:"মৃত্যুদিন (1891)",e:"📚"},
+"08-02":{n:"আচার্য প্রফুল্লচন্দ্র রায়",d:"জন্মদিন (1861)",e:"⚗️"},
+"08-04":{n:"কিশোর কুমার",d:"জন্মদিন (1929)",e:"🎤"},
+"08-07":{n:"রবীন্দ্রনাথ ঠাকুর",d:"মৃত্যুদিন (1941) - বাইশে শ্রাবণ",e:"🙏"},
+"08-09":{n:"ভারত ছাড়ো আন্দোলন",d:"স্মরণ দিবস (1942)",e:"🇮🇳"},
+"08-12":{n:"বিক্রম সারাভাই",d:"জন্মদিন (1919)",e:"🚀"},
+"08-15":{n:"স্বাধীনতা দিবস",d:"ভারতের স্বাধীনতা দিবস - জয় হিন্দ!",e:"🇮🇳"},
+"08-16":{n:"অটল বিহারী বাজপেয়ী",d:"মৃত্যুদিন (2018)",e:"🙏"},
+"08-20":{n:"রাজীব গান্ধী",d:"জন্মদিন (1944) - সদ্ভাবনা দিবস",e:"🕊️"},
+"08-26":{n:"মাদার টেরেসা",d:"জন্মদিন (1910)",e:"🤍"},
+"08-29":{n:"ধ্যানচাঁদ",d:"জন্মদিন (1905) - জাতীয় ক্রীড়া দিবস",e:"🏑"},
+"08-31":{n:"প্রণব মুখার্জি",d:"মৃত্যুদিন (2020)",e:"🙏"},
+"09-05":{n:"ডঃ সর্বপল্লী রাধাকৃষ্ণণ",d:"জন্মদিন (1888) - শিক্ষক দিবস",e:"👨‍🏫"},
+"09-10":{n:"বাঘা যতীন",d:"মৃত্যুদিন (1915)",e:"🇮🇳"},
+"09-11":{n:"স্বামী বিবেকানন্দ",d:"শিকাগো বক্তৃতা (1893) - বিশ্ব ভ্রাতৃত্ব দিবস",e:"🧘"},
+"09-15":{n:"শরৎচন্দ্র চট্টোপাধ্যায় ও এম. বিশ্বেশ্বরায়া",d:"জন্মদিন (1876 ও 1861) - প্রকৌশলী দিবস",e:"📚"},
+"09-24":{n:"প্রীতিলতা ওয়াদ্দেদার",d:"মৃত্যুদিন (1932)",e:"🇮🇳"},
+"09-25":{n:"দীনদয়াল উপাধ্যায়",d:"জন্মদিন (1916)",e:"🙏"},
 "09-26":{n:"ঈশ্বরচন্দ্র বিদ্যাসাগর",d:"জন্মদিন (1820)",e:"📚"},
-"10-02":{n:"মহাত্মা গান্ধী",d:"জন্মদিন (1869)",e:"🕊️"},
+"09-27":{n:"ভগৎ সিং",d:"জন্মদিন (1907)",e:"🇮🇳"},
+"09-28":{n:"লতা মঙ্গেশকর",d:"জন্মদিন (1929)",e:"🎵"},
+"10-02":{n:"মহাত্মা গান্ধী ও লাল বাহাদুর শাস্ত্রী",d:"জন্মদিন (1869 ও 1904)",e:"🕊️"},
+"10-06":{n:"মেঘনাদ সাহা",d:"জন্মদিন (1893)",e:"🔬"},
+"10-11":{n:"জয়প্রকাশ নারায়ণ",d:"জন্মদিন (1902)",e:"🇮🇳"},
 "10-15":{n:"এ.পি.জে. আব্দুল কালাম",d:"জন্মদিন (1931)",e:"🚀"},
-"12-25":{n:"বড়দিন",d:"Merry Christmas",e:"🎄"}
+"10-19":{n:"মাতঙ্গিনী হাজরা",d:"জন্মদিন (1870)",e:"🇮🇳"},
+"10-22":{n:"জীবনানন্দ দাশ",d:"মৃত্যুদিন (1954)",e:"📝"},
+"10-30":{n:"হোমি জাহাঙ্গীর ভাবা",d:"জন্মদিন (1909)",e:"⚛️"},
+"10-31":{n:"সর্দার প্যাটেল ও ইন্দিরা গান্ধী",d:"জন্মদিন (1875) - জাতীয় ঐক্য দিবস; মৃত্যুদিন (1984)",e:"🇮🇳"},
+"11-05":{n:"দেশবন্ধু চিত্তরঞ্জন দাশ",d:"জন্মদিন (1870)",e:"🇮🇳"},
+"11-11":{n:"মৌলানা আবুল কালাম আজাদ",d:"জন্মদিন (1888) - জাতীয় শিক্ষা দিবস",e:"📖"},
+"11-14":{n:"জওহরলাল নেহেরু",d:"জন্মদিন (1889) - শিশু দিবস",e:"🌹"},
+"11-15":{n:"বিরসা মুন্ডা",d:"জন্মদিন (1875) - জনজাতীয় গৌরব দিবস",e:"🏹"},
+"11-19":{n:"ইন্দিরা গান্ধী ও রানি লক্ষ্মীবাঈ",d:"জন্মদিন (1917 ও 1828)",e:"👩"},
+"11-26":{n:"সংবিধান দিবস",d:"ভারতীয় সংবিধান গৃহীত (1949)",e:"📜"},
+"11-30":{n:"জগদীশচন্দ্র বসু",d:"জন্মদিন (1858)",e:"🔬"},
+"12-03":{n:"ক্ষুদিরাম বসু",d:"জন্মদিন (1889)",e:"🇮🇳"},
+"12-07":{n:"বাঘা যতীন",d:"জন্মদিন (1879)",e:"🇮🇳"},
+"12-08":{n:"বিনয়-বাদল-দীনেশ",d:"রাইটার্স অভিযান স্মরণ (1930)",e:"🇮🇳"},
+"12-11":{n:"প্রণব মুখার্জি",d:"জন্মদিন (1935)",e:"🙏"},
+"12-22":{n:"শ্রীনিবাস রামানুজন",d:"জন্মদিন (1887) - জাতীয় গণিত দিবস",e:"🔢"},
+"12-23":{n:"চৌধুরী চরণ সিং",d:"জন্মদিন (1902) - কৃষক দিবস",e:"🌾"},
+"12-25":{n:"বড়দিন ও অটল বিহারী বাজপেয়ী",d:"জন্মদিন (1924) - সুশাসন দিবস",e:"🎄"}
 };
 
-var ISLAMIC = [
+var CATS = {
+islamic:{title:"🕌 ইসলামিক পোস্টার", items:[
 {n:"জুম্মা মোবারক",e:"🕌",t:"জুম্মা মোবারক! আল্লাহ আপনার সব দোয়া কবুল করুন। আমিন।",g1:"#0f5132",g2:"#062a1e"},
 {n:"আলহামদুলিল্লাহ",e:"🤲",t:"প্রতিটা নিশ্বাসের জন্য আলহামদুলিল্লাহ। আল্লাহ মহান।",g1:"#1a5d1a",g2:"#0a2e12"},
 {n:"সকালের দোয়া",e:"🌅",t:"বিসমিল্লাহির রাহমানির রাহিম। নতুন সকাল, নতুন রহমত। শুভ সকাল।",g1:"#2d6a4f",g2:"#122e20"},
@@ -157,19 +276,28 @@ var ISLAMIC = [
 {n:"ঈদ মোবারক",e:"🌙",t:"ঈদ মোবারক! তাকাব্বালাল্লাহু মিন্না ওয়া মিনকুম।",g1:"#0f9b0f",g2:"#063006"},
 {n:"রমজান",e:"🌙",t:"রমজান মোবারক! রোজা ও ইবাদতে কাটুক পবিত্র মাস।",g1:"#1e3a5f",g2:"#0a1626"},
 {n:"দোয়া",e:"🤲",t:"রাব্বানা আতিনা ফিদ্দুনিয়া হাসানাহ। হে আল্লাহ আমাদের মঙ্গল দান করুন। আমিন।",g1:"#4a3728",g2:"#241a10"}
-];
-
-var CARDS = [
+]},
+political:{title:"🏛️ রাজনৈতিক পোস্টার", custom:true, items:[
+{n:"নেতার জন্মদিন",e:"🎂",t:"শুভ জন্মদিন! আপনার নেতৃত্বে এগিয়ে চলুক আমাদের অঞ্চল।",g1:"#b91c1c",g2:"#450a0a"},
+{n:"জনসভা",e:"📢",t:"আসন্ন জনসভায় দলে দলে যোগ দিন। আপনার উপস্থিতিই আমাদের শক্তি।",g1:"#1d4ed8",g2:"#172554"},
+{n:"ভোট প্রচার",e:"🗳️",t:"আপনার মূল্যবান ভোটই গণতন্ত্রের শক্তি। ভোট দিন, ভবিষ্যৎ গড়ুন।",g1:"#c2410c",g2:"#431407"},
+{n:"শুভেচ্ছা বার্তা",e:"💐",t:"আন্তরিক শুভেচ্ছা ও অভিনন্দন।",g1:"#0e7490",g2:"#083344"},
+{n:"জয় হিন্দ",e:"✊",t:"দেশের সেবায় আমরা অঙ্গীকারবদ্ধ। জয় হিন্দ!",g1:"#15803d",g2:"#052e16"},
+{n:"সংবর্ধনা",e:"🏅",t:"আপনার অবদানের জন্য রইলো আন্তরিক সংবর্ধনা।",g1:"#a16207",g2:"#422006"}
+]},
+festival:{title:"🎉 উৎসব ও বিশেষ দিন", items:[
 {n:"জন্মদিন স্পেশাল",e:"🎂",t:"শুভ জন্মদিন! সুখ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক জীবন।",g1:"#ff9a3c",g2:"#c23b3b"},
 {n:"শ্রদ্ধাঞ্জলি",e:"🙏",t:"বিনম্র শ্রদ্ধাঞ্জলি।",g1:"#4a4a4a",g2:"#0d0d0d"},
 {n:"দুর্গাপূজা",e:"🪔",t:"শারদীয়ার প্রীতি ও শুভেচ্ছা।",g1:"#8e2de2",g2:"#2a0066"},
 {n:"নেতাজি জন্মদিন",e:"🇮🇳",t:"তুমি আমাকে রক্ত দাও, আমি তোমাকে স্বাধীনতা দেবো।",g1:"#ff8008",g2:"#8a3d00"},
 {n:"রবীন্দ্র জয়ন্তী",e:"🎼",t:"আনন্দলোকে মঙ্গলালোকে বিরাজ সত্যসুন্দর।",g1:"#654ea3",g2:"#2e2154"},
 {n:"স্বাধীনতা দিবস",e:"🇮🇳",t:"স্বাধীনতা দিবসের শুভেচ্ছা। জয় হিন্দ!",g1:"#1e9600",g2:"#073d00"}
-];
+]}
+};
 
-var sel = ISLAMIC[0];
-var bnDate = new Date().toLocaleDateString('bn-IN',{day:'numeric',month:'long',year:'numeric'});
+var sel=null, catKey=null, customName='', locked=true;
+var pdUserImg=null;
+var bnDate=new Date().toLocaleDateString('bn-IN',{day:'numeric',month:'long',year:'numeric'});
 
 function wrap(x,text,cx,y,maxW,lh){
   var words=text.split(' '),line='',yy=y;
@@ -178,11 +306,11 @@ function wrap(x,text,cx,y,maxW,lh){
     if(x.measureText(t).width>maxW && i>0){x.fillText(line,cx,yy);line=words[i]+' ';yy+=lh;}
     else{line=t;}
   }
-  x.fillText(line,cx,yy);
-  return yy+lh;
+  x.fillText(line,cx,yy); return yy+lh;
 }
 
 function pdDraw(){
+  if(!sel) return;
   var c=document.getElementById('pd-canvas'); if(!c) return;
   var x=c.getContext('2d'),W=1080,H=1350;
   var g=x.createLinearGradient(0,0,W,H);
@@ -191,13 +319,36 @@ function pdDraw(){
   x.globalAlpha=0.12; x.fillStyle='#ffffff';
   x.beginPath(); x.arc(900,180,260,0,7); x.fill();
   x.beginPath(); x.arc(140,1150,200,0,7); x.fill();
-  x.globalAlpha=1;
-  x.textAlign='center';
+  x.globalAlpha=1; x.textAlign='center';
   x.fillStyle='#f5b301'; x.font='bold 40px sans-serif';
   x.fillText('PARVEZ DIGITAL SERVICE',W/2,110);
-  x.font='200px serif'; x.fillText(sel.e,W/2,400);
-  x.fillStyle='#ffffff'; x.font='bold 84px sans-serif';
-  var y=wrap(x,sel.n,W/2,600,920,100);
+  var title=(catKey==='political' && customName)?customName:sel.n;
+  var y;
+  if(pdUserImg){
+    var pw=960,ph=500,px=60,py=150,pr=30;
+    x.save(); x.beginPath();
+    x.moveTo(px+pr,py);
+    x.arcTo(px+pw,py,px+pw,py+ph,pr); x.arcTo(px+pw,py+ph,px,py+ph,pr);
+    x.arcTo(px,py+ph,px,py,pr); x.arcTo(px,py,px+pw,py,pr);
+    x.closePath(); x.clip();
+    var ir=pdUserImg.width/pdUserImg.height, rr=pw/ph, sw,sh,sx,sy;
+    if(ir>rr){sh=pdUserImg.height;sw=sh*rr;sx=(pdUserImg.width-sw)/2;sy=0;}
+    else{sw=pdUserImg.width;sh=sw/rr;sx=0;sy=(pdUserImg.height-sh)/2;}
+    x.drawImage(pdUserImg,sx,sy,sw,sh,px,py,pw,ph);
+    x.restore();
+    x.strokeStyle='#f5b301'; x.lineWidth=8; x.beginPath();
+    x.moveTo(px+pr,py);
+    x.arcTo(px+pw,py,px+pw,py+ph,pr); x.arcTo(px+pw,py+ph,px,py+ph,pr);
+    x.arcTo(px,py+ph,px,py,pr); x.arcTo(px,py,px+pw,py,pr);
+    x.closePath(); x.stroke();
+    x.font='110px serif'; x.fillText(sel.e,W/2,770);
+    x.fillStyle='#ffffff'; x.font='bold 76px sans-serif';
+    y=wrap(x,title,W/2,860,920,92);
+  }else{
+    x.font='200px serif'; x.fillText(sel.e,W/2,400);
+    x.fillStyle='#ffffff'; x.font='bold 84px sans-serif';
+    y=wrap(x,title,W/2,600,920,100);
+  }
   x.font='46px sans-serif'; x.fillStyle='#f8f8f8';
   y=wrap(x,sel.t,W/2,y+40,920,72);
   x.fillStyle='#f5b301'; x.font='bold 42px sans-serif';
@@ -209,20 +360,59 @@ function pdDraw(){
   x.fillText('parvezdigitals.github.io',W/2,H-40);
 }
 
-function makeCard(c){
-  var d=document.createElement('div');
-  d.className='pd-card';
-  d.style.cssText="min-width:140px;scroll-snap-align:start;border-radius:12px;background:linear-gradient(135deg,"+c.g1+","+c.g2+");padding:12px;text-align:center;cursor:pointer";
-  d.innerHTML='<div style="font-size:28px">'+c.e+'</div><div style="font-weight:800;font-size:13px">'+c.n+'</div><div style="margin-top:6px;background:#000;color:#f5b301;font-weight:800;border-radius:8px;padding:4px;font-size:12px">₹2</div>';
-  d.onclick=function(){
-    sel=c;
-    document.getElementById('pd-sel-b').textContent=c.n;
-    document.querySelectorAll('.pd-card').forEach(function(o){o.style.outline='';});
-    d.style.outline='3px solid #f5b301';
-    pdDraw();
-  };
-  return d;
+function openCat(key){
+  catKey=key; customName='';
+  var cn=document.getElementById('pd-custom-name'); if(cn) cn.value='';
+  document.getElementById('pd-home').style.display='none';
+  document.getElementById('pd-studio').style.display='block';
+  var cat=CATS[key];
+  document.getElementById('pd-studio-title').textContent=cat.title;
+  document.getElementById('pd-custom-box').style.display=cat.custom?'block':'none';
+  var box=document.getElementById('pd-templates'); box.innerHTML='';
+  cat.items.forEach(function(it,i){
+    var d=document.createElement('div');
+    d.className='pd-card';
+    d.style.cssText="min-width:140px;scroll-snap-align:start;border-radius:12px;background:linear-gradient(135deg,"+it.g1+","+it.g2+");padding:12px;text-align:center;cursor:pointer";
+    d.innerHTML='<div style="font-size:28px">'+it.e+'</div><div style="font-weight:800;font-size:13px">'+it.n+'</div><div style="margin-top:6px;background:#000;color:#f5b301;font-weight:800;border-radius:8px;padding:4px;font-size:12px">₹2</div>';
+    d.onclick=function(){
+      sel=it;
+      document.getElementById('pd-sel-b').textContent=it.n;
+      box.querySelectorAll('.pd-card').forEach(function(o){o.style.outline='';});
+      d.style.outline='3px solid #f5b301';
+      pdDraw();
+    };
+    box.appendChild(d);
+    if(i===0){sel=it;document.getElementById('pd-sel-b').textContent=it.n;d.style.outline='3px solid #f5b301';}
+  });
+  pdDraw();
+  document.getElementById('pd-studio').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+document.querySelectorAll('.pd-cat').forEach(function(el){
+  el.onclick=function(){openCat(el.getAttribute('data-cat'));};
+});
+document.getElementById('pd-back').onclick=function(){
+  document.getElementById('pd-studio').style.display='none';
+  document.getElementById('pd-home').style.display='block';
+};
+document.getElementById('pd-custom-name').addEventListener('input',function(){
+  customName=this.value.trim(); pdDraw();
+});
+document.getElementById('pd-photo-input').addEventListener('change',function(){
+  var f=this.files[0]; if(!f) return;
+  var rd=new FileReader();
+  rd.onload=function(e){
+    var img=new Image();
+    img.onload=function(){pdUserImg=img;document.getElementById('pd-photo-remove').style.display='inline-block';pdDraw();};
+    img.src=e.target.result;
+  };
+  rd.readAsDataURL(f);
+});
+document.getElementById('pd-photo-remove').onclick=function(){
+  pdUserImg=null; this.style.display='none';
+  document.getElementById('pd-photo-input').value='';
+  pdDraw();
+};
 
 var today=new Date();
 var mm=String(today.getMonth()+1).padStart(2,'0'), dd=String(today.getDate()).padStart(2,'0');
@@ -232,13 +422,6 @@ if(ev){document.getElementById('pd-event-name').textContent=ev.e+" "+ev.n;docume
 else if(today.getDay()===5){document.getElementById('pd-event-name').textContent="🕌 জুম্মা মোবারক";document.getElementById('pd-event-desc').textContent="পবিত্র জুম্মার দিনের শুভেচ্ছা";}
 else{document.getElementById('pd-event-desc').textContent="আজকের স্পেশাল পোস্টার";}
 
-var ic=document.getElementById('pd-islamic-carousel');
-ISLAMIC.forEach(function(c,i){var el=makeCard(c);ic.appendChild(el);if(i===0){document.getElementById('pd-sel-b').textContent=c.n;el.style.outline='3px solid #25D366';}});
-var car=document.getElementById('pd-carousel');
-CARDS.forEach(function(c){car.appendChild(makeCard(c));});
-pdDraw();
-
-var locked=true;
 document.getElementById('pd-wrap').addEventListener('contextmenu',function(e){if(locked)e.preventDefault();});
 document.getElementById('pd-pay-btn').onclick=function(){document.getElementById('pd-pay-box').style.display='block';this.style.display='none';};
 document.getElementById('pd-unlock-btn').onclick=function(){
@@ -250,51 +433,43 @@ document.getElementById('pd-unlock-btn').onclick=function(){
 document.getElementById('pd-dl-btn').onclick=function(){
   pdDraw();
   var c=document.getElementById('pd-canvas');
-  var a=document.createElement('a');
-  a.download='parvez-poster-'+Date.now()+'.png';
-  a.href=c.toDataURL('image/png');
-  document.body.appendChild(a); a.click(); a.remove();
+  function openFull(url){
+    var w=window.open(url,'_blank');
+    if(!w){
+      var a=document.createElement('a');
+      a.href=url; a.download='parvez-poster-'+Date.now()+'.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+  }
+  if(c.toBlob){
+    c.toBlob(function(b){
+      if(!b){alert('আবার চেষ্টা করো');return;}
+      openFull(URL.createObjectURL(b));
+    },'image/png');
+  }else{
+    openFull(c.toDataURL('image/png'));
+  }
 };
 document.getElementById('pd-wa-btn').onclick=function(){
   pdDraw();
   var c=document.getElementById('pd-canvas');
-  var txt=sel.e+' '+sel.n+'\n'+sel.t+'\n— PARVEZ DIGITAL SERVICE';
+  var title=(catKey==='political' && customName)?customName:sel.n;
+  var txt=sel.e+' '+title+'\n'+sel.t+'\n— PARVEZ DIGITAL SERVICE';
   function waText(){location.href='https://wa.me/?text='+encodeURIComponent(txt);}
   try{
     c.toBlob(function(b){
       if(!b){waText();return;}
       var f=new File([b],'parvez-poster.png',{type:'image/png'});
       if(navigator.canShare && navigator.canShare({files:[f]})){
-        navigator.share({files:[f],title:sel.n,text:sel.t}).catch(function(){});
+        navigator.share({files:[f],title:title,text:sel.t}).catch(function(){});
       }else{waText();}
     });
   }catch(e){waText();}
 };
 })();
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
-</style>
+
+<div id="sideMenu"><div style="color:#f59e0b;font-weight:900;font-size:12px;padding:10px 4px;letter-spacing:0.5px">📋 MAIN MENU</div>
 <div class="g" style="border-color:#3b82f6"><div class="gh" style="background:linear-gradient(90deg,#3b82f6,#06b6d4);color:#fff" onclick="tg('a')"><span>🅰️ Aadhaar</span><span>▼</span></div><div id="a" class="gl"><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official - myaadhaar.uidai.gov.in</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/check-aadhaar-validity')">✅ Check Validity - Official</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/verify-email-mobile')">📧 Verify Email/Mobile - Official</div><div class="i" onclick="go('https://uidai.gov.in/')">🏛️ UIDAI Official - uidai.gov.in</div></div></div>
 <div class="g" style="border-color:#f59e0b"><div class="gh" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000" onclick="tg('pvc')"><span>🪪 Auto PVC</span><span>▼</span></div><div id="pvc" class="gl"><div class="i" onclick="openPVC()">🪪 PVC Maker - Auto Crop - Parvez Tool</div><div class="i" onclick="openPhotoPrint()">📸 Easy Photo Print - All Sizes</div><div class="i" onclick="openPanSize()">🖼️ PAN Photo & Sign Resizer</div><div class="i" onclick="openDocTools()">🧰 Document Tools - All in One</div></div></div><a href="document-tools.html" style="display:block;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:900;font-size:15px;padding:14px 16px;border-radius:14px;text-decoration:none;margin:8px 0">🛠️ Document Tools - JPG to PDF, Compress, Merge - Free</a>
 <div class="g" style="border-color:#ef4444"><div class="gh" style="background:linear-gradient(90deg,#ef4444,#f97316);color:#fff" onclick="tg('ay')"><span>🏥 Ayushman</span><span>▼</span></div><div id="ay" class="gl"><div class="i" onclick="go('https://beneficiary.nha.gov.in/')">🏥 Ayushman Bharat - Beneficiary Portal</div><div class="i" onclick="go('https://bis.pmjay.gov.in/')">🏥 BIS - PMJAY - Official</div></div></div>
@@ -328,7 +503,7 @@ document.getElementById('pd-wa-btn').onclick=function(){
 <div class="i" onclick="go('https://www.federalbank.co.in/')">🏦 Federal Bank - e-KYC - Official</div>
 </div></div>
 <div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#fb923c);color:#fff" onclick="tg('bd')"><span>📜 Birth and Death</span><span>▼</span></div><div id="bd" class="gl"><div class="i" onclick="go('https://janma-mrityutathya.wb.gov.in/')">📜 Birth Certificate - Janma Mrityu Tathya - Official</div><div class="i" onclick="go('https://janma-mrityutathya.wb.gov.in/')">💀 Death Certificate - Janma Mrityu Tathya - Official</div><div class="i" onclick="go('https://janma-mrityutathya.wb.gov.in/')">📄 E-District - Birth/Death - Official</div></div></div>
-<div class="g" style="border-color:#a855f7"><div class="gh" style="background:linear-gradient(90deg,#a855f7,#c084fc);color:#fff" onclick="tg('c')"><span>📜 Govt Certificates</span><span>▼</span></div><div id="c" class="gl"><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📜 Caste Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">💰 Income Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">🏠 Residential Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📄 All Certificates - E-District</div></div></div> 
+<div class="g" style="border-color:#a855f7"><div class="gh" style="background:linear-gradient(90deg,#a855f7,#c084fc);color:#fff" onclick="tg('c')"><span>📜 Govt Certificates</span><span>▼</span></div><div id="c" class="gl"><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📜 Caste Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">💰 Income Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">🏠 Residential Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📄 All Certificates - E-District</div></div></div>
 <div class="g" style="border-color:#16a34a"><div class="gh" style="background:linear-gradient(90deg,#16a34a,#4ade80);color:#fff" onclick="tg('kb')"><span>🚜 Krishak Bandhu</span><span>▼</span></div><div id="kb" class="gl">
 <div class="i" onclick="go('https://krishakbandhu.wb.gov.in/')">🚜 Krishak Bandhu Official - krishakbandhu.wb.gov.in - Official</div>
 <div class="i" onclick="go('https://krishakbandhu.wb.gov.in/farmer_search')">🔍 Farmer Status Check - Voter ID - Official</div>
@@ -364,28 +539,6 @@ document.getElementById('pd-wa-btn').onclick=function(){
 <div onclick="window.open('https://yubasathi.wb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Yuva Sathi - Yuvashakti - Official</div></div>
 </div>
 <!-- ============ GOVT SERVICES END ============ -->
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
 <div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#ea580c);color:#fff" onclick="tg('pan')"><span>🅿️ PAN Card - UTI Retailer</span><span>▼</span></div><div id="pan" class="gl"><div style="background:#0f172a;color:#22c55e;padding:8px 12px;font-weight:900;font-size:10px;border-radius:6px">✅ Retailer - No Admin - Direct Work</div><div class="i" onclick="go('https://www.pan.utiitsl.com/')">🆕 New PAN Apply - Retailer - Direct</div><div class="i" onclick="go('https://www.myutiitsl.com/CUP-Admin/')">🎟️ CUP Login - Retailer PSA ID</div><div class="i" onclick="go('https://www.trackpan.utiitsl.com/PANONLINE/#forward')">🔍 Track Status - No Login</div><div class="i" onclick="go('https://www.incometax.gov.in/iec/foportal/')">⚡ Instant e-PAN - Free - No ID Needed</div></div></div>
 <div class="g" style="border-color:#22c55e"><div class="gh" style="background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff" onclick="tg('pt')"><span>🏘️ Panchayat Tax</span><span>▼</span></div><div id="pt" class="gl"><div class="i" onclick="go('https://prdtax.wb.gov.in/')">🏘️ Panchayat Tax - prdtax.wb.gov.in - Official</div></div></div>
 <div class="g" style="border-color:#84cc16"><div class="gh" style="background:linear-gradient(90deg,#84cc16,#a3e635);color:#000" onclick="tg('pm')"><span>🌾 PM Kisan</span><span>▼</span></div><div id="pm" class="gl"><div class="i" onclick="go('https://pmkisan.gov.in/')">🌾 PM Kisan - pmkisan.gov.in - Official</div></div></div>
@@ -547,5 +700,5 @@ document.getElementById('dtOcrGo').addEventListener('click',function(){if(!windo
   tryLoad(GUESS,function(){init(true);},discover);
 })();
 </script>
-</body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
