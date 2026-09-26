@@ -110,7 +110,8 @@ select.dtInp{width:auto;padding:8px}
 <div id="welcomePopup"><div class="welcomeBox"><div style="font-size:36px;margin-bottom:12px">👋</div><h2>Welcome Friend!</h2><p>PARVEZ DIGITAL SERVICE</p><div class="sub">55+ Government Services • West Bengal<br>Trusted • Professional • Secure • Official</div><button class="welcomeBtn" onclick="closeWelcome()">✅ Continue to Portal</button></div></div>
 <div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-<!-- PARVEZ DAILY POSTER v16 - AJKER BIRTHDAY + USER NAM/CHOBI -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- PARVEZ DAILY POSTER v18 - AJKER BIRTHDAY + USER NAM/CHOBI -->
 <div id="pd-home" style="margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
   <div style="font-size:15px;color:#f5b301;font-weight:800">🎉 ডেইলি পোস্টার স্টুডিও</div>
   <div style="font-size:12px;margin:4px 0 10px;opacity:.85;line-height:1.5">আজ যার জন্মদিন/বিশেষ দিন, তার নামের পোস্টার বানাও — <b>নিজের ছবি ও নাম সহ</b>, মাত্র ₹2-তে।</div>
@@ -145,9 +146,19 @@ select.dtInp{width:auto;padding:8px}
   <div style="margin-top:8px;font-size:13px">সিলেক্ট: <b id="pd-sel-b">—</b></div>
   <button id="pd-pay-btn" style="margin-top:8px;width:100%;background:#f5b301;color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer">₹2 দিয়ে ডাউনলোড করো</button>
   <div id="pd-pay-box" style="display:none;margin-top:10px;text-align:center">
-    <div style="font-size:13px">UPI ID: <b>8609754876@ptsbi</b> <button onclick="navigator.clipboard.writeText('8609754876@ptsbi')" style="padding:4px 10px;border-radius:6px;border:0;background:#334155;color:#fff;cursor:pointer">কপি</button></div>
-    <a href="upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock" style="display:inline-block;margin:10px;background:#fff;color:#000;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">UPI দিয়ে ₹2 পে করো</a><br>
-    <button id="pd-unlock-btn" style="background:#22c55e;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer">পেমেন্ট হয়ে গেছে, আনলক করো</button>
+    <button id="pd-auto-pay-btn" style="background:#fff;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer">⚡ ₹2 পে করো</button>
+    <div style="font-size:11px;opacity:.8;margin-top:6px">পেমেন্ট সফল হলেই অটো আনলক হয়ে যাবে</div>
+    <div style="margin-top:8px"><a id="pd-manual-toggle" style="font-size:12px;color:#f5b301;cursor:pointer;text-decoration:underline">অন্য উপায়ে পে করতে চাও?</a></div>
+    <div id="pd-manual-box" style="display:none;margin-top:10px;border-top:1px solid #334155;padding-top:10px">
+      <div style="font-size:13px">UPI ID: <b>8609754876@ptsbi</b> <button onclick="navigator.clipboard.writeText('8609754876@ptsbi')" style="padding:4px 10px;border-radius:6px;border:0;background:#334155;color:#fff;cursor:pointer">কপি</button></div>
+      <a href="upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock" style="display:inline-block;margin:10px;background:#fff;color:#000;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">UPI app দিয়ে সরাসরি পে করো</a><br>
+      <a href="https://wa.me/918609754876?text=%E0%A6%AA%E0%A7%8B%E0%A6%B8%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%B0%E0%A7%87%E0%A6%B0%20%E0%A7%A82%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A7%87%E0%A6%9B%E0%A6%BF%20%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%A8%E0%A6%B6%E0%A6%9F%20%E0%A6%A6%E0%A6%BF%E0%A6%B2%E0%A6%BE%E0%A6%AE" style="display:inline-block;background:#25D366;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">📩 WhatsApp-এ স্ক্রিনশট পাঠাও</a>
+      <div style="margin-top:10px;display:flex;gap:8px;justify-content:center">
+        <input id="pd-code-input" placeholder="🔑 আনলক কোড লিখো" style="background:#1e293b;color:#fff;border:2px solid #f5b301;border-radius:10px;padding:10px;font-size:14px;font-weight:700;width:55%">
+        <button id="pd-unlock-btn" style="background:#22c55e;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer">আনলক</button>
+      </div>
+      <div id="pd-code-msg" style="font-size:12px;color:#f87171;font-weight:700;margin-top:6px;min-height:18px"></div>
+    </div>
   </div>
   <div id="pd-action-box" style="display:none;margin-top:10px;text-align:center">
     <button id="pd-dl-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#f5b301;color:#000;font-weight:800;cursor:pointer">⬇ HD ডাউনলোড</button>
@@ -651,11 +662,38 @@ document.getElementById('pd-logo-remove').onclick=function(){
 
 document.getElementById('pd-studio').addEventListener('contextmenu',function(e){if(locked)e.preventDefault();});
 document.getElementById('pd-pay-btn').onclick=function(){document.getElementById('pd-pay-box').style.display='block';this.style.display='none';};
-document.getElementById('pd-unlock-btn').onclick=function(){
+var RAZORPAY_KEY='';
+var PD_CODE='PD786';
+function pdUnlock(msg){
   locked=false;pdDraw();
   document.getElementById('pd-pay-box').style.display='none';
   document.getElementById('pd-action-box').style.display='block';
-  alert('আনলক হয়ে গেছে! এখন HD ডাউনলোড / WhatsApp শেয়ার করতে পারবে।');
+  var cm=document.getElementById('pd-code-msg');if(cm)cm.textContent='';
+  alert(msg+' এখন HD ডাউনলোড / WhatsApp শেয়ার করতে পারবে।');
+}
+document.getElementById('pd-auto-pay-btn').onclick=function(){
+  if(RAZORPAY_KEY&&typeof Razorpay!=='undefined'){
+    var rzp=new Razorpay({
+      key:RAZORPAY_KEY,amount:200,currency:'INR',
+      name:'PARVEZ DIGITAL SERVICE',description:'Poster Unlock (HD Download)',
+      theme:{color:'#f5b301'},
+      handler:function(resp){pdUnlock('পেমেন্ট সফল! ✅');},
+      modal:{ondismiss:function(){}}
+    });
+    rzp.open();
+  }else{
+    window.location.href='upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock';
+    document.getElementById('pd-manual-box').style.display='block';
+  }
+};
+document.getElementById('pd-manual-toggle').onclick=function(){
+  var mb=document.getElementById('pd-manual-box');
+  mb.style.display=(mb.style.display==='block')?'none':'block';
+};
+document.getElementById('pd-unlock-btn').onclick=function(){
+  var v=document.getElementById('pd-code-input').value.trim();
+  if(v===PD_CODE){pdUnlock('আনলক হয়ে গেছে!');}
+  else{document.getElementById('pd-code-msg').textContent='❌ ভুল কোড! পেমেন্ট করে WhatsApp-এ সঠিক কোড নাও।';}
 };
 document.getElementById('pd-dl-btn').onclick=function(){
   pdDraw();
