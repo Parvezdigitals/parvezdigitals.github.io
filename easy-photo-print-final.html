@@ -135,18 +135,18 @@ function removeBg(imgEl){
      var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
      var mc=document.createElement('canvas');mc.width=w;mc.height=h;
      var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
-     var er=Math.max(2,Math.round(w/300));
-     mctx.globalCompositeOperation='destination-in';
-     mctx.drawImage(mc,er,0);mctx.drawImage(mc,-er,0);mctx.drawImage(mc,0,er);mctx.drawImage(mc,0,-er);
-     mctx.globalCompositeOperation='source-over';
-     mctx.filter='blur(2px)';mctx.drawImage(mc,0,0);mctx.filter='none';
+     // blocky mask ke smooth koro: strong blur + soft edge (khajkata edge thakbe na, halo o katbe)
+     var bc=document.createElement('canvas');bc.width=w;bc.height=h;
+     bc.getContext('2d').drawImage(mc,0,0);
+     var br=Math.max(4,Math.round(w/120));
+     mctx.filter='blur('+br+'px)';mctx.drawImage(bc,0,0);mctx.filter='none';
      var md=mctx.getImageData(0,0,w,h).data;
      var tc=document.createElement('canvas');tc.width=w;tc.height=h;
      var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
      var id=tctx.getImageData(0,0,w,h),dd=id.data;
      for(var i=0;i<md.length/4;i++){
       var a=md[i*4]/255;
-      a=a<0.35?0:(a>0.65?1:(a-0.35)/0.3);
+      var tt=(a-0.32)/0.40;tt=tt<0?0:(tt>1?1:tt);a=tt*tt*(3-2*tt);
       var o=i*4;
       if(a>0.02&&a<0.98){
        var r=dd[o],g=dd[o+1],b=dd[o+2],ex=g-Math.max(r,b);
@@ -161,6 +161,32 @@ function removeBg(imgEl){
    seg.send({image:imgEl}).catch(function(){if(!settled){settled=true;clearTimeout(timer);reject(new Error('send'))}});
   }catch(e){if(!settled){settled=true;clearTimeout(timer);reject(e)}}
  });
+}
+function beautyEnhance(ctx,w,h){
+ // soft blurred copy (fast downscale-upscale trick)
+ var sw=Math.max(1,Math.round(w/10)),sh=Math.max(1,Math.round(h/10));
+ var sc=document.createElement('canvas');sc.width=sw;sc.height=sh;
+ sc.getContext('2d').drawImage(ctx.canvas,0,0,sw,sh);
+ var bd=document.createElement('canvas');bd.width=w;bd.height=h;
+ var bx=bd.getContext('2d');bx.imageSmoothingEnabled=true;bx.imageSmoothingQuality='high';
+ bx.drawImage(sc,0,0,w,h);
+ var bdata=bx.getImageData(0,0,w,h).data;
+ var id=ctx.getImageData(0,0,w,h),d=id.data;
+ for(var i=0;i<d.length;i+=4){
+  var r=d[i],g=d[i+1],b=d[i+2];
+  // skin tone -> smooth + slight glow lift (eyes/hair untouched, stay sharp)
+  if(r>90&&g>45&&b>25&&r>g&&r>b&&(r-g)>12){
+   var m=0.62;
+   d[i]=Math.min(255,r+(bdata[i]-r)*m+5);
+   d[i+1]=Math.min(255,g+(bdata[i+1]-g)*m+5);
+   d[i+2]=Math.min(255,b+(bdata[i+2]-b)*m+3);
+  }
+  d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.06+128+2));
+  d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.06+128+2));
+  d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.06+128+2));
+ }
+ ctx.putImageData(id,0,0);
+ sharpen(ctx,w,h,0.35);
 }
 function sharpen(ctx,w,h,amount){
  var src=ctx.getImageData(0,0,w,h),s=src.data;
@@ -208,16 +234,7 @@ async function makeFinal(){
  ctx.fillStyle=keepOriginal?'#ffffff':bgColor;ctx.fillRect(0,0,outW,outH);
  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
  ctx.drawImage(fg,0,0,outW,outH);
- try{
-  var id=ctx.getImageData(0,0,outW,outH),d=id.data;
-  for(var i=0;i<d.length;i+=4){
-   d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.08+128+3));
-   d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.08+128+3));
-   d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.08+128+3));
-  }
-  ctx.putImageData(id,0,0);
-  sharpen(ctx,outW,outH,0.7);
- }catch(e){}
+ try{beautyEnhance(ctx,outW,outH);}catch(e){}
  resultCanvas.style.display='block';previewCanvas.style.display='none';
  document.getElementById('downloadBtn').style.display='block';
  document.getElementById('printBtn').style.display='block';
