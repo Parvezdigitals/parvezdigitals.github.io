@@ -74,15 +74,15 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
 <p id="status"></p>
 <div id="previewWrap"><canvas id="previewCanvas" style="display:none"></canvas><canvas id="resultCanvas" style="display:none"></canvas></div>
-<p class="note">Upload &rarr; Straighten &rarr; Face detect &rarr; AI 2x upscale (one-time download, then cached) &rarr; AI background remove &rarr; Studio framing &rarr; Radiant skin enhance &rarr; Download. No API key needed.</p>
+<p class="note">Upload &rarr; Straighten &rarr; Face detect &rarr; AI 2x upscale (one-time download, then cached) &rarr; AI background remove &rarr; Smart framing (head never cut) &rarr; Natural enhance &rarr; Download. No API key needed.</p>
 <div class="row"><button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button><button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button></div>
 </div>
 <div class="card">
 <h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + head-and-shoulders studio framing.<br>4. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>5. AI portrait matting removes background with clean edges. White / Lite Blue / Sky background.<br>6. Radiant Enhance: bright glowing skin + clarity, light and natural.<br>7. Download single photo or 4x6 print sheet.</p>
+<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove with clean edges.<br>4. Smart framing measures the person and frames head-and-shoulders — head is never cut.<br>5. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>6. Natural enhance: clean skin + clarity, original quality preserved.<br>7. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v7</div>
+<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v8</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
@@ -174,6 +174,26 @@ function keepLargestComponent(d,w,h){
  var best=0;
  for(var c=1;c<compSize.length;c++) if(compSize[c]>compSize[best]) best=c;
  for(var i=0;i<n;i++) if(label[i]!==best) d[i*4+3]=0;
+}
+// measure actual person bounds from alpha channel (head never cut)
+function personBBox(imgEl){
+ try{
+  var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
+  var sw=200,sh=Math.max(1,Math.round(sw*h/w));
+  var c=document.createElement('canvas');c.width=sw;c.height=sh;
+  c.getContext('2d').drawImage(imgEl,0,0,sw,sh);
+  var d=c.getContext('2d').getImageData(0,0,sw,sh).data;
+  var top=sh,bot=-1,left=sw,right=-1;
+  for(var y=0;y<sh;y++)for(var x=0;x<sw;x++){
+   if(d[(y*sw+x)*4+3]>12){
+    if(y<top)top=y;if(y>bot)bot=y;
+    if(x<left)left=x;if(x>right)right=x;
+   }
+  }
+  if(bot<0||(bot-top)<sh*0.15) return null;
+  var k=w/sw;
+  return {top:top*k,bottom:(bot+1)*k,left:left*k,right:(right+1)*k};
+ }catch(e){return null}
 }
 function fgFromAlpha(imgEl,alphaFn){
  var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
@@ -291,7 +311,7 @@ function sharpen(ctx,w,h,amount){
  for(var y=0;y<h;y++){for(var c=0;c<4;c++){d[(y*w)*4+c]=s[(y*w)*4+c];d[(y*w+w-1)*4+c]=s[(y*w+w-1)*4+c];}}
  ctx.putImageData(out,0,0);
 }
-// Radiant skin enhance: bright glowing skin like reference (light, natural)
+// Natural enhance: gentle clarity + light skin cleanup (original quality preserved)
 function beautyEnhance(ctx,w,h){
  var sw=Math.max(1,Math.round(w/10)),sh=Math.max(1,Math.round(h/10));
  var sc=document.createElement('canvas');sc.width=sw;sc.height=sh;
@@ -300,28 +320,26 @@ function beautyEnhance(ctx,w,h){
  var bx=bd.getContext('2d');bx.imageSmoothingEnabled=true;bx.imageSmoothingQuality='high';
  bx.drawImage(sc,0,0,w,h);
  var bdata=bx.getImageData(0,0,w,h).data;
- // pass 1: clarity + gentle sharpen
  var id=ctx.getImageData(0,0,w,h),d=id.data;
  for(var i=0;i<d.length;i+=4){
-  d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.06+128+4));
-  d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.06+128+4));
-  d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.06+128+4));
+  d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.04+128+2));
+  d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.04+128+2));
+  d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.04+128+2));
  }
  ctx.putImageData(id,0,0);
  sharpen(ctx,w,h,0.25);
- // pass 2: radiant skin - smooth + adaptive brightness lift (shadows lift more = ujjal glow)
  var id2=ctx.getImageData(0,0,w,h),e=id2.data;
  for(var j=0;j<e.length;j+=4){
   var r=e[j],g=e[j+1],b=e[j+2];
   if(r>75&&g>40&&b>20&&r>=g&&r>=b&&(r-g)>6){
-   var m=0.8;
+   var m=0.6;
    var bright=(r+g+b)/3;
-   var lift=Math.round((1-bright/255)*22)+8;
+   var lift=Math.round((1-bright/255)*12)+4;
    e[j]=Math.min(255,r+(bdata[j]-r)*m+lift);
    e[j+1]=Math.min(255,g+(bdata[j+1]-g)*m+lift);
-   e[j+2]=Math.min(255,b+(bdata[j+2]-b)*m+Math.round(lift*0.9));
+   e[j+2]=Math.min(255,b+(bdata[j+2]-b)*m+lift);
   }else{
-   var n=0.2;
+   var n=0.15;
    e[j]=r+(bdata[j]-r)*n;
    e[j+1]=g+(bdata[j+1]-g)*n;
    e[j+2]=b+(bdata[j+2]-b)*n;
@@ -337,10 +355,11 @@ async function makeFinal(){
  try{face=await detectFace(srcImg);}catch(e){face=null;}
  var cx=w/2,cy=h*0.36,fw=w*0.30;
  if(face){cx=face.x*w;cy=face.y*h;fw=face.w*w;}
- var cw=fw*2.2,ch=cw/ratio;
+ // generous crop just to isolate the person (final framing comes from measured person bounds)
+ var cw=fw*2.6,ch=cw/ratio;
  if(ch>h*0.96){ch=h*0.96;cw=ch*ratio;}
  if(cw>w*0.96){cw=w*0.96;ch=cw/ratio;}
- var bx=cx-cw/2,by=cy-ch*0.37;
+ var bx=cx-cw/2,by=cy-ch*0.42;
  if(bx<0)bx=0;if(by<0)by=0;if(bx+cw>w)bx=w-cw;if(by+ch>h)by=h-ch;
  var crop=document.createElement('canvas');crop.width=Math.round(cw);crop.height=Math.round(ch);
  crop.getContext('2d').drawImage(srcImg,bx,by,cw,ch,0,0,crop.width,crop.height);
@@ -357,13 +376,28 @@ async function makeFinal(){
   try{fg=await removeBg(cropImg);}
   catch(e){bgOk=false;fg=cropImg;}
  }
- statusEl.textContent='Enhancing quality...';
+ statusEl.textContent='Framing photo...';
  var outW=900,outH=Math.round(900/ratio);
  resultCanvas.width=outW;resultCanvas.height=outH;
  var ctx=resultCanvas.getContext('2d');
  ctx.fillStyle=keepOriginal?'#ffffff':bgColor;ctx.fillRect(0,0,outW,outH);
  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
- ctx.drawImage(fg,0,0,outW,outH);
+ // smart framing: measure the person, head top at 7% margin, person 78% of frame height
+ var framed=false;
+ if(!keepOriginal&&bgOk){
+  var fb=personBBox(fg);
+  if(fb){
+   var pH=fb.bottom-fb.top,pW=fb.right-fb.left,pCx=(fb.left+fb.right)/2;
+   var sc=(outH*0.78)/pH;
+   if(pW*sc>outW*0.95) sc=(outW*0.95)/pW;
+   var dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
+   var dx=outW/2-pCx*sc,dy=outH*0.07-fb.top*sc;
+   ctx.drawImage(fg,dx,dy,dw,dh);
+   framed=true;
+  }
+ }
+ if(!framed) ctx.drawImage(fg,0,0,outW,outH);
+ statusEl.textContent='Enhancing quality...';
  try{beautyEnhance(ctx,outW,outH);}catch(e){}
  resultCanvas.style.display='block';previewCanvas.style.display='none';
  document.getElementById('downloadBtn').style.display='block';
