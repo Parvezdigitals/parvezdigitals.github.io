@@ -180,28 +180,32 @@ function beautyEnhance(ctx,w,h){
  var bx=bd.getContext('2d');bx.imageSmoothingEnabled=true;bx.imageSmoothingQuality='high';
  bx.drawImage(sc,0,0,w,h);
  var bdata=bx.getImageData(0,0,w,h).data;
+ // pass 1: clarity + gentle sharpen (detail for eyes/hair)
  var id=ctx.getImageData(0,0,w,h),d=id.data;
  for(var i=0;i<d.length;i+=4){
-  var r=d[i],g=d[i+1],b=d[i+2];
-  // skin tone -> strong smooth + glow (face norom ujjwal)
-  if(r>90&&g>45&&b>25&&r>g&&r>b&&(r-g)>12){
-   var m=0.62;
-   d[i]=Math.min(255,r+(bdata[i]-r)*m+5);
-   d[i+1]=Math.min(255,g+(bdata[i+1]-g)*m+5);
-   d[i+2]=Math.min(255,b+(bdata[i+2]-b)*m+3);
-  }else{
-   // hair/clothes: light denoise only (crunchy bhab kombbe, detail thakbe)
-   var n=0.18;
-   d[i]=r+(bdata[i]-r)*n;
-   d[i+1]=g+(bdata[i+1]-g)*n;
-   d[i+2]=b+(bdata[i+2]-b)*n;
-  }
   d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.06+128+2));
   d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.06+128+2));
   d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.06+128+2));
  }
  ctx.putImageData(id,0,0);
  sharpen(ctx,w,h,0.25);
+ // pass 2: strong skin smoothing AFTER sharpen (reference-like smooth skin texture)
+ var id2=ctx.getImageData(0,0,w,h),e=id2.data;
+ for(var j=0;j<e.length;j+=4){
+  var r=e[j],g=e[j+1],b=e[j+2];
+  if(r>90&&g>45&&b>25&&r>g&&r>b&&(r-g)>8){
+   var m=0.8;
+   e[j]=Math.min(255,r+(bdata[j]-r)*m+5);
+   e[j+1]=Math.min(255,g+(bdata[j+1]-g)*m+5);
+   e[j+2]=Math.min(255,b+(bdata[j+2]-b)*m+3);
+  }else{
+   var n=0.15;
+   e[j]=r+(bdata[j]-r)*n;
+   e[j+1]=g+(bdata[j+1]-g)*n;
+   e[j+2]=b+(bdata[j+2]-b)*n;
+  }
+ }
+ ctx.putImageData(id2,0,0);
 }
 function sharpen(ctx,w,h,amount){
  var src=ctx.getImageData(0,0,w,h),s=src.data;
