@@ -135,10 +135,15 @@ function removeBg(imgEl){
      var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
      var mc=document.createElement('canvas');mc.width=w;mc.height=h;
      var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
-     // blocky mask ke smooth koro: strong blur + soft edge (khajkata edge thakbe na, halo o katbe)
+     // 1) mask ke bhetor dike sankuchito koro - halo fringe katbe
+     var er=Math.max(4,Math.round(w/80));
+     mctx.globalCompositeOperation='destination-in';
+     mctx.drawImage(mc,er,0);mctx.drawImage(mc,-er,0);mctx.drawImage(mc,0,er);mctx.drawImage(mc,0,-er);
+     mctx.globalCompositeOperation='source-over';
+     // 2) dhape dhape edge soft koro (khajkata bhab thakbe na)
      var bc=document.createElement('canvas');bc.width=w;bc.height=h;
      bc.getContext('2d').drawImage(mc,0,0);
-     var br=Math.max(4,Math.round(w/120));
+     var br=Math.max(3,Math.round(w/200));
      mctx.filter='blur('+br+'px)';mctx.drawImage(bc,0,0);mctx.filter='none';
      var md=mctx.getImageData(0,0,w,h).data;
      var tc=document.createElement('canvas');tc.width=w;tc.height=h;
@@ -150,7 +155,7 @@ function removeBg(imgEl){
       var o=i*4;
       if(a>0.02&&a<0.98){
        var r=dd[o],g=dd[o+1],b=dd[o+2],ex=g-Math.max(r,b);
-       if(ex>0)dd[o+1]=Math.max(0,g-ex*0.85);
+       if(ex>0)dd[o+1]=Math.max(0,g-ex*0.95);
       }
       dd[o+3]=Math.round(a*255);
      }
