@@ -82,7 +82,7 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove with clean edges.<br>4. Smart framing measures the person and frames head-and-shoulders — head is never cut.<br>5. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>6. Natural enhance: clean skin + clarity, original quality preserved.<br>7. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v8</div>
+<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v9</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
@@ -185,14 +185,15 @@ function personBBox(imgEl){
   var d=c.getContext('2d').getImageData(0,0,sw,sh).data;
   var top=sh,bot=-1,left=sw,right=-1;
   for(var y=0;y<sh;y++)for(var x=0;x<sw;x++){
-   if(d[(y*sw+x)*4+3]>12){
+   if(d[(y*sw+x)*4+3]>4){
     if(y<top)top=y;if(y>bot)bot=y;
     if(x<left)left=x;if(x>right)right=x;
    }
   }
-  if(bot<0||(bot-top)<sh*0.15) return null;
+  if(bot<0||(bot-top)<sh*0.12) return null;
   var k=w/sw;
-  return {top:top*k,bottom:(bot+1)*k,left:left*k,right:(right+1)*k};
+  var eTop=Math.max(0,top*k-(bot-top)*k*0.15);
+  return {top:eTop,bottom:(bot+1)*k,left:left*k,right:(right+1)*k};
  }catch(e){return null}
 }
 function fgFromAlpha(imgEl,alphaFn){
@@ -388,10 +389,10 @@ async function makeFinal(){
   var fb=personBBox(fg);
   if(fb){
    var pH=fb.bottom-fb.top,pW=fb.right-fb.left,pCx=(fb.left+fb.right)/2;
-   var sc=(outH*0.78)/pH;
-   if(pW*sc>outW*0.95) sc=(outW*0.95)/pW;
+   var sc=(outH*0.74)/pH;
+   if(pW*sc>outW*0.92) sc=(outW*0.92)/pW;
    var dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
-   var dx=outW/2-pCx*sc,dy=outH*0.07-fb.top*sc;
+   var dx=outW/2-pCx*sc,dy=outH*0.10-fb.top*sc;
    ctx.drawImage(fg,dx,dy,dw,dh);
    framed=true;
   }
