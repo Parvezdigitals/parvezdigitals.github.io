@@ -82,7 +82,7 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove with clean edges.<br>4. Smart framing measures the person and frames head-and-shoulders — head is never cut.<br>5. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>6. Natural enhance: clean skin + clarity, original quality preserved.<br>7. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v10</div>
+<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v11</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
@@ -360,8 +360,13 @@ async function makeFinal(){
  var cw=fw*2.6,ch=cw/ratio;
  if(ch>h*0.96){ch=h*0.96;cw=ch*ratio;}
  if(cw>w*0.96){cw=w*0.96;ch=cw/ratio;}
- var bx=cx-cw/2,by=cy-ch*0.42;
- if(bx<0)bx=0;if(by<0)by=0;if(bx+cw>w)bx=w-cw;if(by+ch>h)by=h-ch;
+ var fhh=face?face.h*h:fw*1.2;
+ var headTopNeed=cy-fhh*0.95;
+ var by=cy-ch*0.42;
+ if(by>headTopNeed-ch*0.02) by=headTopNeed-ch*0.02;
+ var bx=cx-cw/2;
+ if(bx<0)bx=0;if(by<0)by=0;if(bx+cw>w)bx=w-cw;
+ if(by+ch>h){ch=h-by;cw=ch*ratio;bx=cx-cw/2;if(bx<0)bx=0;if(bx+cw>w)bx=w-cw;}
  var crop=document.createElement('canvas');crop.width=Math.round(cw);crop.height=Math.round(ch);
  crop.getContext('2d').drawImage(srcImg,bx,by,cw,ch,0,0,crop.width,crop.height);
  var cropImg=new Image();cropImg.src=crop.toDataURL('image/png');
