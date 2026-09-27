@@ -74,7 +74,7 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
 <p id="status"></p>
 <div id="previewWrap"><canvas id="previewCanvas" style="display:none"></canvas><canvas id="resultCanvas" style="display:none"></canvas></div>
-<p class="note">Upload &rarr; Straighten if tilted &rarr; Auto face detect &rarr; Background remove &rarr; Studio-style passport framing &rarr; HD Enhance &rarr; Download. No API key needed.</p>
+<p class="note">Upload &rarr; Straighten if tilted &rarr; Auto face detect &rarr; AI background remove (one-time model download ~25MB, then cached) &rarr; Studio-style passport framing &rarr; HD Enhance &rarr; Download. No API key needed.</p>
 <div class="row"><button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button><button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button></div>
 </div>
 <div class="card">
@@ -85,6 +85,10 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
+<script type="module">
+import * as __tf from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
+window.__tf=__tf; window.__tfOk=true;
+</script>
 <script>
 var srcImg=null,bgColor="#ffffff",keepOriginal=false,baseImg=null,rotDeg=0;
 var upload=document.getElementById('upload'),previewCanvas=document.getElementById('previewCanvas'),resultCanvas=document.getElementById('resultCanvas'),processBtn=document.getElementById('processBtn'),statusEl=document.getElementById('status');
@@ -121,7 +125,7 @@ function detectFace(imgEl){
   }catch(e){fin(null)}
  });
 }
-function removeBg(imgEl){
+function removeBgMediapipe(imgEl){
  return new Promise(function(resolve,reject){
   if(typeof SelfieSegmentation==="undefined"){reject(new Error('network'));return}
   var settled=false;
@@ -136,14 +140,14 @@ function removeBg(imgEl){
      var mc=document.createElement('canvas');mc.width=w;mc.height=h;
      var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
      // 1) mask ke bhetor dike sankuchito koro - halo fringe katbe
-     var er=Math.max(4,Math.round(w/80));
+     var er=Math.max(4,Math.round(w/95));
      mctx.globalCompositeOperation='destination-in';
      mctx.drawImage(mc,er,0);mctx.drawImage(mc,-er,0);mctx.drawImage(mc,0,er);mctx.drawImage(mc,0,-er);
      mctx.globalCompositeOperation='source-over';
      // 2) dhape dhape edge soft koro (khajkata bhab thakbe na)
      var bc=document.createElement('canvas');bc.width=w;bc.height=h;
      bc.getContext('2d').drawImage(mc,0,0);
-     var br=Math.max(3,Math.round(w/200));
+     var br=Math.max(3,Math.round(w/160));
      mctx.filter='blur('+br+'px)';mctx.drawImage(bc,0,0);mctx.filter='none';
      var md=mctx.getImageData(0,0,w,h).data;
      var tc=document.createElement('canvas');tc.width=w;tc.height=h;
@@ -179,19 +183,25 @@ function beautyEnhance(ctx,w,h){
  var id=ctx.getImageData(0,0,w,h),d=id.data;
  for(var i=0;i<d.length;i+=4){
   var r=d[i],g=d[i+1],b=d[i+2];
-  // skin tone -> smooth + slight glow lift (eyes/hair untouched, stay sharp)
+  // skin tone -> strong smooth + glow (face norom ujjwal)
   if(r>90&&g>45&&b>25&&r>g&&r>b&&(r-g)>12){
    var m=0.62;
    d[i]=Math.min(255,r+(bdata[i]-r)*m+5);
    d[i+1]=Math.min(255,g+(bdata[i+1]-g)*m+5);
    d[i+2]=Math.min(255,b+(bdata[i+2]-b)*m+3);
+  }else{
+   // hair/clothes: light denoise only (crunchy bhab kombbe, detail thakbe)
+   var n=0.18;
+   d[i]=r+(bdata[i]-r)*n;
+   d[i+1]=g+(bdata[i+1]-g)*n;
+   d[i+2]=b+(bdata[i+2]-b)*n;
   }
   d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.06+128+2));
   d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.06+128+2));
   d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.06+128+2));
  }
  ctx.putImageData(id,0,0);
- sharpen(ctx,w,h,0.35);
+ sharpen(ctx,w,h,0.25);
 }
 function sharpen(ctx,w,h,amount){
  var src=ctx.getImageData(0,0,w,h),s=src.data;
@@ -207,6 +217,56 @@ function sharpen(ctx,w,h,amount){
  for(var x=0;x<w;x++){for(var c=0;c<4;c++){d[x*4+c]=s[x*4+c];d[((h-1)*w+x)*4+c]=s[((h-1)*w+x)*4+c];}}
  for(var y=0;y<h;y++){for(var c=0;c<4;c++){d[(y*w)*4+c]=s[(y*w)*4+c];d[(y*w+w-1)*4+c]=s[(y*w+w-1)*4+c];}}
  ctx.putImageData(out,0,0);
+}
+// MODNet portrait matting - hair-level clean edges. Falls back to MediaPipe.
+async function removeBgModnet(imgEl){
+ for(var w8=0;w8<120&&!window.__tfOk;w8++) await new Promise(function(r){setTimeout(r,250)});
+ if(!window.__tfOk) throw new Error('tflib');
+ var tf=window.__tf;
+ if(!window.__modnet){
+  var mdl=await tf.AutoModel.from_pretrained('Xenova/modnet',{dtype:'fp32',
+   progress_callback:function(p){
+    if(p&&p.progress!=null) statusEl.textContent='Downloading AI model (one-time)... '+Math.round(p.progress)+'%';
+    else statusEl.textContent='Downloading AI model (one-time)...';
+   }});
+  var prc=await tf.AutoProcessor.from_pretrained('Xenova/modnet');
+  window.__modnet={model:mdl,processor:prc};
+ }
+ var mm=window.__modnet;
+ statusEl.textContent='Removing background (AI portrait matting)...';
+ var image=await tf.RawImage.fromURL(imgEl.src);
+ var pv=await mm.processor(image);
+ var out=await Promise.race([
+  mm.model({input:pv.pixel_values}),
+  new Promise(function(_,rej){setTimeout(function(){rej(new Error('infer-timeout'))},90000)})
+ ]);
+ var mask=await tf.RawImage.fromTensor(out.output[0].mul(255).to('uint8')).resize(image.width,image.height);
+ var mcv=mask.toCanvas();
+ var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
+ var mc=document.createElement('canvas');mc.width=w;mc.height=h;
+ mc.getContext('2d').drawImage(mcv,0,0,w,h);
+ var md=mc.getContext('2d').getImageData(0,0,w,h).data;
+ var tc=document.createElement('canvas');tc.width=w;tc.height=h;
+ var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
+ var id=tctx.getImageData(0,0,w,h),dd=id.data;
+ for(var i=0;i<md.length/4;i++){
+  var a=md[i*4]/255;
+  if(a<0.04)a=0;else if(a>0.97)a=1;
+  var o=i*4;
+  if(a>0.02&&a<0.98){
+   var r=dd[o],g=dd[o+1],b=dd[o+2],ex=g-Math.max(r,b);
+   if(ex>0)dd[o+1]=Math.max(0,g-ex*0.9);
+  }
+  dd[o+3]=Math.round(a*255);
+ }
+ tctx.putImageData(id,0,0);
+ var fg=new Image();
+ await new Promise(function(res,rej){fg.onload=res;fg.onerror=rej;fg.src=tc.toDataURL('image/png')});
+ return fg;
+}
+async function removeBg(imgEl){
+ try{return await removeBgModnet(imgEl);}
+ catch(e){return await removeBgMediapipe(imgEl);}
 }
 async function makeFinal(){
  var ratio=getRatio();
