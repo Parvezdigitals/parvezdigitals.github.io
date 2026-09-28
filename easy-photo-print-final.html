@@ -1,43 +1,50 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parvez Digitals - Final Passport Maker</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0f0f0f;color:#fff;font-family:system-ui;padding:12px}
+.app{max-width:430px;margin:auto;background:#1e1e1e;border-radius:20px;padding:18px;border:1px solid #333}
+h2{text-align:center;margin:0 0 12px 0}
+#fileInput{width:100%;background:#fff;color:#000;padding:14px;border-radius:12px;font-size:16px;font-weight:800}
+#preview,#result{width:100%;border-radius:14px;margin-top:12px;display:none;background:#fff}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:800;font-size:16px;margin-top:12px}
+.bg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.bg button{padding:12px;border-radius:10px;border:3px solid transparent;font-weight:800}
+.bg button.active{border-color:#00ff88}
+#status{text-align:center;color:#00ff88;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="app">
+<h2>📸 Parvez Digitals</h2>
+
+<input type="file" id="fileInput" accept="image/*">
+<img id="preview">
+
+<div class="bg">
+<button id="b1" style="background:#fff" onclick="changeBg('#ffffff','b1')">সাদা</button>
+<button id="b2" style="background:#a3d5ff" onclick="changeBg('#a3d5ff','b2')">হালকা ব্লু</button>
+<button id="b3" style="background:#1976d2;color:#fff" onclick="changeBg('#1976d2','b3')">ডিপ ব্লু</button>
+</div>
+
+<button class="btn" style="background:#fff;color:#000" onclick="makePassport()">✨ HD Passport বানাও</button>
+
+<canvas id="canvas" width="800" height="1000" style="display:none"></canvas>
+<img id="result">
+
+<a id="downloadLink" download="passport_hd.jpg" style="text-decoration:none">
+<button class="btn" id="dlBtn" style="background:#00ff88;color:#000;display:none">⬇️ ডাউনলোড করো</button>
+</a>
+
+<div id="status">ছবি বাছো</div>
+</div>
+
 <script>
-let imgObj=null, bg='#ffffff';
-const fileInput=document.getElementById('fileInput');
-const preview=document.getElementById('preview');
-const result=document.getElementById('result');
-const canvas=document.getElementById('c');
-const ctx=canvas.getContext('2d');
+let selectedImage = null;
+let bgColor = "#ffffff";
 
-fileInput.addEventListener('change',function(){
-  const file=this.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(e){
-    preview.src=e.target.result;
-    preview.style.display='block';
-    imgObj=new Image();
-    imgObj.src=e.target.result;
-    imgObj.onload=()=>{ document.getElementById('st').innerText='✅ লোড হয়েছে, এখন বানাও তে ক্লিক করো'; }
-  };
-  reader.readAsDataURL(file);
-});
-
-function setBg(c,id){
-  bg=c;
-  document.querySelectorAll('[id^=b]').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if(result.style.display==='block') make();
-}
-function make(){
-  if(!imgObj){alert('আগে ছবি বাছো');return;}
-  ctx.clearRect(0,0,800,1000);
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,800,1000);
-  ctx.drawImage(imgObj,40,10,720,970);
-  const url=canvas.toDataURL('image/jpeg',0.92);
-  result.src=url;
-  result.style.display='block';
-  document.getElementById('dl').href=url;
-  document.getElementById('dlBtn').style.display='block';
-  document.getElementById('st').innerText='✅ রেডি! ডাউনলোড করো';
-}
-document.getElementById('b1').classList.add('active');
-</script>
+const fileInput = document.getElementById('
