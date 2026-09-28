@@ -2,79 +2,61 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Easy Photo Print - Exact Same</title>
+<title>Easy Print - Fast</title>
 <style>
 body{margin:0;background:#0f172a;color:#fff;font-family:system-ui;padding:10px}
-.box{max-width:420px;margin:auto;background:#1e293b;border:2px solid #f59e0b;border-radius:16px;padding:14px}
-h2{text-align:center;color:#fbbf24;margin:0;font-size:16px}
-#st{text-align:center;color:#22c55e;font-weight:700;font-size:12px;margin:6px 0}
-canvas{width:100%;border-radius:12px;background:#8AB4F8;display:none}
-img{width:100%;border-radius:12px;margin-top:10px;display:none}
+.box{max-width:400px;margin:auto;background:#1e293b;border:2px solid #f59e0b;border-radius:16px;padding:14px}
+h2{text-align:center;color:#fbbf24;font-size:16px;margin:0}
+#st{text-align:center;color:#22c55e;font-size:12px;font-weight:700}
+canvas{width:100%;border-radius:12px;margin-top:10px;background:#8AB4F8}
 .btn{width:100%;padding:13px;border-radius:10px;border:0;font-weight:900;margin-top:7px}
-input{width:100%;padding:11px;border-radius:10px;font-weight:800}
+input{width:100%;padding:10px;border-radius:10px}
 </style>
 </head>
 <body>
 <div class="box">
-<h2>Easy Print - Same As Your Photo</h2>
+<h2>Easy Photo Print - No AI - Fast</h2>
 <input type="file" id="f" accept="image/*">
-<p id="st">ছবি বাছো - এই ছবির মতোই বানাবে</p>
-<canvas id="c" width="900" height="1200"></canvas>
-<img id="out">
-<button class="btn" style="background:#fff;color:#000" onclick="setBg('#ffffff')">সাদা</button>
-<button class="btn" style="background:#8AB4F8;color:#000" onclick="setBg('#8AB4F8')">তোমার নীল - Exact</button>
-<a id="dl" download="passport_exact.jpg"><button id="dlBtn" class="btn" style="display:none;background:#22c55e">⬇️ HD ডাউনলোড</button></a>
+<p id="st">ছবি বাছো - 1 সেকেন্ডে রেডি</p>
+<canvas id="c" width="600" height="800"></canvas>
+<br>
+<button class="btn" style="background:#fff" onclick="downloadJPG()">⬇️ JPG ডাউনলোড</button>
 </div>
-
-<script type="module">
-import {removeBackground} from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm";
-let cut=null, bg='#8AB4F8';
-const inp=document.getElementById('f'), c=document.getElementById('c'), ctx=c.getContext('2d'), out=document.getElementById('out'), st=document.getElementById('st');
-
-inp.onchange=async e=>{
+<script>
+let img=null;
+const inp=document.getElementById('f'), c=document.getElementById('c'), ctx=c.getContext('2d'), st=document.getElementById('st');
+inp.onchange=e=>{
   const file=e.target.files[0]; if(!file) return;
-  st.innerText='⏳ AI প্রসেস করছে... 15s';
-  try{
-    const blob=await removeBackground(file);
-    const im=new Image(); im.onload=()=>{cut=im; drawExact();}; im.src=URL.createObjectURL(blob);
-  }catch{
-    const im=new Image(); im.onload=()=>{cut=im; drawExact();}; im.src=URL.createObjectURL(file);
-  }
+  const r=new FileReader();
+  r.onload=ev=>{
+    img=new Image();
+    img.onload=()=>{ draw(); st.innerText='✅ রেডি - তোমার ছবির মতো'; };
+    img.src=ev.target.result;
+  };
+  r.readAsDataURL(file);
 }
+function draw(){
+  if(!img) return;
+  // নীল ব্যাকগ্রাউন্ড - তোমার ছবির #8AB4F8
+  ctx.fillStyle='#8AB4F8';
+  ctx.fillRect(0,0,600,800);
 
-function drawExact(){
-  // Exact size like your photo - 900x1200 passport
-  ctx.clearRect(0,0,900,1200);
-  ctx.fillStyle=bg; ctx.fillRect(0,0,900,1200);
-
-  // White shirt - exact like your photo
+  // সাদা শার্ট - নিচে
   ctx.fillStyle='#ffffff';
-  // Shirt body
-  ctx.fillRect(0, 750, 900, 450);
-  // Collar left
-  ctx.beginPath();
-  ctx.moveTo(180,750); ctx.lineTo(350,880); ctx.lineTo(300,780); ctx.lineTo(220,720);
-  ctx.closePath(); ctx.fill();
-  // Collar right
-  ctx.beginPath();
-  ctx.moveTo(720,750); ctx.lineTo(550,880); ctx.lineTo(600,780); ctx.lineTo(680,720);
-  ctx.closePath(); ctx.fill();
-  // Shirt placket
-  ctx.fillRect(430, 880, 40, 320);
+  ctx.fillRect(0,520,600,280);
+  // কলার
+  ctx.beginPath(); ctx.moveTo(150,520); ctx.lineTo(250,600); ctx.lineTo(210,540); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(450,520); ctx.lineTo(350,600); ctx.lineTo(390,540); ctx.fill();
 
-  // Person - centered like your photo, face 60% from top
-  if(cut){
-    ctx.drawImage(cut, 50, 30, 800, 1050);
-  }
-
-  const url=c.toDataURL('image/jpeg',0.95);
-  out.src=url; out.style.display='block';
-  document.getElementById('dl').href=url;
-  document.getElementById('dlBtn').style.display='block';
-  c.style.display='block';
-  st.innerText='✅ একদম তোমার ছবির মতো রেডি!';
+  // মানুষ - সেন্টারে, তোমার ছবির মতো
+  ctx.drawImage(img, 50, 20, 500, 600);
 }
-window.setBg=c=>{bg=c; if(cut) drawExact();}
+function downloadJPG(){
+  const a=document.createElement('a');
+  a.download='passport_blue_parvez.jpg';
+  a.href=c.toDataURL('image/jpeg',0.9);
+  a.click();
+}
 </script>
 </body>
 </html>
