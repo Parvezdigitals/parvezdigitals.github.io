@@ -3,45 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Maker PRO - Parvez Digitals</title>
+<title>Parvez Digitals - Passport Maker PRO</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0; background:#0f0f0f; color:#fff; font-family:system-ui; padding:12px}
-.app{max-width:430px; margin:auto; background:#1e1e1e; border-radius:20px; padding:18px; border:1px solid #333}
-.upload{border:2px dashed #888; border-radius:15px; padding:20px; text-align:center; background:#252525}
-#fileInput{width:100%; margin-top:15px; padding:12px; background:#fff; color:#000; border-radius:10px; font-size:16px}
-#preview, #result{width:100%; border-radius:15px; margin-top:15px; display:none; background:#fff}
-.btn{width:100%; padding:14px; border:none; border-radius:12px; font-weight:800; font-size:16px; margin-top:12px}
-.bg-opt{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px}
-.bg-opt button{padding:12px; border-radius:10px; border:1px solid #555; font-weight:700; color:#000}
-.status{text-align:center; color:#00ff88; margin-top:12px}
+*{box-sizing:border-box; margin:0; padding:0}
+body{background:#0f0f0f; color:#fff; font-family:system-ui; padding:12px}
+.app{max-width:440px; margin:auto; background:#1e1e1e; border-radius:22px; padding:18px; border:1px solid #333}
+h2{text-align:center; margin-bottom:12px}
+.upload-box{border:2px dashed #888; border-radius:16px; padding:20px; text-align:center; background:#252525}
+#fileLabel{display:block; background:#fff; color:#000; padding:14px; border-radius:12px; font-weight:800; margin-top:12px; cursor:pointer}
+#fileInput{display:none}
+#preview, #result{width:100%; border-radius:16px; margin-top:14px; display:none; background:#fff}
+.btn{width:100%; padding:14px; border:none; border-radius:12px; font-weight:800; font-size:16px; margin-top:12px; cursor:pointer}
+.bg-opt{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:14px}
+.bg-opt button{padding:12px; border-radius:10px; border:2px solid transparent; font-weight:800; color:#000; cursor:pointer}
+.bg-opt button.active{border-color:#00ff88; transform:scale(1.05)}
+.status{text-align:center; color:#00ff88; margin-top:12px; font-size:14px; min-height:20px}
 </style>
 </head>
 <body>
 <div class="app">
-<h2>📸 Parvez Digitals Passport</h2>
+<h2>📸 Parvez Digitals Passport PRO</h2>
 
-<div class="upload">
-<div style="font-size:38px">📁</div>
-<p>নিচের বাটন থেকে ছবি বাছো</p>
-<input type="file" id="fileInput" accept="image/*" capture="user">
+<div class="upload-box">
+<div style="font-size:42px">📁</div>
+<p>ছবি আপলোড করো</p>
+<label for="fileInput" id="fileLabel">গ্যালারি / ক্যামেরা থেকে বাছো</label>
+<input type="file" id="fileInput" accept="image/*">
 <img id="preview">
 </div>
 
 <div class="bg-opt">
-<button style="background:#fff" onclick="changeBg('#ffffff')">সাদা</button>
-<button style="background:#a3d5ff" onclick="changeBg('#a3d5ff')">হালকা ব্লু</button>
-<button style="background:#1976d2; color:#fff" onclick="changeBg('#1976d2')">ডিপ ব্লু</button>
+<button id="btnWhite" style="background:#fff" onclick="setBg('#ffffff','btnWhite')">সাদা</button>
+<button id="btnLight" style="background:#a3d5ff" onclick="setBg('#a3d5ff','btnLight')">হালকা ব্লু</button>
+<button id="btnDeep" style="background:#1976d2; color:#fff" onclick="setBg('#1976d2','btnDeep')">ডিপ ব্লু</button>
 </div>
 
 <button class="btn" style="background:#fff; color:#000" id="makeBtn">✨ HD Passport বানাও</button>
 
 <canvas id="canvas" style="display:none"></canvas>
 <img id="result">
-<a id="downloadLink" download="passport_hd.jpg">
-<button class="btn" id="dlBtn" style="background:#00ff88; color:#000; display:none">⬇️ ডাউনলোড করো</button>
+<a id="downloadLink" download="passport_hd_parvez_digitals.jpg" style="text-decoration:none">
+<button class="btn" id="dlBtn" style="background:#00ff88; color:#000; display:none">⬇️ ডাউনলোড করো (HD)</button>
 </a>
-<div class="status" id="status">ছবি সিলেক্ট করো</div>
+<div class="status" id="status">প্রথমে ছবি সিলেক্ট করো</div>
 </div>
 
 <script>
@@ -54,36 +58,58 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const status = document.getElementById('status');
 
-fileInput.addEventListener('change', function(e){
+fileInput.addEventListener('change', e=>{
   const file = e.target.files[0];
   if(!file) return;
+  if(!file.type.startsWith('image/')){ alert("শুধু ছবি দিন"); return; }
+
+  status.innerText = "লোড হচ্ছে...";
   const reader = new FileReader();
-  reader.onload = function(ev){
+  reader.onload = ev=>{
     preview.src = ev.target.result;
     preview.style.display = "block";
     selectedImg = new Image();
+    selectedImg.onload = ()=>{
+      status.innerText = "✅ ছবি রেডি, এখন 'HD Passport বানাও' তে ক্লিক করো";
+    };
     selectedImg.src = ev.target.result;
-    selectedImg.onload = ()=>{ status.innerText="✅ ছবি লোড হয়েছে"; }
-  }
+  };
   reader.readAsDataURL(file);
 });
 
-function changeBg(c){ bgColor=c; if(selectedImg) makePassport(); }
+function setBg(color, btnId){
+  bgColor = color;
+  document.querySelectorAll('.bg-opt button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(btnId).classList.add('active');
+  if(selectedImg && result.style.display==='block') makePassport();
+}
 
 function makePassport(){
   if(!selectedImg){ alert("আগে ছবি বাছো"); return; }
-  canvas.width=800; canvas.height=1000;
-  ctx.fillStyle=bgColor;
-  ctx.fillRect(0,0,800,1000);
-  ctx.filter="contrast(1.15) brightness(1.08) saturate(1.05)";
-  ctx.drawImage(selectedImg, 80, 20, 640, 900);
-  let url=canvas.toDataURL("image/jpeg",0.95);
-  result.src=url; result.style.display="block";
-  document.getElementById('downloadLink').href=url;
-  document.getElementById('dlBtn').style.display="block";
-  status.innerText="✅ রেডি! ব্যাকগ্রাউন্ড চেঞ্জ করে ডাউনলোড করো";
-}
-document.getElementById('makeBtn').onclick=makePassport;
-</script>
-</body>
-</html>
+  status.innerText = "⏳ HD Processing...";
+
+  // Passport size 35x45mm ratio - 800x1000
+  canvas.width = 800;
+  canvas.height = 1000;
+
+  // 1. Fill new background
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // 2. HD Enhance
+  ctx.filter = "contrast(1.12) brightness(1.08) saturate(1.08)";
+
+  // 3. Smart center crop (face middle)
+  // Keep 10% margin left/right, 2% top
+  const imgW = selectedImg.width;
+  const imgH = selectedImg.height;
+  // Cover logic
+  ctx.drawImage(selectedImg, 40, 10, 720, 980);
+
+  const finalUrl = canvas.toDataURL("image/jpeg", 0.95);
+  result.src = finalUrl;
+  result.style.display = "block";
+  document.getElementById('downloadLink').href = finalUrl;
+  document.getElementById('dlBtn').style.display = "block";
+  status.innerText = "✅ রেডি! উপরে কালার বদলে আ
