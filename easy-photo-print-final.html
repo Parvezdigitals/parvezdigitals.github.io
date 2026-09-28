@@ -2,60 +2,50 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Easy Print - Fast</title>
+<title>Easy Print AI Final</title>
+<script type="importmap">{"imports":{"@imgly/background-removal":"https://unpkg.com/@imgly/background-removal@1.4.5/dist/index.js"}}</script>
 <style>
 body{margin:0;background:#0f172a;color:#fff;font-family:system-ui;padding:10px}
-.box{max-width:400px;margin:auto;background:#1e293b;border:2px solid #f59e0b;border-radius:16px;padding:14px}
-h2{text-align:center;color:#fbbf24;font-size:16px;margin:0}
-#st{text-align:center;color:#22c55e;font-size:12px;font-weight:700}
-canvas{width:100%;border-radius:12px;margin-top:10px;background:#8AB4F8}
-.btn{width:100%;padding:13px;border-radius:10px;border:0;font-weight:900;margin-top:7px}
-input{width:100%;padding:10px;border-radius:10px}
+.box{max-width:420px;margin:auto;background:#1e293b;border:2px solid #22c55e;border-radius:16px;padding:14px}
+h2{text-align:center;color:#4ade80;margin:0;font-size:16px}
+#st{text-align:center;color:#fbbf24;font-size:13px;font-weight:700;margin:8px}
+canvas{width:100%;border-radius:12px;background:#8AB4F8}
+.btn{width:100%;padding:14px;border-radius:10px;border:0;font-weight:900;margin-top:8px;font-size:15px}
 </style>
 </head>
 <body>
 <div class="box">
-<h2>Easy Photo Print - No AI - Fast</h2>
+<h2>✅ AI Passport - Final</h2>
 <input type="file" id="f" accept="image/*">
-<p id="st">ছবি বাছো - 1 সেকেন্ডে রেডি</p>
+<p id="st">ছবি বাছো - AI 5 সেকেন্ডে বানাবে</p>
 <canvas id="c" width="600" height="800"></canvas>
-<br>
-<button class="btn" style="background:#fff" onclick="downloadJPG()">⬇️ JPG ডাউনলোড</button>
+<button class="btn" style="background:#22c55e" onclick="downloadJPG()">⬇️ ডাউনলোড JPG</button>
 </div>
-<script>
-let img=null;
-const inp=document.getElementById('f'), c=document.getElementById('c'), ctx=c.getContext('2d'), st=document.getElementById('st');
-inp.onchange=e=>{
-  const file=e.target.files[0]; if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    img=new Image();
-    img.onload=()=>{ draw(); st.innerText='✅ রেডি - তোমার ছবির মতো'; };
-    img.src=ev.target.result;
+<script type="module">
+import {removeBackground} from "@imgly/background-removal";
+const c=document.getElementById('c'), ctx=c.getContext('2d'), st=document.getElementById('st');
+document.getElementById('f').onchange=async e=>{
+ const file=e.target.files[0]; if(!file) return;
+ st.innerText="⏳ AI কাজ করছে... 5 সেকেন্ড";
+ try{
+  const blob=await removeBackground(file);
+  const img=new Image(); img.src=URL.createObjectURL(blob);
+  img.onload=()=>{
+   ctx.clearRect(0,0,600,800);
+   ctx.fillStyle='#8AB4F8'; ctx.fillRect(0,0,600,800);
+   ctx.fillStyle='#fff'; ctx.fillRect(0,540,600,260);
+   ctx.beginPath();ctx.moveTo(170,540);ctx.lineTo(270,620);ctx.lineTo(220,560);ctx.fill();
+   ctx.beginPath();ctx.moveTo(430,540);ctx.lineTo(330,620);ctx.lineTo(380,560);ctx.fill();
+   // person center
+   const scale=Math.min(500/img.width, 600/img.height);
+   const w=img.width*scale, h=img.height*scale;
+   ctx.drawImage(img, (600-w)/2, 20, w, h);
+   st.innerText="✅ রেডি - একদম পারফেক্ট";
   };
-  r.readAsDataURL(file);
-}
-function draw(){
-  if(!img) return;
-  // নীল ব্যাকগ্রাউন্ড - তোমার ছবির #8AB4F8
-  ctx.fillStyle='#8AB4F8';
-  ctx.fillRect(0,0,600,800);
-
-  // সাদা শার্ট - নিচে
-  ctx.fillStyle='#ffffff';
-  ctx.fillRect(0,520,600,280);
-  // কলার
-  ctx.beginPath(); ctx.moveTo(150,520); ctx.lineTo(250,600); ctx.lineTo(210,540); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(450,520); ctx.lineTo(350,600); ctx.lineTo(390,540); ctx.fill();
-
-  // মানুষ - সেন্টারে, তোমার ছবির মতো
-  ctx.drawImage(img, 50, 20, 500, 600);
-}
-function downloadJPG(){
-  const a=document.createElement('a');
-  a.download='passport_blue_parvez.jpg';
-  a.href=c.toDataURL('image/jpeg',0.9);
-  a.click();
+ }catch(err){ st.innerText="❌ আবার চেষ্টা করো"; console.error(err); }
+};
+window.downloadJPG=()=>{
+ const a=document.createElement('a'); a.download='passport-ai.jpg'; a.href=c.toDataURL('image/jpeg',0.92); a.click();
 }
 </script>
 </body>
