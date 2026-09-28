@@ -29,474 +29,405 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
 body{background:#f0f2f5;color:#222}
 .header{background:linear-gradient(135deg,#0b5ed7,#084298);color:#fff;padding:18px 16px;text-align:center}
-.header h1{font-size:20px}
+.header h1{font-size:20px;letter-spacing:.5px}
 .header p{font-size:13px;opacity:.9;margin-top:4px}
 .container{max-width:640px;margin:16px auto;padding:0 14px}
 .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:14px}
 .btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
 .btn-primary{background:#0b5ed7;color:#fff}
-.btn-primary:disabled{opacity:.6}
 .btn-success{background:#198754;color:#fff}
 .btn-outline{background:#fff;color:#0b5ed7;border:2px solid #0b5ed7}
-.row{display:flex;gap:10px;margin-top:10px}.row .btn{margin-top:0}
+.row{display:flex;gap:10px;margin-top:10px}
+.row .btn{margin-top:0}
 label{font-size:14px;font-weight:600;display:block;margin:12px 0 6px}
 select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:15px}
+input[type=range]{width:100%}
 .bg-options{display:flex;gap:10px;margin-top:8px}
 .bg-opt{flex:1;text-align:center;padding:10px;border:2px solid #ddd;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
-.bg-opt.active{border-color:#0b5ed7}
+.bg-opt.active{border-color:#0b5ed7;background:#e8f1ff}
 #previewWrap{text-align:center}
 #previewCanvas,#resultCanvas{max-width:100%;border:1px solid #ddd;border-radius:8px;margin-top:10px;background:#fff}
 .note{font-size:12px;color:#666;margin-top:8px;line-height:1.5}
+#status{font-size:13px;color:#0b5ed7;font-weight:600;margin-top:8px;min-height:18px}
+.chk{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px}
+.chk input{width:auto}
 .footer{text-align:center;font-size:12px;color:#888;padding:18px}
-#status{font-size:13px;color:#0b5ed7;margin-top:8px;font-weight:600;min-height:18px}
 </style>
 </head>
 <body>
-<div class="header"><h1>Easy Photo Print</h1><p>Automatic Passport Size Photo Maker - PARVEZ DIGITAL SERVICE</p></div>
-<div class="container"><div class="card">
-<label>1. Upload Photo</label><input type="file" id="upload" accept="image/*">
-<label>1b. Straighten Photo (if tilted)</label>
-<div class="row">
-<button class="btn btn-outline" id="rotL" type="button">↺ 90°</button>
-<button class="btn btn-outline" id="rotR" type="button">↻ 90°</button>
+<div class="header">
+<h1>Easy Photo Print</h1>
+<p>Automatic Passport Size Photo Maker - PARVEZ DIGITAL SERVICE</p>
 </div>
-<label style="margin-top:8px;font-weight:400;font-size:13px">Fine rotate: <span id="rotVal">0°</span></label>
-<input type="range" id="rotFine" min="-20" max="20" value="0" step="0.5" style="width:100%">
-<label>2. Photo Size</label>
-<select id="sizeSel"><option value="35x45">Passport - 35x45 mm (7:9)</option><option value="51x51">Visa USA - 51x51 mm (1:1)</option><option value="3R">3R - 3.5x5 inch</option><option value="4R">4R - 4x6 inch</option></select>
-<label>3. Background Colour</label>
+<div class="container">
+<div class="card">
+<label>1. Upload Photo</label>
+<input type="file" id="upload" accept="image/*">
+<label>2. Background</label>
 <div class="bg-options">
-<div class="bg-opt active" data-bg="#ffffff" style="background:#ffffff">White</div>
-<div class="bg-opt" data-bg="#add8e6" style="background:#add8e6">Lite Blue</div>
-<div class="bg-opt" data-bg="#00b2e3" style="background:#00b2e3;color:#fff">Sky Blue</div>
-<div class="bg-opt" data-bg="original" style="background:#eee">Original</div>
+<div class="bg-opt active" data-bg="#ffffff">White</div>
+<div class="bg-opt" data-bg="#bfe9f5">Lite Blue</div>
+<div class="bg-opt" data-bg="#00b8e6">Sky Blue</div>
 </div>
-<button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
-<p id="status"></p>
-<div id="previewWrap"><canvas id="previewCanvas" style="display:none"></canvas><canvas id="resultCanvas" style="display:none"></canvas></div>
-<p class="note">Upload &rarr; Straighten &rarr; Face detect &rarr; AI 2x upscale (one-time download, then cached) &rarr; AI background remove &rarr; Smart framing (head never cut) &rarr; Natural enhance &rarr; Download. No API key needed.</p>
-<div class="row"><button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button><button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button></div>
+<label>3. Photo Size</label>
+<select id="sizeSel">
+<option value="0.7778">Passport 35x45mm</option>
+<option value="1">Visa 50x50mm</option>
+<option value="0.7">3R (3.5x5 inch)</option>
+<option value="0.6667">4R (4x6 inch)</option>
+</select>
+<label>4. Straighten (degrees)</label>
+<input type="range" id="rotR" min="-15" max="15" value="0" step="0.5">
+<div class="chk"><input type="checkbox" id="keepBg"><span>Keep original background (no removal)</span></div>
+<button class="btn btn-primary" id="makeBtn">Make Photo</button>
+<div id="status"></div>
+<div id="previewWrap"><canvas id="resultCanvas"></canvas></div>
+<div class="row">
+<button class="btn btn-success" id="dlBtn">Download Photo</button>
+<button class="btn btn-outline" id="printBtn">Print 4x6 Sheet</button>
+</div>
+<p class="note">Tip: first run downloads AI models once (cached afterwards). Works fully offline after that, no API key needed.</p>
 </div>
 <div class="card">
 <h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove with clean edges.<br>4. Smart framing measures the person and frames head-and-shoulders — head is never cut.<br>5. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>6. Natural enhance: clean skin + clarity, original quality preserved.<br>7. Download single photo or 4x6 print sheet.</p>
+<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove (MODNet) with clean edges.<br>4. Passport-standard framing anchored on face: head 72% of frame, crown at 10% margin, chest reaches frame bottom - head is never cut.<br>5. Background blob cleaner removes leftover background objects.<br>6. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>7. Natural enhance: clean skin + clarity, original quality preserved.<br>8. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v14</div>
+<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v15</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
 import * as __tf from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
-window.__tf=__tf; window.__tfOk=true;
-</script>
-<script>
-var srcImg=null,bgColor="#ffffff",keepOriginal=false,baseImg=null,rotDeg=0,bgEngine="",didUpscale=false;
-var upload=document.getElementById('upload'),previewCanvas=document.getElementById('previewCanvas'),resultCanvas=document.getElementById('resultCanvas'),processBtn=document.getElementById('processBtn'),statusEl=document.getElementById('status');
-document.querySelectorAll('.bg-opt').forEach(function(el){el.onclick=function(){document.querySelectorAll('.bg-opt').forEach(function(x){x.classList.remove('active')});el.classList.add('active');var v=el.getAttribute('data-bg');if(v==="original"){keepOriginal=true}else{keepOriginal=false;bgColor=v}}});
-function drawPreview(){var c=previewCanvas;c.style.display="block";var s=Math.min(1,500/srcImg.width);c.width=Math.round(srcImg.width*s);c.height=Math.round(srcImg.height*s);c.getContext('2d').drawImage(srcImg,0,0,c.width,c.height);}
-function applyRotation(){
- if(!baseImg)return;
- var rad=rotDeg*Math.PI/180,w=baseImg.naturalWidth,hh=baseImg.naturalHeight;
- var co=Math.abs(Math.cos(rad)),si=Math.abs(Math.sin(rad));
- var cw=Math.round(w*co+hh*si),ch=Math.round(w*si+hh*co);
- var tmp=document.createElement('canvas');tmp.width=cw;tmp.height=ch;
- var x=tmp.getContext('2d');x.translate(cw/2,ch/2);x.rotate(rad);x.drawImage(baseImg,-w/2,-hh/2);
- srcImg=new Image();srcImg.onload=function(){drawPreview();statusEl.textContent='Photo loaded. Now click Auto Create.';};srcImg.src=tmp.toDataURL('image/png');
- document.getElementById('rotVal').textContent=rotDeg+'°';
+window.__tf=__tf;
+const $=id=>document.getElementById(id);
+const upload=$('upload'),sizeSel=$('sizeSel'),rotR=$('rotR'),keepBg=$('keepBg'),
+ resultCanvas=$('resultCanvas'),statusEl=$('status'),
+ makeBtn=$('makeBtn'),dlBtn=$('dlBtn'),printBtn=$('printBtn');
+let srcImg=null,bgColor='#ffffff',ratio=35/45,resultURL=null;
+let modnetPipe=null,srPipe=null;
+document.querySelectorAll('.bg-opt').forEach(el=>{
+ el.addEventListener('click',()=>{
+  document.querySelectorAll('.bg-opt').forEach(o=>o.classList.remove('active'));
+  el.classList.add('active');bgColor=el.dataset.bg;
+  if(srcImg) makeFinal();
+ });
+});
+sizeSel.addEventListener('change',()=>{ratio=parseFloat(sizeSel.value);if(srcImg)makeFinal();});
+rotR.addEventListener('change',()=>{if(srcImg)makeFinal();});
+keepBg.addEventListener('change',()=>{if(srcImg)makeFinal();});
+upload.addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;
+ const r=new FileReader();
+ r.onload=()=>{const im=new Image();im.onload=()=>{srcImg=im;makeFinal();};im.src=r.result;};
+ r.readAsDataURL(f);
+});
+function imgFromCanvas(c){
+ return new Promise((res,rej)=>{const im=new Image();im.onload=()=>res(im);im.onerror=rej;im.src=c.toDataURL('image/png');});
 }
-upload.onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){baseImg=new Image();baseImg.onload=function(){rotDeg=0;document.getElementById('rotFine').value=0;applyRotation();};baseImg.src=ev.target.result;};r.readAsDataURL(f);};
-document.getElementById('rotL').onclick=function(){if(!baseImg){alert('Please upload a photo first');return}rotDeg=(rotDeg-90)%360;document.getElementById('rotFine').value=0;applyRotation();};
-document.getElementById('rotR').onclick=function(){if(!baseImg){alert('Please upload a photo first');return}rotDeg=(rotDeg+90)%360;document.getElementById('rotFine').value=0;applyRotation();};
-document.getElementById('rotFine').oninput=function(e){if(!baseImg)return;rotDeg=parseFloat(e.target.value);applyRotation();};
-function getRatio(){var v=document.getElementById('sizeSel').value;if(v==="51x51")return 1;if(v==="3R")return 3.5/5;if(v==="4R")return 4/6;return 35/45}
-function detectFace(imgEl){
- return new Promise(function(resolve){
-  var done=false;function fin(v){if(!done){done=true;resolve(v)}}
-  if(typeof FaceDetection==="undefined"){fin(null);return}
+function straightened(){
+ const w=srcImg.naturalWidth,h=srcImg.naturalHeight;
+ const ang=parseFloat(rotR.value)*Math.PI/180;
+ const c=document.createElement('canvas');c.width=w;c.height=h;
+ const x=c.getContext('2d');
+ x.translate(w/2,h/2);x.rotate(ang);x.drawImage(srcImg,-w/2,-h/2);
+ return imgFromCanvas(c);
+}
+function detectFace(img){
+ return new Promise(res=>{
   try{
-   var fd=new FaceDetection({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/'+f}});
+   const fd=new FaceDetection({locateFile:f=>'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/'+f});
    fd.setOptions({model:'short',minDetectionConfidence:0.5});
-   fd.onResults(function(res){
-    if(res.detections&&res.detections.length>0){var b=res.detections[0].boundingBox;fin({x:b.xCenter,y:b.yCenter,w:b.width,h:b.height});}
-    else fin(null);
+   fd.onResults(r=>{
+    try{
+     const dt=r.detections&&r.detections[0];
+     if(dt){const bb=dt.boundingBox;res({x:bb.xCenter,y:bb.yCenter,w:bb.width,h:bb.height});}
+     else res(null);
+    }catch(e){res(null);}
+    try{fd.close();}catch(e){}
    });
-   fd.send({image:imgEl}).catch(function(){fin(null)});
-   setTimeout(function(){fin(null)},9000);
-  }catch(e){fin(null)}
+   fd.send({image:img});
+  }catch(e){res(null);}
  });
 }
-async function upscale2x(imgEl){
- for(var w8=0;w8<120&&!window.__tfOk;w8++) await new Promise(function(r){setTimeout(r,250)});
- if(!window.__tfOk) throw new Error('tflib');
- var tf=window.__tf;
- if(!window.__upscaler){
-  var up=await Promise.race([
-   tf.pipeline('image-to-image','Xenova/swin2SR-lightweight-x2-64',{
-    progress_callback:function(p){
-     if(p&&p.progress!=null) statusEl.textContent='Downloading upscale AI (one-time)... '+Math.round(p.progress)+'%';
-     else statusEl.textContent='Downloading upscale AI (one-time)...';
-    }}),
-   new Promise(function(_,rej){setTimeout(function(){rej(new Error('up-dl-timeout'))},90000)})
-  ]);
-  window.__upscaler=up;
- }
- statusEl.textContent='Upscaling photo (AI 2x)...';
- var image=await tf.RawImage.fromURL(imgEl.src);
- var out=await Promise.race([
-  window.__upscaler(image),
-  new Promise(function(_,rej){setTimeout(function(){rej(new Error('up-infer-timeout'))},120000)})
- ]);
- if(Array.isArray(out)) out=out[0];
- var cv=out.toCanvas();
- var img=new Image();
- await new Promise(function(res,rej){img.onload=res;img.onerror=rej;img.src=cv.toDataURL('image/png')});
- return img;
+function maskToAlpha(maskCanvas,w,h){
+ const c=document.createElement('canvas');c.width=w;c.height=h;
+ const x=c.getContext('2d');x.drawImage(maskCanvas,0,0,w,h);
+ const id=x.getImageData(0,0,w,h),d=id.data;
+ for(let i=0;i<w*h;i++){d[i*4+3]=d[i*4];d[i*4]=d[i*4+1]=d[i*4+2]=0;}
+ x.putImageData(id,0,0);return c;
 }
-function keepLargestComponent(d,w,h){
- var n=w*h,bin=new Uint8Array(n),label=new Int32Array(n).fill(-1);
- for(var i=0;i<n;i++) bin[i]=d[i*4+3]>100?1:0;
- var compSize=[],stack=[];
- for(var i=0;i<n;i++){
-  if(!bin[i]||label[i]>=0) continue;
-  var sz=0,cid=compSize.length;
-  stack.push(i);label[i]=cid;
-  while(stack.length){
-   var p=stack.pop();sz++;
-   var px=p%w,py=(p/w)|0,q;
-   if(px>0){q=p-1;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
-   if(px<w-1){q=p+1;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
-   if(py>0){q=p-w;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
-   if(py<h-1){q=p+w;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
-  }
-  compSize.push(sz);
- }
- if(!compSize.length) return;
- var best=0;
- for(var c=1;c<compSize.length;c++) if(compSize[c]>compSize[best]) best=c;
- for(var i=0;i<n;i++) if(label[i]!==best) d[i*4+3]=0;
+async function modnetAlpha(img){
+ const tf=window.__tf;
+ if(!modnetPipe) modnetPipe=await tf.pipeline('image-segmentation','Xenova/modnet',{quantized:true});
+ const segs=await modnetPipe(img.src);
+ let m=null;
+ for(const s of segs){if(/person|human/i.test(s.label)){m=s.mask;break;}}
+ if(!m)m=segs[0].mask;
+ return m.toCanvas();
 }
-// measure actual person bounds from alpha channel (head never cut)
-function personBBox(imgEl){
- try{
-  var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
-  var sw=200,sh=Math.max(1,Math.round(sw*h/w));
-  var c=document.createElement('canvas');c.width=sw;c.height=sh;
-  c.getContext('2d').drawImage(imgEl,0,0,sw,sh);
-  var d=c.getContext('2d').getImageData(0,0,sw,sh).data;
-  var top=sh,bot=-1,left=sw,right=-1;
-  for(var y=0;y<sh;y++)for(var x=0;x<sw;x++){
-   if(d[(y*sw+x)*4+3]>4){
-    if(y<top)top=y;if(y>bot)bot=y;
-    if(x<left)left=x;if(x>right)right=x;
-   }
-  }
-  if(bot<0||(bot-top)<sh*0.12) return null;
-  var k=w/sw;
-  var eTop=Math.max(0,top*k-(bot-top)*k*0.15);
-  return {top:eTop,bottom:(bot+1)*k,left:left*k,right:(right+1)*k};
- }catch(e){return null}
-}
-// remove background blobs not connected to the head (uses face box as anchor)
-function cleanBlob(fg,fb,maxHalf){
- return new Promise(function(res){
+function mpAlpha(img){
+ return new Promise((res,rej)=>{
   try{
-   var w=fg.naturalWidth,h=fg.naturalHeight;
-   var sw=220,sh=Math.max(1,Math.round(sw*h/w));
-   var c=document.createElement('canvas');c.width=sw;c.height=sh;
-   var x2=c.getContext('2d');x2.drawImage(fg,0,0,sw,sh);
-   var d=x2.getImageData(0,0,sw,sh).data,n=sw*sh,i,xx,yy,p,q;
-   var k=sw/w;
-   var bin=new Uint8Array(n);
-   for(i=0;i<n;i++) bin[i]=d[i*4+3]>100?1:0;
-   // lateral gate: drop anything far outside the framed body width
+   const ss=new SelfieSegmentation({locateFile:f=>'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f});
+   ss.setOptions({modelSelection:1});
+   ss.onResults(r=>{try{res(r.segmentationMask);}catch(e){rej(e);}try{ss.close();}catch(e){}});
+   ss.send({image:img});
+  }catch(e){rej(e);}
+ });
+}
+function keepLargest(img){
+ return new Promise(res=>{
+  try{
+   const w=img.naturalWidth,h=img.naturalHeight;
+   const sw=220,sh=Math.max(1,Math.round(sw*h/w));
+   const c=document.createElement('canvas');c.width=sw;c.height=sh;
+   const x=c.getContext('2d');x.drawImage(img,0,0,sw,sh);
+   const d=x.getImageData(0,0,sw,sh).data,n=sw*sh;
+   const bin=new Uint8Array(n);
+   for(let i=0;i<n;i++)bin[i]=d[i*4+3]>100?1:0;
+   const label=new Int32Array(n).fill(-1);let nc=0;const sizes=[];const stack=[];
+   for(let i=0;i<n;i++){
+    if(!bin[i]||label[i]>=0)continue;
+    const cid=nc++;label[i]=cid;stack.push(i);let sz=0;
+    while(stack.length){const p=stack.pop();sz++;const px=p%sw,py=(p/sw)|0;let q;
+     if(px>0){q=p-1;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
+     if(px<sw-1){q=p+1;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
+     if(py>0){q=p-sw;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
+     if(py<sh-1){q=p+sw;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}}
+    sizes.push(sz);
+   }
+   let best=0;for(let i=1;i<nc;i++)if(sizes[i]>sizes[best])best=i;
+   const gc=document.createElement('canvas');gc.width=sw;gc.height=sh;
+   const gx=gc.getContext('2d');const gid=gx.createImageData(sw,sh);
+   for(let i=0;i<n;i++)gid.data[i*4+3]=(label[i]===best)?255:0;
+   gx.putImageData(gid,0,0);
+   const tc=document.createElement('canvas');tc.width=w;tc.height=h;
+   const tx=tc.getContext('2d');tx.drawImage(img,0,0);
+   tx.globalCompositeOperation='destination-in';
+   tx.imageSmoothingEnabled=true;tx.drawImage(gc,0,0,w,h);
+   tx.globalCompositeOperation='source-over';
+   imgFromCanvas(tc).then(res);
+  }catch(e){res(img);}
+ });
+}
+async function applyMask(img,maskCanvas){
+ const w=img.naturalWidth,h=img.naturalHeight;
+ const ac=maskToAlpha(maskCanvas,w,h);
+ const tc=document.createElement('canvas');tc.width=w;tc.height=h;
+ const tx=tc.getContext('2d');tx.drawImage(img,0,0);
+ tx.globalCompositeOperation='destination-in';tx.drawImage(ac,0,0);
+ tx.globalCompositeOperation='source-over';
+ const fg=await imgFromCanvas(tc);
+ return keepLargest(fg);
+}
+async function removeBg(img){
+ try{
+  statusEl.textContent='Removing background (AI matting)...';
+  const mc=await modnetAlpha(img);
+  return await applyMask(img,mc);
+ }catch(e){
+  statusEl.textContent='Removing background (basic)...';
+  const mc=await mpAlpha(img);
+  return await applyMask(img,mc);
+ }
+}
+function cleanBlob(fg,fb,maxHalf){
+ return new Promise(res=>{
+  try{
+   const w=fg.naturalWidth,h=fg.naturalHeight;
+   const sw=220,sh=Math.max(1,Math.round(sw*h/w));
+   const c=document.createElement('canvas');c.width=sw;c.height=sh;
+   const x2=c.getContext('2d');x2.drawImage(fg,0,0,sw,sh);
+   const d=x2.getImageData(0,0,sw,sh).data,n=sw*sh;
+   const k=sw/w;let i,xx,yy,p,q;
+   const bin=new Uint8Array(n);
+   for(i=0;i<n;i++)bin[i]=d[i*4+3]>100?1:0;
    if(maxHalf){
-    var fcx=(fb.x+fb.w/2)*k, halfK=maxHalf*k;
+    const fcx=(fb.x+fb.w/2)*k,halfK=maxHalf*k;
     for(yy=0;yy<sh;yy++)for(xx=0;xx<sw;xx++){p=yy*sw+xx;if(Math.abs(xx-fcx)>halfK)bin[p]=0;}
    }
-   var label=new Int32Array(n).fill(-1),stack=[],nc=0;
+   const label=new Int32Array(n).fill(-1),stack=[];let nc=0;
    for(i=0;i<n;i++){
     if(!bin[i]||label[i]>=0)continue;
-    var cid=nc++;stack.push(i);label[i]=cid;
-    while(stack.length){var pp=stack.pop();var px=pp%sw,py=(pp/sw)|0;
+    const cid=nc++;stack.push(i);label[i]=cid;
+    while(stack.length){const pp=stack.pop();const px=pp%sw,py=(pp/sw)|0;
      if(px>0){q=pp-1;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
      if(px<sw-1){q=pp+1;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
      if(py>0){q=pp-sw;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}
      if(py<sh-1){q=pp+sw;if(bin[q]&&label[q]<0){label[q]=cid;stack.push(q);}}}
    }
-   var fx0=Math.max(0,Math.floor((fb.x-fb.w*0.4)*k)),fy0=Math.max(0,Math.floor((fb.y-fb.h*1.1)*k));
-   var fx1=Math.min(sw-1,Math.ceil((fb.x+fb.w*1.4)*k)),fy1=Math.min(sh-1,Math.ceil((fb.y+fb.h*1.6)*k));
-   var keep={},keptAny=false;
-   for(yy=fy0;yy<=fy1;yy++)for(xx=fx0;xx<=fx1;xx++){p=yy*sw+xx;var cd=label[p];if(cd>=0){keep[cd]=1;keptAny=true;}}
+   const fx0=Math.max(0,Math.floor((fb.x-fb.w*0.4)*k)),fy0=Math.max(0,Math.floor((fb.y-fb.h*1.1)*k));
+   const fx1=Math.min(sw-1,Math.ceil((fb.x+fb.w*1.4)*k)),fy1=Math.min(sh-1,Math.ceil((fb.y+fb.h*1.6)*k));
+   const keep={};let keptAny=false;
+   for(yy=fy0;yy<=fy1;yy++)for(xx=fx0;xx<=fx1;xx++){p=yy*sw+xx;const cd=label[p];if(cd>=0){keep[cd]=1;keptAny=true;}}
    if(!keptAny){res(fg);return;}
-   var gc=document.createElement('canvas');gc.width=sw;gc.height=sh;
-   var gx=gc.getContext('2d'),gid=gx.createImageData(sw,sh);
-   for(i=0;i<n;i++){gid.data[i*4+3]=(label[i]>=0&&keep[label[i]])?255:0;}
+   const gc=document.createElement('canvas');gc.width=sw;gc.height=sh;
+   const gx=gc.getContext('2d'),gid=gx.createImageData(sw,sh);
+   for(i=0;i<n;i++)gid.data[i*4+3]=(label[i]>=0&&keep[label[i]])?255:0;
    gx.putImageData(gid,0,0);
-   var tc=document.createElement('canvas');tc.width=w;tc.height=h;
-   var tx=tc.getContext('2d');tx.drawImage(fg,0,0);
+   const tc=document.createElement('canvas');tc.width=w;tc.height=h;
+   const tx=tc.getContext('2d');tx.drawImage(fg,0,0);
    tx.globalCompositeOperation='destination-in';
    tx.imageSmoothingEnabled=true;tx.imageSmoothingQuality='high';
    tx.drawImage(gc,0,0,w,h);
    tx.globalCompositeOperation='source-over';
-   var out=new Image();
-   out.onload=function(){res(out)};out.onerror=function(){res(fg)};
+   const out=new Image();
+   out.onload=()=>res(out);out.onerror=()=>res(fg);
    out.src=tc.toDataURL('image/png');
-  }catch(e){res(fg)}
+  }catch(e){res(fg);}
  });
 }
-function fgFromAlpha(imgEl,alphaFn){
- var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
- var tc=document.createElement('canvas');tc.width=w;tc.height=h;
- var tctx=tc.getContext('2d');tctx.drawImage(imgEl,0,0);
- var id=tctx.getImageData(0,0,w,h),dd=id.data;
- alphaFn(dd,w,h);
- keepLargestComponent(dd,w,h);
- tctx.putImageData(id,0,0);
- var fg=new Image();
- return new Promise(function(res,rej){fg.onload=function(){res(fg)};fg.onerror=rej;fg.src=tc.toDataURL('image/png')});
-}
-async function removeBgModnet(imgEl){
- for(var w8=0;w8<120&&!window.__tfOk;w8++) await new Promise(function(r){setTimeout(r,250)});
- if(!window.__tfOk) throw new Error('tflib');
- var tf=window.__tf;
- if(!window.__modnet){
-  var mdl=await Promise.race([
-   tf.AutoModel.from_pretrained('Xenova/modnet',{dtype:'fp32',
-    progress_callback:function(p){
-     if(p&&p.progress!=null) statusEl.textContent='Downloading bg-remove AI (one-time)... '+Math.round(p.progress)+'%';
-     else statusEl.textContent='Downloading bg-remove AI (one-time)...';
-    }}),
-   new Promise(function(_,rej){setTimeout(function(){rej(new Error('modnet-dl-timeout'))},90000)})
-  ]);
-  var prc=await tf.AutoProcessor.from_pretrained('Xenova/modnet');
-  window.__modnet={model:mdl,processor:prc};
- }
- var mm=window.__modnet;
- statusEl.textContent='Removing background (AI portrait matting)...';
- var image=await tf.RawImage.fromURL(imgEl.src);
- var pv=await mm.processor(image);
- var out=await Promise.race([
-  mm.model({input:pv.pixel_values}),
-  new Promise(function(_,rej){setTimeout(function(){rej(new Error('infer-timeout'))},90000)})
- ]);
- var mask=await tf.RawImage.fromTensor(out.output[0].mul(255).to('uint8')).resize(image.width,image.height);
- var mcv=mask.toCanvas();
- var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
- var mc=document.createElement('canvas');mc.width=w;mc.height=h;
- mc.getContext('2d').drawImage(mcv,0,0,w,h);
- var md=mc.getContext('2d').getImageData(0,0,w,h).data;
- bgEngine='AI portrait matting';
- return fgFromAlpha(imgEl,function(dd){
-  for(var i=0;i<md.length/4;i++){
-   var a=md[i*4]/255;
-   if(a<0.04)a=0;else if(a>0.97)a=1;
-   var o=i*4;
-   if(a>0.02&&a<0.98){
-    var r=dd[o],g=dd[o+1],b=dd[o+2],ex=g-Math.max(r,b);
-    if(ex>0)dd[o+1]=Math.max(0,g-ex*0.9);
+function personBBox(img){
+ try{
+  const w=img.naturalWidth,h=img.naturalHeight;
+  const sw=200,sh=Math.max(1,Math.round(sw*h/w));
+  const c=document.createElement('canvas');c.width=sw;c.height=sh;
+  const x=c.getContext('2d');x.drawImage(img,0,0,sw,sh);
+  const d=x.getImageData(0,0,sw,sh).data;
+  let top=sh,bot=-1,left=sw,right=-1;
+  for(let yy=0;yy<sh;yy++)for(let xx=0;xx<sw;xx++){
+   if(d[(yy*sw+xx)*4+3]>4){
+    if(yy<top)top=yy;if(yy>bot)bot=yy;
+    if(xx<left)left=xx;if(xx>right)right=xx;
    }
-   dd[o+3]=Math.round(a*255);
   }
- });
+  if(bot<0||(bot-top)<sh*0.12)return null;
+  const k=w/sw;
+  const eTop=Math.max(0,top*k-(bot-top)*k*0.15);
+  return {top:eTop,bottom:(bot+1)*k,left:left*k,right:(right+1)*k};
+ }catch(e){return null;}
 }
-function removeBgMediapipe(imgEl){
- return new Promise(function(resolve,reject){
-  if(typeof SelfieSegmentation==="undefined"){reject(new Error('network'));return}
-  var settled=false;
-  var timer=setTimeout(function(){if(!settled){settled=true;reject(new Error('timeout'))}},25000);
-  try{
-   var seg=new SelfieSegmentation({locateFile:function(f){return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f}});
-   seg.setOptions({modelSelection:1});
-   seg.onResults(function(res){
-    if(settled)return;settled=true;clearTimeout(timer);
-    try{
-     var w=imgEl.naturalWidth,h=imgEl.naturalHeight;
-     var mc=document.createElement('canvas');mc.width=w;mc.height=h;
-     var mctx=mc.getContext('2d');mctx.drawImage(res.segmentationMask,0,0,w,h);
-     var er=Math.max(4,Math.round(w/95));
-     mctx.globalCompositeOperation='destination-in';
-     mctx.drawImage(mc,er,0);mctx.drawImage(mc,-er,0);mctx.drawImage(mc,0,er);mctx.drawImage(mc,0,-er);
-     mctx.globalCompositeOperation='source-over';
-     var bc=document.createElement('canvas');bc.width=w;bc.height=h;
-     bc.getContext('2d').drawImage(mc,0,0);
-     var br=Math.max(3,Math.round(w/160));
-     mctx.filter='blur('+br+'px)';mctx.drawImage(bc,0,0);mctx.filter='none';
-     var md=mctx.getImageData(0,0,w,h).data;
-     bgEngine='basic mode';
-     fgFromAlpha(imgEl,function(dd){
-      for(var i=0;i<md.length/4;i++){
-       var a=md[i*4]/255;
-       var tt=(a-0.32)/0.40;tt=tt<0?0:(tt>1?1:tt);a=tt*tt*(3-2*tt);
-       var o=i*4;
-       if(a>0.02&&a<0.98){
-        var r=dd[o],g=dd[o+1],b=dd[o+2],ex=g-Math.max(r,b);
-        if(ex>0)dd[o+1]=Math.max(0,g-ex*0.95);
-       }
-       dd[o+3]=Math.round(a*255);
-      }
-     }).then(resolve,reject);
-    }catch(e){reject(e)}
-   });
-   seg.send({image:imgEl}).catch(function(){if(!settled){settled=true;clearTimeout(timer);reject(new Error('send'))}});
-  }catch(e){if(!settled){settled=true;clearTimeout(timer);reject(e)}}
- });
+async function upscale(img){
+ const tf=window.__tf;
+ if(!srPipe)srPipe=await tf.pipeline('image-to-image','Xenova/swin2SR-classical-sr-x2-64',{quantized:true});
+ const out=await srPipe(img.src);
+ return imgFromCanvas(out.toCanvas());
 }
-async function removeBg(imgEl){
- try{return await removeBgModnet(imgEl);}
- catch(e){return await removeBgMediapipe(imgEl);}
-}
-function sharpen(ctx,w,h,amount){
- var src=ctx.getImageData(0,0,w,h),s=src.data;
- var out=ctx.createImageData(w,h),d=out.data;
- for(var y=1;y<h-1;y++){for(var x=1;x<w-1;x++){
-  var o=(y*w+x)*4;
-  for(var c=0;c<3;c++){
-   var v=s[((y-1)*w+x)*4+c]*-1+s[(y*w+x-1)*4+c]*-1+s[o+c]*5+s[(y*w+x+1)*4+c]*-1+s[((y+1)*w+x)*4+c]*-1;
-   d[o+c]=Math.max(0,Math.min(255,s[o+c]+(v-s[o+c])*amount));
-  }
-  d[o+3]=s[o+3];
- }}
- for(var x=0;x<w;x++){for(var c=0;c<4;c++){d[x*4+c]=s[x*4+c];d[((h-1)*w+x)*4+c]=s[((h-1)*w+x)*4+c];}}
- for(var y=0;y<h;y++){for(var c=0;c<4;c++){d[(y*w)*4+c]=s[(y*w)*4+c];d[(y*w+w-1)*4+c]=s[(y*w+w-1)*4+c];}}
- ctx.putImageData(out,0,0);
-}
-// Natural enhance: gentle clarity + light skin cleanup (original quality preserved)
-function beautyEnhance(ctx,w,h){
- var sw=Math.max(1,Math.round(w/10)),sh=Math.max(1,Math.round(h/10));
- var sc=document.createElement('canvas');sc.width=sw;sc.height=sh;
- sc.getContext('2d').drawImage(ctx.canvas,0,0,sw,sh);
- var bd=document.createElement('canvas');bd.width=w;bd.height=h;
- var bx=bd.getContext('2d');bx.imageSmoothingEnabled=true;bx.imageSmoothingQuality='high';
- bx.drawImage(sc,0,0,w,h);
- var bdata=bx.getImageData(0,0,w,h).data;
- var id=ctx.getImageData(0,0,w,h),d=id.data;
- for(var i=0;i<d.length;i+=4){
-  d[i]=Math.max(0,Math.min(255,(d[i]-128)*1.04+128+2));
-  d[i+1]=Math.max(0,Math.min(255,(d[i+1]-128)*1.04+128+2));
-  d[i+2]=Math.max(0,Math.min(255,(d[i+2]-128)*1.04+128+2));
- }
- ctx.putImageData(id,0,0);
- sharpen(ctx,w,h,0.25);
- var id2=ctx.getImageData(0,0,w,h),e=id2.data;
- for(var j=0;j<e.length;j+=4){
-  var r=e[j],g=e[j+1],b=e[j+2];
-  if(r>75&&g>40&&b>20&&r>=g&&r>=b&&(r-g)>6){
-   var m=0.6;
-   var bright=(r+g+b)/3;
-   var lift=Math.round((1-bright/255)*12)+4;
-   e[j]=Math.min(255,r+(bdata[j]-r)*m+lift);
-   e[j+1]=Math.min(255,g+(bdata[j+1]-g)*m+lift);
-   e[j+2]=Math.min(255,b+(bdata[j+2]-b)*m+lift);
-  }else{
-   var n=0.15;
-   e[j]=r+(bdata[j]-r)*n;
-   e[j+1]=g+(bdata[j+1]-g)*n;
-   e[j+2]=b+(bdata[j+2]-b)*n;
-  }
- }
- ctx.putImageData(id2,0,0);
+async function enhance(img){
+ const w=img.naturalWidth,h=img.naturalHeight;
+ const c=document.createElement('canvas');c.width=w;c.height=h;
+ const x=c.getContext('2d');
+ x.filter='contrast(1.06) saturate(1.08) brightness(1.02)';
+ x.drawImage(img,0,0);x.filter='none';
+ return imgFromCanvas(c);
 }
 async function makeFinal(){
- var ratio=getRatio();
- var w=srcImg.naturalWidth,h=srcImg.naturalHeight;
- statusEl.textContent='Detecting face...';
- var face=null;
- try{face=await detectFace(srcImg);}catch(e){face=null;}
- var cx=w/2,cy=h*0.36,fw=w*0.30;
- if(face){cx=face.x*w;cy=face.y*h;fw=face.w*w;}
- // generous crop just to isolate the person (final framing comes from measured person bounds)
- var cw,ch,bx,by;
- if(!face){bx=0;by=0;cw=w;ch=h;}
- else{
-  cw=fw*2.6;ch=cw/ratio;
-  if(ch>h*0.96){ch=h*0.96;cw=ch*ratio;}
-  if(cw>w*0.96){cw=w*0.96;ch=cw/ratio;}
-  var fhh=face.h*h;
-  var headTopNeed=cy-fhh*0.95;
-  by=cy-ch*0.42;
-  if(by>headTopNeed-ch*0.02) by=headTopNeed-ch*0.02;
-  bx=cx-cw/2;
-  if(bx<0)bx=0;if(by<0)by=0;if(bx+cw>w)bx=w-cw;
-  if(by+ch>h){ch=h-by;cw=ch*ratio;bx=cx-cw/2;if(bx<0)bx=0;if(bx+cw>w)bx=w-cw;}
- }
- var crop=document.createElement('canvas');crop.width=Math.round(cw);crop.height=Math.round(ch);
- crop.getContext('2d').drawImage(srcImg,bx,by,cw,ch,0,0,crop.width,crop.height);
- var cropImg=new Image();cropImg.src=crop.toDataURL('image/png');
- await new Promise(function(r){cropImg.onload=r;});
- didUpscale=false;
- if(cropImg.naturalWidth<800){
-  try{cropImg=await upscale2x(cropImg);didUpscale=true;}
-  catch(e){didUpscale=false;}
- }
- var fg=cropImg,bgOk=true;
- var outW=900,outH=Math.round(900/ratio);
- if(!keepOriginal){
-  statusEl.textContent='Removing background...';
-  try{fg=await removeBg(cropImg);}
-  catch(e){bgOk=false;fg=cropImg;}
-  if(bgOk&&face){
-   try{
-    statusEl.textContent='Cleaning background...';
-    var kk0=fg.naturalWidth/cw;
-    var fbw=face.w*w*kk0, fbh=face.h*h*kk0;
-    var fbox={x:(cx-bx)*kk0-fbw/2,y:(cy-by)*kk0-fbh/2,w:fbw,h:fbh};
-    var sc0=(outH*0.72)/(1.4*fbh);
-    if(1.9*fbw*sc0>outW*0.96) sc0=(outW*0.96)/(1.9*fbw);
-    fg=await cleanBlob(fg,fbox,outW*0.46/sc0);
-   }catch(e){}
+ if(!srcImg)return;
+ try{
+  statusEl.textContent='Preparing photo...';
+  const simg=await straightened();
+  const w=simg.naturalWidth,h=simg.naturalHeight;
+  statusEl.textContent='Detecting face...';
+  let face=null;
+  try{face=await detectFace(simg);}catch(e){face=null;}
+  const keepOriginal=keepBg.checked;
+  let cx=w/2,cy=h*0.36,fw=w*0.30;
+  if(face){cx=face.x*w;cy=face.y*h;fw=face.w*w;}
+  let cw,ch,bx,by;
+  if(!face){bx=0;by=0;cw=w;ch=h;}
+  else{
+   cw=fw*2.6;ch=cw/ratio;
+   if(ch>h*0.96){ch=h*0.96;cw=ch*ratio;}
+   if(cw>w*0.96){cw=w*0.96;ch=cw/ratio;}
+   const fhh=face.h*h;
+   const headTopNeed=cy-fhh*0.95;
+   by=cy-ch*0.42;
+   if(by>headTopNeed-ch*0.02)by=headTopNeed-ch*0.02;
+   bx=cx-cw/2;
+   if(bx<0)bx=0;if(by<0)by=0;if(bx+cw>w)bx=w-cw;
+   if(by+ch>h){ch=h-by;cw=ch*ratio;bx=cx-cw/2;if(bx<0)bx=0;if(bx+cw>w)bx=w-cw;}
   }
- }
- statusEl.textContent='Framing photo...';
- resultCanvas.width=outW;resultCanvas.height=outH;
- var ctx=resultCanvas.getContext('2d');
- ctx.fillStyle=keepOriginal?'#ffffff':bgColor;ctx.fillRect(0,0,outW,outH);
- ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
- // passport-standard framing anchored on detected face: head 72% of frame, crown at 10%, chest reaches frame bottom
- var framed=false;
- if(!keepOriginal&&bgOk&&face){
-  var kk=fg.naturalWidth/cw;
-  var fcx=(cx-bx)*kk, ftop=(cy-by)*kk-(face.h*h*kk)/2, fh=face.h*h*kk;
-  var crown=ftop-0.4*fh, headH=1.4*fh;
-  var sc=(outH*0.72)/headH;
-  if(fg.naturalWidth*sc>outW*0.95) sc=(outW*0.95)/fg.naturalWidth;
-  var dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
-  var dx=outW/2-fcx*sc, dy=outH*0.10-crown*sc;
-  ctx.drawImage(fg,dx,dy,dw,dh);
-  framed=true;
- }
- if(!framed&&!keepOriginal&&bgOk){
-  var fb=personBBox(fg);
-  if(fb){
-   var pH=fb.bottom-fb.top,pW=fb.right-fb.left,pCx=(fb.left+fb.right)/2;
-   var sc2=(outH*0.74)/pH;
-   if(pW*sc2>outW*0.92) sc2=(outW*0.92)/pW;
-   var dw2=fg.naturalWidth*sc2,dh2=fg.naturalHeight*sc2;
-   var dx2=outW/2-pCx*sc2, dy2=outH*0.10-fb.top*sc2;
-   ctx.drawImage(fg,dx2,dy2,dw2,dh2);
+  const crop=document.createElement('canvas');crop.width=Math.round(cw);crop.height=Math.round(ch);
+  crop.getContext('2d').drawImage(simg,bx,by,cw,ch,0,0,crop.width,crop.height);
+  let cropImg=await imgFromCanvas(crop);
+  if(cropImg.naturalWidth<800){
+   try{statusEl.textContent='AI 2x upscaling...';cropImg=await upscale(cropImg);}
+   catch(e){/* keep original */}
+  }
+  const outW=900,outH=Math.round(900/ratio);
+  let fg=cropImg,bgOk=true;
+  if(!keepOriginal){
+   try{fg=await removeBg(cropImg);}
+   catch(e){bgOk=false;fg=cropImg;}
+   if(bgOk&&face){
+    try{
+     statusEl.textContent='Cleaning background...';
+     const kk0=fg.naturalWidth/cw;
+     const fbw=face.w*w*kk0,fbh=face.h*h*kk0;
+     const fbox={x:(cx-bx)*kk0-fbw/2,y:(cy-by)*kk0-fbh/2,w:fbw,h:fbh};
+     let sc0=(outH*0.72)/(1.4*fbh);
+     if(1.9*fbw*sc0>outW*0.96)sc0=(outW*0.96)/(1.9*fbw);
+     fg=await cleanBlob(fg,fbox,outW*0.46/sc0);
+    }catch(e){}
+   }
+  }
+  statusEl.textContent='Framing photo...';
+  resultCanvas.width=outW;resultCanvas.height=outH;
+  const ctx=resultCanvas.getContext('2d');
+  ctx.fillStyle=keepOriginal?'#ffffff':bgColor;ctx.fillRect(0,0,outW,outH);
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  let framed=false;
+  if(!keepOriginal&&bgOk&&face){
+   const kk=fg.naturalWidth/cw;
+   const fcx=(cx-bx)*kk,ftop=(cy-by)*kk-(face.h*h*kk)/2,fh=face.h*h*kk;
+   const crown=ftop-0.4*fh,headH=1.4*fh;
+   let sc=(outH*0.72)/headH;
+   const pWlim=1.9*face.w*w*kk;
+   if(pWlim*sc>outW*0.96)sc=(outW*0.96)/pWlim;
+   const dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
+   const dx=outW/2-fcx*sc,dy=outH*0.10-crown*sc;
+   ctx.drawImage(fg,dx,dy,dw,dh);
    framed=true;
   }
- }
- if(!framed) ctx.drawImage(fg,0,0,outW,outH);
- statusEl.textContent='Enhancing quality...';
- try{beautyEnhance(ctx,outW,outH);}catch(e){}
- resultCanvas.style.display='block';previewCanvas.style.display='none';
- document.getElementById('downloadBtn').style.display='block';
- document.getElementById('printBtn').style.display='block';
- if(!bgOk)statusEl.textContent='Background remove failed (check internet) — passport size ready.';
-}
-processBtn.onclick=function(){
- if(!srcImg){alert('Please upload a photo first');return}
- processBtn.disabled=true;processBtn.textContent='Processing...';
- makeFinal().then(function(){
-  if(statusEl.textContent.indexOf('failed')<0){
-   var tag=bgEngine==='AI portrait matting'?'(AI matting)':bgEngine==='basic mode'?'(basic mode)':'';
-   statusEl.textContent='Ready! HD passport photo done '+tag+(didUpscale?' +AI 2x':'')+'.';
+  if(!framed){
+   if(!keepOriginal&&bgOk){
+    const fb=personBBox(fg);
+    if(fb){
+     const pH=fb.bottom-fb.top,pW=fb.right-fb.left,pCx=(fb.left+fb.right)/2;
+     let sc=(outH*0.74)/pH;
+     if(pW*sc>outW*0.92)sc=(outW*0.92)/pW;
+     const dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
+     const dx=outW/2-pCx*sc,dy=outH*0.10-fb.top*sc;
+     ctx.drawImage(fg,dx,dy,dw,dh);framed=true;
+    }
+   }
+   if(!framed)ctx.drawImage(fg,0,0,outW,outH);
   }
-  processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';
- }).catch(function(e){statusEl.textContent='Error: '+e.message;processBtn.disabled=false;processBtn.textContent='Auto Create Passport Photo';});
-};
-document.getElementById('downloadBtn').onclick=function(){var a=document.createElement('a');a.download='passport-photo-hd.png';a.href=resultCanvas.toDataURL('image/png');a.click()};
-document.getElementById('printBtn').onclick=function(){var sheet=document.createElement('canvas');sheet.width=1200;sheet.height=1800;var s=sheet.getContext('2d');s.fillStyle='#fff';s.fillRect(0,0,1200,1800);var tw=260,th=Math.round(260*(resultCanvas.height/resultCanvas.width)),y=60;for(var r=0;r<6;r++){var x=40;for(var c=0;c<4;c++){s.drawImage(resultCanvas,x,y,tw,th);x+=tw+20}y+=th+20;if(y>1750)break}var a=document.createElement('a');a.download='passport-4x6-sheet.png';a.href=sheet.toDataURL('image/png');a.click()};
+  statusEl.textContent='Enhancing...';
+  const finalC=document.createElement('canvas');finalC.width=outW;finalC.height=outH;
+  finalC.getContext('2d').drawImage(resultCanvas,0,0);
+  const enh=await enhance(await imgFromCanvas(finalC));
+  ctx.clearRect(0,0,outW,outH);ctx.drawImage(enh,0,0);
+  resultURL=resultCanvas.toDataURL('image/jpeg',0.92);
+  statusEl.textContent='Done!';
+ }catch(err){statusEl.textContent='Error: '+err.message;}
+}
+makeBtn.addEventListener('click',makeFinal);
+dlBtn.addEventListener('click',()=>{
+ if(!resultURL){statusEl.textContent='Make a photo first!';return;}
+ const a=document.createElement('a');a.href=resultURL;a.download='passport-photo.jpg';a.click();
+});
+printBtn.addEventListener('click',()=>{
+ if(!resultURL){statusEl.textContent='Make a photo first!';return;}
+ const pw=1800,ph=1200;
+ const sh=document.createElement('canvas');sh.width=pw;sh.height=ph;
+ const x=sh.getContext('2d');x.fillStyle='#ffffff';x.fillRect(0,0,pw,ph);
+ const im=new Image();
+ im.onload=()=>{
+  const iw=im.naturalWidth,ih=im.naturalHeight;
+  const tw=413,th=Math.round(413*ih/iw);
+  const gap=20;let px=gap,py=gap;
+  x.drawImage(im,0,0,iw,ih,px,py,tw,th);
+  while(true){
+   px+=tw+gap;
+   if(px+tw>pw){px=gap;py+=th+gap;}
+   if(py+th>ph)break;
+   x.drawImage(im,0,0,iw,ih,px,py,tw,th);
+  }
+  const a=document.createElement('a');a.href=sh.toDataURL('image/jpeg',0.92);a.download='print-4x6.jpg';a.click();
+ };
+ im.src=resultURL;
+});
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
