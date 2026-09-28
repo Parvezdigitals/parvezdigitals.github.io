@@ -90,10 +90,10 @@ input[type=range]{width:100%}
 </div>
 <div class="card">
 <h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove (MODNet) with clean edges.<br>4. Passport-standard framing anchored on face: head 72% of frame, crown at 10% margin, chest reaches frame bottom - head is never cut.<br>5. Background blob cleaner removes leftover background objects.<br>6. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>7. Natural enhance: clean skin + clarity, original quality preserved.<br>8. Download single photo or 4x6 print sheet.</p>
+<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove (MODNet) with clean edges.<br>4. Passport-standard framing anchored on face: head 50% of frame, crown at 6% margin, chest reaches frame bottom - head is never cut.<br>5. Background blob cleaner removes leftover background objects.<br>6. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>7. Natural enhance: clean skin + clarity, original quality preserved.<br>8. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v15</div>
+<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v16</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
@@ -184,7 +184,7 @@ function keepLargest(img){
    const x=c.getContext('2d');x.drawImage(img,0,0,sw,sh);
    const d=x.getImageData(0,0,sw,sh).data,n=sw*sh;
    const bin=new Uint8Array(n);
-   for(let i=0;i<n;i++)bin[i]=d[i*4+3]>100?1:0;
+   for(let i=0;i<n;i++)bin[i]=d[i*4+3]>50?1:0;
    const label=new Int32Array(n).fill(-1);let nc=0;const sizes=[];const stack=[];
    for(let i=0;i<n;i++){
     if(!bin[i]||label[i]>=0)continue;
@@ -241,7 +241,7 @@ function cleanBlob(fg,fb,maxHalf){
    const d=x2.getImageData(0,0,sw,sh).data,n=sw*sh;
    const k=sw/w;let i,xx,yy,p,q;
    const bin=new Uint8Array(n);
-   for(i=0;i<n;i++)bin[i]=d[i*4+3]>100?1:0;
+   for(i=0;i<n;i++)bin[i]=d[i*4+3]>50?1:0;
    if(maxHalf){
     const fcx=(fb.x+fb.w/2)*k,halfK=maxHalf*k;
     for(yy=0;yy<sh;yy++)for(xx=0;xx<sw;xx++){p=yy*sw+xx;if(Math.abs(xx-fcx)>halfK)bin[p]=0;}
@@ -355,7 +355,7 @@ async function makeFinal(){
      const kk0=fg.naturalWidth/cw;
      const fbw=face.w*w*kk0,fbh=face.h*h*kk0;
      const fbox={x:(cx-bx)*kk0-fbw/2,y:(cy-by)*kk0-fbh/2,w:fbw,h:fbh};
-     let sc0=(outH*0.72)/(1.4*fbh);
+     let sc0=(outH*0.50)/(1.4*fbh);
      if(1.9*fbw*sc0>outW*0.96)sc0=(outW*0.96)/(1.9*fbw);
      fg=await cleanBlob(fg,fbox,outW*0.46/sc0);
     }catch(e){}
@@ -371,11 +371,11 @@ async function makeFinal(){
    const kk=fg.naturalWidth/cw;
    const fcx=(cx-bx)*kk,ftop=(cy-by)*kk-(face.h*h*kk)/2,fh=face.h*h*kk;
    const crown=ftop-0.4*fh,headH=1.4*fh;
-   let sc=(outH*0.72)/headH;
+   let sc=(outH*0.50)/headH;
    const pWlim=1.9*face.w*w*kk;
    if(pWlim*sc>outW*0.96)sc=(outW*0.96)/pWlim;
    const dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
-   const dx=outW/2-fcx*sc,dy=outH*0.10-crown*sc;
+   const dx=outW/2-fcx*sc,dy=outH*0.06-crown*sc;
    ctx.drawImage(fg,dx,dy,dw,dh);
    framed=true;
   }
@@ -384,10 +384,10 @@ async function makeFinal(){
     const fb=personBBox(fg);
     if(fb){
      const pH=fb.bottom-fb.top,pW=fb.right-fb.left,pCx=(fb.left+fb.right)/2;
-     let sc=(outH*0.74)/pH;
+     let sc=(outH*0.52)/pH;
      if(pW*sc>outW*0.92)sc=(outW*0.92)/pW;
      const dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
-     const dx=outW/2-pCx*sc,dy=outH*0.10-fb.top*sc;
+     const dx=outW/2-pCx*sc,dy=outH*0.08-fb.top*sc;
      ctx.drawImage(fg,dx,dy,dw,dh);framed=true;
     }
    }
