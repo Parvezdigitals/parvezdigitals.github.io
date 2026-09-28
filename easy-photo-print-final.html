@@ -3,48 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parvez Digitals - Final Passport Maker</title>
+<title>Final Auto Passport - Parvez Digitals</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0f0f0f;color:#fff;font-family:system-ui;padding:12px}
-.app{max-width:430px;margin:auto;background:#1e1e1e;border-radius:20px;padding:18px;border:1px solid #333}
-h2{text-align:center;margin:0 0 12px 0}
-#fileInput{width:100%;background:#fff;color:#000;padding:14px;border-radius:12px;font-size:16px;font-weight:800}
-#preview,#result{width:100%;border-radius:14px;margin-top:12px;display:none;background:#fff}
-.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:800;font-size:16px;margin-top:12px}
-.bg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
-.bg button{padding:12px;border-radius:10px;border:3px solid transparent;font-weight:800}
-.bg button.active{border-color:#00ff88}
-#status{text-align:center;color:#00ff88;margin-top:12px}
+body{margin:0;background:#111;color:#fff;font-family:system-ui;padding:12px}
+.box{max-width:400px;margin:0 auto;background:#222;padding:16px;border-radius:18px}
+input{width:100%;padding:16px;background:#fff;color:#000;border-radius:12px;font-size:17px;font-weight:bold}
+img{width:100%;border-radius:14px;margin-top:12px;background:#fff}
+button{width:100%;padding:14px;border-radius:12px;border:0;font-weight:800;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="app">
-<h2>📸 Parvez Digitals</h2>
+<div class="box">
+<h3 style="text-align:center">📸 Parvez Digitals FINAL</h3>
 
 <input type="file" id="fileInput" accept="image/*">
-<img id="preview">
+<p id="msg" style="text-align:center;color:#0f8">গ্যালারি থেকে ছবি বাছো</p>
 
-<div class="bg">
-<button id="b1" style="background:#fff" onclick="changeBg('#ffffff','b1')">সাদা</button>
-<button id="b2" style="background:#a3d5ff" onclick="changeBg('#a3d5ff','b2')">হালকা ব্লু</button>
-<button id="b3" style="background:#1976d2;color:#fff" onclick="changeBg('#1976d2','b3')">ডিপ ব্লু</button>
+<img id="preview" style="display:none">
+<canvas id="canvas" width="800" height="1000" style="display:none"></canvas>
+<img id="final" style="display:none">
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
+<button style="background:#fff" onclick="bg='#ffffff';make()">সাদা</button>
+<button style="background:#8ec8ff" onclick="bg='#a3d5ff';make()">ব্লু</button>
+<button style="background:#0d5cb6;color:#fff" onclick="bg='#1976d2';make()">ডিপ ব্লু</button>
 </div>
 
-<button class="btn" style="background:#fff;color:#000" onclick="makePassport()">✨ HD Passport বানাও</button>
-
-<canvas id="canvas" width="800" height="1000" style="display:none"></canvas>
-<img id="result">
-
-<a id="downloadLink" download="passport_hd.jpg" style="text-decoration:none">
-<button class="btn" id="dlBtn" style="background:#00ff88;color:#000;display:none">⬇️ ডাউনলোড করো</button>
-</a>
-
-<div id="status">ছবি বাছো</div>
+<a id="dlink" download="passport.jpg"><button id="dbtn" style="display:none;background:#00ff88;margin-top:12px">⬇️ ডাউনলোড করো</button></a>
 </div>
 
 <script>
-let selectedImage = null;
-let bgColor = "#ffffff";
+let img = null;
+let bg = '#ffffff';
+const inp = document.getElementById('fileInput');
+const preview = document.getElementById('preview');
+const finalImg = document.getElementById('final');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-const fileInput = document.getElementById('
+inp.onchange = function(){
+  let f = this.files[0];
+  if(!f) return;
+  document.getElementById('msg').innerText = 'লোড হচ্ছে...';
+  let r = new FileReader();
+  r.onload = function(e){
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    img = new Image();
+    img.onload = function(){ make(); };
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(f);
+};
+
+function make(){
+  if(!img) return;
+  document.getElementById('msg').innerText = 'বানানো হচ্ছে...';
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,800,1000);
+  ctx.drawImage(img, 0, 0, 800, 1000);
+  let url = canvas.toDataURL('image/jpeg', 0.9);
+  finalImg.src = url;
+  finalImg.style.display = 'block';
+  document.getElementById('dlink').href = url;
+  document.getElementById('dbtn').style.display = 'block';
+  document.getElementById('msg').innerText = '✅ হয়ে গেছে, ডাউনলোড করো';
+}
+</script>
+</body>
+</html>
