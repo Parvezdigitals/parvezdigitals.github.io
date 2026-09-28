@@ -3,281 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>PARVEZ DIGITAL SERVICE - Photo Enhancer</title>
+<title>PARVEZ DIGITAL SERVICE - AI Photo Enhancer</title>
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;background:#0d1629;color:#fff;font-family:Arial,"Noto Sans Bengali",sans-serif;
-}
-header{
-  position:sticky;top:0;z-index:5;background:#0d1629;
-  border-bottom:1px solid #17233a;padding:14px 16px;
-}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{
-  width:52px;height:52px;border-radius:50%;background:#050914;
-  border:2px solid #f7b500;display:flex;align-items:center;justify-content:center;
-  color:#f7b500;font-weight:900;font-size:14px;text-align:center;
-}
-.brand h1{font-size:19px;margin:0;color:#fff}
-.brand p{margin:4px 0 0;color:#f7b500;font-size:12px;font-weight:bold}
-.wrap{max-width:900px;margin:auto;padding:18px 14px 35px}
-.card{
-  background:#111d31;border:2px solid #f7b500;border-radius:18px;
-  padding:16px;margin-bottom:16px;box-shadow:0 8px 25px #0005;
-}
-h2{margin:0 0 12px;color:#f7b500;font-size:21px}
-.upload{
-  display:block;background:#2563eb;border-radius:13px;padding:15px;
-  text-align:center;font-size:18px;font-weight:bold;cursor:pointer;
-}
-.upload input{display:none}
-.preview{
-  width:100%;max-height:65vh;object-fit:contain;background:#07101e;
-  border-radius:14px;border:1px solid #334155;display:block;margin-top:14px;
-}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.control{
-  background:#1a2940;border-radius:12px;padding:12px;margin-top:10px;
-}
+body{margin:0;background:#0d1629;color:#fff;font-family:Arial,"Noto Sans Bengali",sans-serif}
+header{position:sticky;top:0;z-index:10;background:#0d1629;border-bottom:1px solid #1c2940;padding:13px 15px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:52px;height:52px;border-radius:50%;
+background:#050914;border:2px solid #f7b500;display:flex;align-items:center;justify-content:center;
+color:#f7b500;font-size:13px;font-weight:900;text-align:center}.brand h1{font-size:18px;margin:0}
+.brand p{margin:4px 0 0;color:#f7b500;font-size:11px;font-weight:bold}
+.wrap{max-width:900px;margin:auto;padding:16px 13px 35px}
+.card{background:#111d31;border:2px solid #f7b500;border-radius:18px;padding:15px;margin-bottom:15px;
+box-shadow:0 8px 25px #0005}
+h2{margin:0 0 12px;color:#f7b500;font-size:20px}
+.upload{display:block;background:#2563eb;border-radius:13px;padding:15px;text-align:center;
+font-size:17px;font-weight:800;cursor:pointer}.upload input{display:none}
+canvas,.imgpreview{width:100%;max-height:62vh;object-fit:contain;background-color:#222;
+background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),
+linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);
+background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0;
+border-radius:13px;border:1px solid #334155;display:block;margin-top:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{background:#1a2940;border-radius:12px;padding:11px}
 .control label{display:flex;justify-content:space-between;font-weight:bold;font-size:14px}
 input[type=range]{width:100%;accent-color:#f7b500}
-button{
-  width:100%;border:0;border-radius:13px;padding:14px;margin-top:10px;
-  font-size:17px;font-weight:800;cursor:pointer;
-}
-.primary{background:#f7b500;color:#111}
-.green{background:#16a34a;color:#fff}
-.gray{background:#334155;color:#fff}
-.status{color:#22c55e;text-align:center;min-height:22px;margin-top:8px;font-weight:bold}
-.small{font-size:12px;color:#94a3b8;line-height:1.5}
-.hidden{display:none}
-@media(max-width:600px){
-  .row{grid-template-columns:1fr}
-  .brand h1{font-size:17px}
-}
+button{width:100%;border:0;border-radius:13px;padding:14px;margin-top:10px;font-size:16px;font-weight:800;cursor:pointer}
+.primary{background:#f7b500;color:#111}.green{background:#16a34a;color:#fff}.purple{background:#7c3aed;color:#fff}
+.gray{background:#334155;color:#fff}.danger{background:#dc2626;color:#fff}
+.status{text-align:center;min-height:22px;margin-top:8px;color:#22c55e;font-weight:bold}
+.progress{height:9px;background:#25344d;border-radius:20px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:#f7b500;transition:.2s}
+.small{font-size:12px;color:#94a3b8;line-height:1.5}.hidden{display:none}
+.badge{display:inline-block;background:#063b2a;color:#55e6a5;padding:6px 9px;border-radius:20px;font-size:12px;font-weight:bold}
+@media(max-width:600px){.row{grid-template-columns:1fr}.brand h1{font-size:16px}}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="brand">
-    <div class="logo">PA<br>PARVEZ</div>
-    <div>
-      <h1>PARVEZ DIGITAL SERVICE</h1>
-      <p>📸 PHOTO ENHANCER • HD QUALITY</p>
-    </div>
-  </div>
+<div class="brand">
+<div class="logo">PA<br>PARVEZ</div>
+<div><h1>PARVEZ DIGITAL SERVICE</h1><p>AI PHOTO ENHANCER • HAIR-SAFE BACKGROUND REMOVE</p></div>
+</div>
 </header>
 
 <main class="wrap">
-  <div class="card">
-    <h2>📸 HD Photo Enhancer</h2>
-    <label class="upload">
-      📁 ছবি নির্বাচন করুন
-      <input id="file" type="file" accept="image/*">
-    </label>
+<div id="httpsNotice" class="card" style="border-color:#ef4444;background:#2a1620">
+  <b>⚠️ গুরুত্বপূর্ণ:</b> AI Background Remove-এর জন্য এই page-টি <b>HTTPS website</b> থেকে চালান।
+  Download করা HTML-টি সরাসরি <b>file://</b> দিয়ে খুললে model load ব্যর্থ হতে পারে।
+</div>
+<div class="card">
+<h2>📸 AI Photo Enhancer</h2>
+<label class="upload">📁 ছবি নির্বাচন করুন<input id="file" type="file" accept="image/*"></label>
+<div id="status" class="status"></div>
+<div class="progress hidden" id="progress"><div class="bar" id="bar"></div></div>
+<canvas id="canvas" class="hidden"></canvas>
+</div>
 
-    <div id="status" class="status"></div>
+<div id="controls" class="card hidden">
+<h2>✂️ AI Background Remove</h2>
+<span class="badge">🧠 Hair / edge matting mode</span>
+<button class="purple" id="removeBG">✂️ AI BACKGROUND REMOVE</button>
+<button class="gray" id="restore">↩️ Original Background</button>
+<p class="small">AI matting ব্যবহার করা হচ্ছে যাতে মাথার চুলের সূক্ষ্ম edge যতটা সম্ভব রাখা যায়। প্রথমবার AI model browser-এ load হতে সময় লাগতে পারে।</p>
+</div>
 
-    <canvas id="canvas" class="preview hidden"></canvas>
-  </div>
-
-  <div id="controls" class="card hidden">
-    <h2>✨ Photo Enhancement</h2>
-
-    <div class="row">
-      <div class="control">
-        <label>☀️ Brightness <span id="bv">0</span></label>
-        <input id="brightness" type="range" min="-30" max="30" value="0">
-      </div>
-      <div class="control">
-        <label>◐ Contrast <span id="cv">1.00</span></label>
-        <input id="contrast" type="range" min="0.7" max="1.4" step="0.01" value="1">
-      </div>
-      <div class="control">
-        <label>🎨 Saturation <span id="sv">1.00</span></label>
-        <input id="saturation" type="range" min="0.7" max="1.3" step="0.01" value="1">
-      </div>
-      <div class="control">
-        <label>✨ Smooth <span id="smv">15</span></label>
-        <input id="smooth" type="range" min="0" max="35" value="15">
-      </div>
-      <div class="control">
-        <label>🔍 Sharpness <span id="shv">15</span></label>
-        <input id="sharp" type="range" min="0" max="40" value="15">
-      </div>
-      <div class="control">
-        <label>📐 Upscale <span id="uv">2×</span></label>
-        <select id="upscale" style="width:100%;padding:10px;margin-top:7px;border-radius:8px">
-          <option value="1">1×</option>
-          <option value="2" selected>2× HD</option>
-          <option value="3">3× HD</option>
-          <option value="4">4× HD</option>
-        </select>
-      </div>
-    </div>
-
-    <button class="primary" id="enhance">✨ APPLY ENHANCEMENT</button>
-    <button class="green" id="download">⬇️ DOWNLOAD HD PHOTO</button>
-    <button class="gray" id="reset">↻ RESET</button>
-
-    <p class="small">
-      নোট: এই ভার্সনটি পুরোপুরি browser-এর ভিতরে কাজ করে। ছবি কোনো server-এ পাঠানো হয় না।
-      খুব বড় ছবি হলে মোবাইলের RAM অনুযায়ী 4× upscale ধীর হতে পারে।
-    </p>
-  </div>
+<div id="editCard" class="card hidden">
+<h2>✨ HD Enhancement</h2>
+<div class="row">
+<div class="control"><label>☀️ Brightness <span id="bv">0</span></label><input id="brightness" type="range" min="-30" max="30" value="0"></div>
+<div class="control"><label>◐ Contrast <span id="cv">1.00</span></label><input id="contrast" type="range" min=".7" max="1.4" step=".01" value="1"></div>
+<div class="control"><label>🎨 Saturation <span id="sv">1.00</span></label><input id="saturation" type="range" min=".7" max="1.3" step=".01" value="1"></div>
+<div class="control"><label>🙂 Skin Smooth <span id="smv">10</span></label><input id="smooth" type="range" min="0" max="25" value="10"></div>
+<div class="control"><label>🔍 Sharpness <span id="shv">12</span></label><input id="sharp" type="range" min="0" max="35" value="12"></div>
+<div class="control"><label>📐 Upscale <span id="uv">2×</span></label>
+<select id="upscale" style="width:100%;padding:10px;margin-top:7px;border-radius:8px">
+<option value="1">1×</option><option value="2" selected>2× HD</option><option value="3">3× HD</option><option value="4">4× HD</option>
+</select></div>
+</div>
+<button class="primary" id="enhance">✨ APPLY ENHANCEMENT</button>
+<button class="green" id="download">⬇️ DOWNLOAD HD PNG</button>
+<button class="gray" id="reset">↻ RESET</button>
+<p class="small">Background removed হলে PNG download করলে transparent background এবং hair edge বজায় থাকবে।</p>
+</div>
 </main>
 
-<script>
-const fileInput=document.getElementById("file");
-const canvas=document.getElementById("canvas");
-const ctx=canvas.getContext("2d",{willReadFrequently:true});
-const controls=document.getElementById("controls");
-const status=document.getElementById("status");
-
+<script type="module">
+let removeBackgroundFn=null;
 let sourceImage=null;
+let originalFile=null;
+let removedBlob=null;
+let bgRemoved=false;
+
+const fileInput=document.getElementById("file"), canvas=document.getElementById("canvas"),
+ctx=canvas.getContext("2d",{willReadFrequently:true}), controls=document.getElementById("controls"),
+editCard=document.getElementById("editCard"), status=document.getElementById("status"),
+progress=document.getElementById("progress"), bar=document.getElementById("bar");
 
 const $=id=>document.getElementById(id);
+if(location.protocol==="https:" || location.hostname==="localhost") document.getElementById("httpsNotice").style.display="none";
+const clamp=v=>Math.max(0,Math.min(255,v));
 
-function clamp(v){return Math.max(0,Math.min(255,v));}
-
-function updateLabels(){
-  $("bv").textContent=$("brightness").value;
-  $("cv").textContent=Number($("contrast").value).toFixed(2);
-  $("sv").textContent=Number($("saturation").value).toFixed(2);
-  $("smv").textContent=$("smooth").value;
-  $("shv").textContent=$("sharp").value;
-  $("uv").textContent=$("upscale").value+"×";
+function labels(){
+$("bv").textContent=$("brightness").value;
+$("cv").textContent=Number($("contrast").value).toFixed(2);
+$("sv").textContent=Number($("saturation").value).toFixed(2);
+$("smv").textContent=$("smooth").value;
+$("shv").textContent=$("sharp").value;
+$("uv").textContent=$("upscale").value+"×";
 }
-["brightness","contrast","saturation","smooth","sharp","upscale"].forEach(id=>{
-  $(id).addEventListener("input",updateLabels);
-});
-updateLabels();
+["brightness","contrast","saturation","smooth","sharp","upscale"].forEach(x=>$(x).addEventListener("input",labels));
+labels();
+
+function showProgress(p,text){
+progress.classList.remove("hidden");bar.style.width=p+"%";status.textContent=text;
+}
+function done(text){bar.style.width="100%";status.textContent=text;setTimeout(()=>progress.classList.add("hidden"),700)}
 
 fileInput.addEventListener("change",e=>{
-  const file=e.target.files[0];
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const img=new Image();
-    img.onload=()=>{
-      sourceImage=img;
-      controls.classList.remove("hidden");
-      canvas.classList.remove("hidden");
-      status.textContent="ছবি লোড হয়েছে ✓";
-      render();
-    };
-    img.src=ev.target.result;
-  };
-  reader.readAsDataURL(file);
+const f=e.target.files[0];if(!f)return;
+originalFile=f;removedBlob=null;bgRemoved=false;
+const reader=new FileReader();
+reader.onload=ev=>{
+const im=new Image();
+im.onload=()=>{sourceImage=im;controls.classList.remove("hidden");editCard.classList.remove("hidden");
+canvas.classList.remove("hidden");status.textContent="ছবি লোড হয়েছে ✓";drawOriginal();};
+im.src=ev.target.result;
+};reader.readAsDataURL(f);
 });
 
-function render(){
-  if(!sourceImage)return;
-
-  const scale=Number($("upscale").value);
-  const maxPixels=12000000; // mobile safety
-  let w=sourceImage.naturalWidth*scale;
-  let h=sourceImage.naturalHeight*scale;
-  if(w*h>maxPixels){
-    const k=Math.sqrt(maxPixels/(w*h));
-    w=Math.floor(w*k);h=Math.floor(h*k);
-    status.textContent="মোবাইল memory-এর জন্য output size সামান্য কমানো হয়েছে";
-  }
-
-  canvas.width=w;canvas.height=h;
-  ctx.imageSmoothingEnabled=true;
-  ctx.imageSmoothingQuality="high";
-  ctx.drawImage(sourceImage,0,0,w,h);
-
-  let data=ctx.getImageData(0,0,w,h);
-  let p=data.data;
-
-  const brightness=Number($("brightness").value);
-  const contrast=Number($("contrast").value);
-  const saturation=Number($("saturation").value);
-
-  // Basic tone + saturation correction
-  for(let i=0;i<p.length;i+=4){
-    let r=p[i],g=p[i+1],b=p[i+2];
-
-    r=(r-128)*contrast+128+brightness;
-    g=(g-128)*contrast+128+brightness;
-    b=(b-128)*contrast+128+brightness;
-
-    const gray=0.299*r+0.587*g+0.114*b;
-    r=gray+(r-gray)*saturation;
-    g=gray+(g-gray)*saturation;
-    b=gray+(b-gray)*saturation;
-
-    p[i]=clamp(r);p[i+1]=clamp(g);p[i+2]=clamp(b);
-  }
-
-  ctx.putImageData(data,0,0);
-
-  // Gentle smoothing
-  const smooth=Number($("smooth").value);
-  if(smooth>0){
-    const temp=document.createElement("canvas");
-    temp.width=w;temp.height=h;
-    const t=temp.getContext("2d");
-    t.filter=`blur(${Math.max(0.2,smooth/10)}px)`;
-    t.drawImage(canvas,0,0);
-    ctx.globalAlpha=Math.min(0.45,smooth/100);
-    ctx.drawImage(temp,0,0);
-    ctx.globalAlpha=1;
-  }
-
-  // Unsharp-style sharpening
-  const sharp=Number($("sharp").value);
-  if(sharp>0){
-    const original=ctx.getImageData(0,0,w,h);
-    const blurred=document.createElement("canvas");
-    blurred.width=w;blurred.height=h;
-    const bc=blurred.getContext("2d");
-    bc.filter="blur(1px)";
-    bc.drawImage(canvas,0,0);
-    const bp=bc.getImageData(0,0,w,h).data;
-    const op=original.data;
-    const amount=sharp/100;
-
-    for(let i=0;i<op.length;i+=4){
-      op[i]=clamp(op[i]+(op[i]-bp[i])*amount);
-      op[i+1]=clamp(op[i+1]+(op[i+1]-bp[i+1])*amount);
-      op[i+2]=clamp(op[i+2]+(op[i+2]-bp[i+2])*amount);
-    }
-    ctx.putImageData(original,0,0);
-  }
-
-  status.textContent="Enhancement complete ✓";
+function drawOriginal(){
+if(!sourceImage)return;
+const scale=Math.min(2,12000000/(sourceImage.naturalWidth*sourceImage.naturalHeight))**.5;
+const s=Math.min(2,Math.sqrt(12000000/(sourceImage.naturalWidth*sourceImage.naturalHeight)));
+canvas.width=Math.max(1,Math.floor(sourceImage.naturalWidth*s));
+canvas.height=Math.max(1,Math.floor(sourceImage.naturalHeight*s));
+ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(sourceImage,0,0,canvas.width,canvas.height);
 }
 
-$("enhance").addEventListener("click",render);
+async function getLibrary(){
+if(removeBackgroundFn)return removeBackgroundFn;
+showProgress(5,"AI background remover loading...");
+const mod=await import("https://esm.sh/@imgly/background-removal@1.7.0");
+removeBackgroundFn=mod.default||mod.removeBackground;
+if(typeof removeBackgroundFn!=="function")throw new Error("AI library load failed");
+return removeBackgroundFn;
+}
+
+$("removeBG").addEventListener("click",async()=>{
+if(!originalFile){alert("আগে ছবি নির্বাচন করুন");return}
+try{
+showProgress(8,"AI model প্রস্তুত হচ্ছে...");
+const removeBG=await getLibrary();
+showProgress(18,"মাথার চুল ও subject detect হচ্ছে...");
+removedBlob=await removeBG(originalFile,{
+model:"isnet_fp16",
+device:"cpu",
+proxyToWorker:false,
+debug:true,
+output:{format:"image/png",type:"foreground"},
+progress:(key,current,total)=>{
+if(total){const p=20+Math.round(current/total*65);showProgress(p,"AI background remove চলছে... "+p+"%")}
+}
+});
+showProgress(90,"Transparent hair edge তৈরি হচ্ছে...");
+const url=URL.createObjectURL(removedBlob);
+const im=new Image();
+im.onload=()=>{
+sourceImage=im;bgRemoved=true;drawOriginal();URL.revokeObjectURL(url);
+done("Background remove complete ✓ Hair edge preserve করা হয়েছে");
+};
+im.src=url;
+}catch(err){
+console.error(err);
+status.textContent="AI remove চালু হয়নি। এই HTML-টি HTTPS-এ (যেমন GitHub Pages) খুলুন, তারপর আবার চেষ্টা করুন।";
+progress.classList.add("hidden");
+}
+});
+
+$("restore").addEventListener("click",()=>{
+if(!originalFile)return;
+bgRemoved=false;removedBlob=null;
+const r=new FileReader();r.onload=e=>{const im=new Image();im.onload=()=>{sourceImage=im;drawOriginal();status.textContent="Original background ফিরেছে ✓"};im.src=e.target.result};r.readAsDataURL(originalFile);
+});
+
+function enhance(){
+if(!sourceImage)return;
+const scale=Number($("upscale").value);
+let w=sourceImage.naturalWidth*scale,h=sourceImage.naturalHeight*scale;
+const max=12000000;if(w*h>max){const k=Math.sqrt(max/(w*h));w=Math.floor(w*k);h=Math.floor(h*k)}
+canvas.width=w;canvas.height=h;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
+ctx.drawImage(sourceImage,0,0,w,h);
+
+let d=ctx.getImageData(0,0,w,h),p=d.data;
+const br=+$("brightness").value,co=+$("contrast").value,sa=+$("saturation").value;
+for(let i=0;i<p.length;i+=4){
+let r=(p[i]-128)*co+128+br,g=(p[i+1]-128)*co+128+br,b=(p[i+2]-128)*co+128+br;
+let gray=.299*r+.587*g+.114*b;r=gray+(r-gray)*sa;g=gray+(g-gray)*sa;b=gray+(b-gray)*sa;
+p[i]=clamp(r);p[i+1]=clamp(g);p[i+2]=clamp(b);
+}
+ctx.putImageData(d,0,0);
+
+const sm=+$("smooth").value;
+if(sm>0){const t=document.createElement("canvas");t.width=w;t.height=h;const tc=t.getContext("2d");
+tc.filter=`blur(${Math.max(.15,sm/14)}px)`;tc.drawImage(canvas,0,0);
+ctx.globalAlpha=Math.min(.28,sm/100);ctx.drawImage(t,0,0);ctx.globalAlpha=1}
+
+const sh=+$("sharp").value;
+if(sh>0){const o=ctx.getImageData(0,0,w,h),t=document.createElement("canvas");t.width=w;t.height=h;
+const tc=t.getContext("2d");tc.filter="blur(1px)";tc.drawImage(canvas,0,0);
+const bp=tc.getImageData(0,0,w,h).data,op=o.data,a=sh/100;
+for(let i=0;i<op.length;i+=4){op[i]=clamp(op[i]+(op[i]-bp[i])*a);op[i+1]=clamp(op[i+1]+(op[i+1]-bp[i+1])*a);op[i+2]=clamp(op[i+2]+(op[i+2]-bp[i+2])*a)}
+ctx.putImageData(o,0,0)}
+status.textContent="Enhancement complete ✓";
+}
+$("enhance").addEventListener("click",enhance);
 
 $("download").addEventListener("click",()=>{
-  if(!sourceImage){
-    alert("আগে একটি ছবি নির্বাচন করুন");
-    return;
-  }
-  canvas.toBlob(blob=>{
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="PARVEZ_DIGITAL_ENHANCED_HD.jpg";
-    a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  },"image/jpeg",0.97);
+if(!sourceImage){alert("আগে ছবি নির্বাচন করুন");return}
+canvas.toBlob(blob=>{
+const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+a.download=bgRemoved?"PARVEZ_DIGITAL_CUTOUT_HD.png":"PARVEZ_DIGITAL_ENHANCED_HD.png";
+a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+},"image/png");
 });
 
 $("reset").addEventListener("click",()=>{
-  $("brightness").value=0;
-  $("contrast").value=1;
-  $("saturation").value=1;
-  $("smooth").value=15;
-  $("sharp").value=15;
-  $("upscale").value=2;
-  updateLabels();
-  render();
+$("brightness").value=0;$("contrast").value=1;$("saturation").value=1;$("smooth").value=10;$("sharp").value=12;$("upscale").value=2;
+labels();if(originalFile){bgRemoved=false;removedBlob=null;const r=new FileReader();r.onload=e=>{const im=new Image();im.onload=()=>{sourceImage=im;drawOriginal()};im.src=e.target.result};r.readAsDataURL(originalFile)}
 });
 </script>
 </body>
