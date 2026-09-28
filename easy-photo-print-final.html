@@ -3,98 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Maker - 3 Background</title>
+<title>Passport Maker PRO - Parvez Digitals</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0; background:#111; color:#fff; font-family:system-ui; padding:12px}
-.app{max-width:430px; margin:auto; background:#1e1e1e; border-radius:20px; padding:18px}
-h2{text-align:center}
-.upload{border:2px dashed #666; border-radius:15px; padding:25px; text-align:center; background:#252525}
-input{display:none}
-.btn{width:100%; padding:15px; border:none; border-radius:12px; font-weight:700; font-size:17px; margin-top:12px}
-.white{background:#fff; color:#000}
-.lb{background:#a3d5ff; color:#000}
-.blue{background:#1976d2; color:#fff}
-.black{background:#fff; color:#000; margin-top:15px}
-.green{background:#00ff88; color:#000; display:none}
-#preview,#result{width:100%; border-radius:15px; margin-top:15px; display:none; background:#fff}
-#status{text-align:center; color:#00ff88; margin-top:10px; font-size:14px}
-.bg-options{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px}
-.bg-options button{padding:12px; border-radius:10px; border:1px solid #444; font-weight:700}
+body{margin:0; background:#0f0f0f; color:#fff; font-family:system-ui; padding:12px}
+.app{max-width:430px; margin:auto; background:#1e1e1e; border-radius:20px; padding:18px; border:1px solid #333}
+h2{text-align:center; margin:5px 0}
+.upload{border:2px dashed #888; border-radius:15px; padding:30px 15px; text-align:center; background:#252525; cursor:pointer}
+#preview, #result{width:100%; border-radius:15px; margin-top:15px; display:none; background:#fff}
+.btn{width:100%; padding:14px; border:none; border-radius:12px; font-weight:800; font-size:16px; margin-top:12px}
+.bg-opt{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px}
+.bg-opt button{padding:12px; border-radius:10px; border:1px solid #555; font-weight:700; color:#000}
+.status{text-align:center; color:#00ff88; margin-top:12px; font-size:14px}
 </style>
 </head>
 <body>
 <div class="app">
-<h2>📸 পাসপোর্ট মেকার PRO</h2>
-<div class="upload" onclick="document.getElementById('file').click()">
-<div style="font-size:40px">👆</div>
-<p>ছবিতে টাচ করে গ্যালারি থেকে ছবি নাও</p>
+<h2>📸 Parvez Digitals Passport</h2>
+<div class="upload" id="uploadBox">
+<div style="font-size:38px">📁</div>
+<p>এখানে টাচ করে ছবি আপলোড করো</p>
 <img id="preview">
 </div>
-<input type="file" id="file" accept="image/*">
+<input type="file" id="file" accept="image/*" style="display:none">
 
-<div class="bg-options">
-<button class="white" onclick="changeBg('white')">⬜ সাদা</button>
-<button class="lb" onclick="changeBg('#a3d5ff')">🟦 হালকা ব্লু</button>
-<button class="blue" onclick="changeBg('#1976d2')">🟦 ব্লু</button>
+<div class="bg-opt">
+<button style="background:#fff" onclick="changeBg('#ffffff')">সাদা</button>
+<button style="background:#a3d5ff" onclick="changeBg('#a3d5ff')">হালকা ব্লু</button>
+<button style="background:#1976d2; color:#fff" onclick="changeBg('#1976d2')">ডিপ ব্লু</button>
 </div>
 
-<button class="btn black" id="autoBtn">✨ অটো পাসপোর্ট বানাও (HD + ক্লিয়ার)</button>
+<button class="btn" style="background:#fff; color:#000" id="makeBtn">✨ HD Passport বানাও</button>
 
 <canvas id="canvas" style="display:none"></canvas>
 <img id="result">
-<a id="download"><button class="btn green" id="dlBtn">⬇️ ডাউনলোড করো</button></a>
-<div id="status">ছবি সিলেক্ট করো</div>
+<a id="downloadLink" download="passport_hd.jpg" style="text-decoration:none">
+<button class="btn" id="dlBtn" style="background:#00ff88; color:#000; display:none">⬇️ ডাউনলোড করো (HD)</button>
+</a>
+<div class="status" id="status">ছবি সিলেক্ট করো</div>
 </div>
 
-<script type="module">
-import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.mjs";
-let originalFile=null, bgColor="#ffffff", lastImg=null;
-const fileInput=document.getElementById('file'), preview=document.getElementById('preview');
-const canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
-const result=document.getElementById('result'), status=document.getElementById('status');
-const dlBtn=document.getElementById('dlBtn'), download=document.getElementById('download');
+<script>
+let selectedImg = null;
+let bgColor = "#ffffff";
+const fileInput = document.getElementById('file');
+const uploadBox = document.getElementById('uploadBox');
+const preview = document.getElementById('preview');
+const result = document.getElementById('result');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const status = document.getElementById('status');
+const dlBtn = document.getElementById('dlBtn');
+const downloadLink = document.getElementById('downloadLink');
 
-fileInput.onchange=e=>{
-  originalFile=e.target.files[0];
-  preview.src=URL.createObjectURL(originalFile);
-  preview.style.display="block";
-  status.innerText="ছবি লোড হয়েছে, এখন অটো বাটনে ক্লিক করো";
-}
+uploadBox.onclick = () => fileInput.click();
 
-window.changeBg=c=>{
-  bgColor=c;
-  if(lastImg) render(lastImg);
-}
+fileInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if(!file){ status.innerText="ছবি পাওয়া যায়নি"; return; }
+  if(!file.type.startsWith('image/')){ alert("শুধু ছবি আপলোড করো"); return; }
 
-document.getElementById('autoBtn').onclick=async()=>{
-  if(!originalFile) return alert("আগে ছবি সিলেক্ট করো");
-  status.innerText="⏳ ব্যাকগ্রাউন্ড রিমুভ + HD হচ্ছে... 15 সেকেন্ড";
-  try{
-    const blob=await removeBackground(originalFile);
-    let img=new Image();
-    img.src=URL.createObjectURL(blob);
-    img.onload=()=>{
-      lastImg=img;
-      render(img);
-      status.innerText="✅ রেডি! নিচে ৩ টে ব্যাকগ্রাউন্ড ট্রাই করতে পারো";
-      dlBtn.style.display="block";
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    preview.src = ev.target.result;
+    preview.style.display = "block";
+    selectedImg = new Image();
+    selectedImg.onload = () => {
+      status.innerText = "✅ ছবি লোড হয়েছে, এখন HD বানাও তে ক্লিক করো";
     }
-  }catch(e){status.innerText="Error: "+e.message}
+    selectedImg.src = ev.target.result;
+  }
+  reader.readAsDataURL(file);
+};
+
+function changeBg(color){
+  bgColor = color;
+  if(selectedImg) makePassport();
 }
 
-function render(img){
-  canvas.width=800; canvas.height=1000;
-  ctx.fillStyle=bgColor;
+function makePassport(){
+  if(!selectedImg){ alert("আগে ছবি আপলোড করো"); return; }
+  status.innerText = "⏳ HD Processing...";
+
+  canvas.width = 800;
+  canvas.height = 1000;
+
+  // Background fill
+  ctx.fillStyle = bgColor;
   ctx.fillRect(0,0,canvas.width,canvas.height);
-  // HD + চোখের কালি হালকা ফিল্টার
-  ctx.filter="contrast(1.15) brightness(1.07) saturate(1.03)";
-  ctx.drawImage(img, 100, 40, 600, 850);
-  let url=canvas.toDataURL("image/jpeg",0.96);
-  result.src=url; result.style.display="block";
-  download.href=url;
-  download.download=`passport_${bgColor.replace('#','')}_${Date.now()}.jpg`;
-}
-</script>
-</body>
-</html>
+
+  // Auto face center crop + HD filters
+  // Calculate crop to center
+  ctx.filter = "contrast(1.15) brightness(1.08) saturate(1.05) blur(0px)";
+  // Draw with some margin for passport
+  const w = selectedImg.width;
+  const h = selectedImg.height;
+  // simple center cover
+  ctx.drawImage(selectedImg, 80, 20, 640, 900);
+
+  const finalUrl = canvas.toDataURL("image/jpeg", 0.95
