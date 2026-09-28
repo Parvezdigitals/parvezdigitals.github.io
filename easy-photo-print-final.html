@@ -90,10 +90,10 @@ input[type=range]{width:100%}
 </div>
 <div class="card">
 <h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove (MODNet) with clean edges.<br>4. Passport-standard framing anchored on face: head 50% of frame, crown at 6% margin, chest reaches frame bottom - head is never cut.<br>5. Background blob cleaner removes leftover background objects.<br>6. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>7. Natural enhance: clean skin + clarity, original quality preserved.<br>8. Download single photo or 4x6 print sheet.</p>
+<p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove (MODNet) with clean edges.<br>4. Passport-standard framing anchored on face: face 64% of frame width, crown at 6% margin, chest reaches frame bottom - head is never cut.<br>5. Background blob cleaner removes leftover background objects.<br>6. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>7. Natural enhance: clean skin + clarity, original quality preserved.<br>8. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v16</div>
+<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v17</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
@@ -355,7 +355,8 @@ async function makeFinal(){
      const kk0=fg.naturalWidth/cw;
      const fbw=face.w*w*kk0,fbh=face.h*h*kk0;
      const fbox={x:(cx-bx)*kk0-fbw/2,y:(cy-by)*kk0-fbh/2,w:fbw,h:fbh};
-     let sc0=(outH*0.50)/(1.4*fbh);
+     let sc0=(outW*0.64)/fbw;
+     if(1.4*fbh*sc0>outH*0.55)sc0=(outH*0.55)/(1.4*fbh);
      if(1.9*fbw*sc0>outW*0.96)sc0=(outW*0.96)/(1.9*fbw);
      fg=await cleanBlob(fg,fbox,outW*0.46/sc0);
     }catch(e){}
@@ -370,9 +371,11 @@ async function makeFinal(){
   if(!keepOriginal&&bgOk&&face){
    const kk=fg.naturalWidth/cw;
    const fcx=(cx-bx)*kk,ftop=(cy-by)*kk-(face.h*h*kk)/2,fh=face.h*h*kk;
+   const fbw=face.w*w*kk;
    const crown=ftop-0.4*fh,headH=1.4*fh;
-   let sc=(outH*0.50)/headH;
-   const pWlim=1.9*face.w*w*kk;
+   let sc=(outW*0.64)/fbw;
+   if(headH*sc>outH*0.55)sc=(outH*0.55)/headH;
+   const pWlim=1.9*fbw;
    if(pWlim*sc>outW*0.96)sc=(outW*0.96)/pWlim;
    const dw=fg.naturalWidth*sc,dh=fg.naturalHeight*sc;
    const dx=outW/2-fcx*sc,dy=outH*0.06-crown*sc;
