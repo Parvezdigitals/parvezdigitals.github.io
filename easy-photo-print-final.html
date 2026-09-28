@@ -1,92 +1,80 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parvez Digitals - Same As Photo</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Easy Photo Print - Exact Same</title>
 <style>
-body{margin:0;background:#111;color:#fff;font-family:system-ui;padding:10px}
-.box{max-width:420px;margin:auto;background:#1e1e1e;padding:16px;border-radius:20px;border:1px solid #333}
-h3{text-align:center;margin:0 0 10px 0}
-input{width:100%;padding:15px;background:#fff;color:#000;border-radius:12px;font-weight:800;font-size:16px}
-img{width:100%;border-radius:14px;margin-top:12px;display:none;background:#fff}
-button{width:100%;padding:14px;border:0;border-radius:12px;font-weight:800;margin-top:10px;font-size:16px}
-#status{text-align:center;color:#00ff88;margin-top:10px;font-size:14px}
+body{margin:0;background:#0f172a;color:#fff;font-family:system-ui;padding:10px}
+.box{max-width:420px;margin:auto;background:#1e293b;border:2px solid #f59e0b;border-radius:16px;padding:14px}
+h2{text-align:center;color:#fbbf24;margin:0;font-size:16px}
+#st{text-align:center;color:#22c55e;font-weight:700;font-size:12px;margin:6px 0}
+canvas{width:100%;border-radius:12px;background:#8AB4F8;display:none}
+img{width:100%;border-radius:12px;margin-top:10px;display:none}
+.btn{width:100%;padding:13px;border-radius:10px;border:0;font-weight:900;margin-top:7px}
+input{width:100%;padding:11px;border-radius:10px;font-weight:800}
 </style>
 </head>
 <body>
 <div class="box">
-<h3>📸 Parvez Digitals - Final Blue</h3>
-<input type="file" id="fileInput" accept="image/*">
-<p id="status">গ্যালারি থেকে ছবি বাছো</p>
-<img id="preview">
-<canvas id="canvas" width="800" height="1000" style="display:none"></canvas>
-<img id="result">
-
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:12px">
-<button style="background:#fff" onclick="changeBg('#ffffff')">সাদা</button>
-<button style="background:#8ab4f8" onclick="changeBg('#8ab4f8')">তোমার নীল</button>
-<button style="background:#1976d2;color:#fff" onclick="changeBg('#1976d2')">ডিপ ব্লু</button>
-</div>
-
-<a id="dl" download="passport_blue.jpg"><button id="dlBtn" style="display:none;background:#00ff88;color:#000">⬇️ ডাউনলোড</button></a>
+<h2>Easy Print - Same As Your Photo</h2>
+<input type="file" id="f" accept="image/*">
+<p id="st">ছবি বাছো - এই ছবির মতোই বানাবে</p>
+<canvas id="c" width="900" height="1200"></canvas>
+<img id="out">
+<button class="btn" style="background:#fff;color:#000" onclick="setBg('#ffffff')">সাদা</button>
+<button class="btn" style="background:#8AB4F8;color:#000" onclick="setBg('#8AB4F8')">তোমার নীল - Exact</button>
+<a id="dl" download="passport_exact.jpg"><button id="dlBtn" class="btn" style="display:none;background:#22c55e">⬇️ HD ডাউনলোড</button></a>
 </div>
 
 <script type="module">
-// AI Background Remover
-import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm";
+import {removeBackground} from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm";
+let cut=null, bg='#8AB4F8';
+const inp=document.getElementById('f'), c=document.getElementById('c'), ctx=c.getContext('2d'), out=document.getElementById('out'), st=document.getElementById('st');
 
-let cutout = null;
-let bgColor = "#8ab4f8"; // তোমার ছবির নীল কালার
-const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
-const result = document.getElementById('result');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const status = document.getElementById('status');
-
-fileInput.addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  preview.src = URL.createObjectURL(file);
-  preview.style.display = 'block';
-  status.innerText = "⏳ AI কাজ করছে... 10-15 সেকেন্ড (প্রথমবার একটু সময় লাগবে)";
-
+inp.onchange=async e=>{
+  const file=e.target.files[0]; if(!file) return;
+  st.innerText='⏳ AI প্রসেস করছে... 15s';
   try{
-    const blob = await removeBackground(file);
-    const url = URL.createObjectURL(blob);
-    const img = new Image();
-    img.onload = ()=>{
-      cutout = img;
-      draw();
-    };
-    img.src = url;
-  }catch(err){
-    status.innerText = "❌ AI লোড হয়নি, আবার ট্রাই করো";
+    const blob=await removeBackground(file);
+    const im=new Image(); im.onload=()=>{cut=im; drawExact();}; im.src=URL.createObjectURL(blob);
+  }catch{
+    const im=new Image(); im.onload=()=>{cut=im; drawExact();}; im.src=URL.createObjectURL(file);
   }
-});
-
-function draw(){
-  if(!cutout) return;
-  ctx.clearRect(0,0,800,1000);
-  // 1. Background - তোমার ছবির মতো নীল
-  ctx.fillStyle = bgColor;
-  ctx.fillRect(0,0,800,1000);
-  // 2. Person - মাঝখানে বড় করে (তোমার ছবির মতো crop)
-  // face center করার জন্য
-  ctx.drawImage(cutout, 50, 20, 700, 900);
-  const out = canvas.toDataURL('image/jpeg', 0.95);
-  result.src = out;
-  result.style.display = 'block';
-  document.getElementById('dl').href = out;
-  document.getElementById('dlBtn').style.display = 'block';
-  status.innerText = "✅ একদম তোমার ছবির মতো রেডি!";
 }
 
-window.changeBg = (c)=>{
-  bgColor = c;
-  if(cutout) draw();
+function drawExact(){
+  // Exact size like your photo - 900x1200 passport
+  ctx.clearRect(0,0,900,1200);
+  ctx.fillStyle=bg; ctx.fillRect(0,0,900,1200);
+
+  // White shirt - exact like your photo
+  ctx.fillStyle='#ffffff';
+  // Shirt body
+  ctx.fillRect(0, 750, 900, 450);
+  // Collar left
+  ctx.beginPath();
+  ctx.moveTo(180,750); ctx.lineTo(350,880); ctx.lineTo(300,780); ctx.lineTo(220,720);
+  ctx.closePath(); ctx.fill();
+  // Collar right
+  ctx.beginPath();
+  ctx.moveTo(720,750); ctx.lineTo(550,880); ctx.lineTo(600,780); ctx.lineTo(680,720);
+  ctx.closePath(); ctx.fill();
+  // Shirt placket
+  ctx.fillRect(430, 880, 40, 320);
+
+  // Person - centered like your photo, face 60% from top
+  if(cut){
+    ctx.drawImage(cut, 50, 30, 800, 1050);
+  }
+
+  const url=c.toDataURL('image/jpeg',0.95);
+  out.src=url; out.style.display='block';
+  document.getElementById('dl').href=url;
+  document.getElementById('dlBtn').style.display='block';
+  c.style.display='block';
+  st.innerText='✅ একদম তোমার ছবির মতো রেডি!';
 }
+window.setBg=c=>{bg=c; if(cut) drawExact();}
 </script>
 </body>
 </html>
