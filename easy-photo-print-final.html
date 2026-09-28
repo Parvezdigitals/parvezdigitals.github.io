@@ -93,7 +93,7 @@ input[type=range]{width:100%}
 <p class="note">1. Upload any mobile photo.<br>2. Straighten it if tilted.<br>3. Face auto-detect + AI background remove (MODNet) with clean edges.<br>4. Passport-standard framing anchored on face: face 64% of frame width, crown at 6% margin, chest reaches frame bottom - head is never cut.<br>5. Background blob cleaner removes leftover background objects.<br>6. AI 2x upscaling sharpens blurry photos (first run downloads model once).<br>7. Natural enhance: clean skin + clarity, original quality preserved.<br>8. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
-<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v17</div>
+<div class="footer">&copy; PARVEZ DIGITAL SERVICE - parvezdigitalservice.net | v18</div>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
 <script type="module">
@@ -297,6 +297,23 @@ function personBBox(img){
   return {top:eTop,bottom:(bot+1)*k,left:left*k,right:(right+1)*k};
  }catch(e){return null;}
 }
+function headTop(fg,fb){
+ try{
+  var w=fg.naturalWidth,h=fg.naturalHeight;
+  var sw=220,sh=Math.max(1,Math.round(sw*h/w));
+  var c=document.createElement('canvas');c.width=sw;c.height=sh;
+  var x=c.getContext('2d');x.drawImage(fg,0,0,sw,sh);
+  var d=x.getImageData(0,0,sw,sh).data;
+  var k=sw/w,xx,yy;
+  var x0=Math.max(0,Math.floor((fb.x-fb.w)*k));
+  var x1=Math.min(sw-1,Math.ceil((fb.x+fb.w*2)*k));
+  var y1=Math.min(sh-1,Math.ceil((fb.y+fb.h)*k));
+  for(yy=0;yy<=y1;yy++)for(xx=x0;xx<=x1;xx++){
+   if(d[(yy*sw+xx)*4+3]>50)return yy/k;
+  }
+  return null;
+ }catch(e){return null;}
+}
 async function upscale(img){
  const tf=window.__tf;
  if(!srPipe)srPipe=await tf.pipeline('image-to-image','Xenova/swin2SR-classical-sr-x2-64',{quantized:true});
@@ -330,7 +347,7 @@ async function makeFinal(){
    if(ch>h*0.96){ch=h*0.96;cw=ch*ratio;}
    if(cw>w*0.96){cw=w*0.96;ch=cw/ratio;}
    const fhh=face.h*h;
-   const headTopNeed=cy-fhh*0.95;
+   const headTopNeed=cy-fhh*1.25;
    by=cy-ch*0.42;
    if(by>headTopNeed-ch*0.02)by=headTopNeed-ch*0.02;
    bx=cx-cw/2;
@@ -372,7 +389,12 @@ async function makeFinal(){
    const kk=fg.naturalWidth/cw;
    const fcx=(cx-bx)*kk,ftop=(cy-by)*kk-(face.h*h*kk)/2,fh=face.h*h*kk;
    const fbw=face.w*w*kk;
-   const crown=ftop-0.4*fh,headH=1.4*fh;
+   let crown=ftop-0.4*fh;
+   try{
+    const mc=headTop(fg,{x:fcx-fbw/2,y:ftop,w:fbw,h:fh});
+    if(mc!==null&&mc>ftop-1.2*fh&&mc<ftop)crown=Math.min(mc,crown);
+   }catch(e){}
+   const headH=(ftop+fh)-crown;
    let sc=(outW*0.64)/fbw;
    if(headH*sc>outH*0.55)sc=(outH*0.55)/headH;
    const pWlim=1.9*fbw;
