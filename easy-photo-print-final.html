@@ -74,11 +74,12 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 <div class="bg-opt" data-bg="original" style="background:#eee">Original</div>
 </div>
 <button class="btn btn-primary" id="processBtn">Auto Create Passport Photo</button>
+<div id="status" style="font-size:13px;color:#0b5ed7;font-weight:600;margin-top:8px;min-height:18px"></div>
 <div id="previewWrap">
 <canvas id="previewCanvas" style="display:none"></canvas>
 <canvas id="resultCanvas" style="display:none"></canvas>
 </div>
-<p class="note">Workflow: Upload &rarr; Auto face-center crop &rarr; Auto background fill &rarr; HD Enhance &rarr; Download ready photo. Like photobg site, white outer border is auto-removed and photo is cropped to exact passport ratio.</p>
+<p class="note">Workflow: Upload &rarr; Auto crop (sides never cut) &rarr; AI background remove &rarr; White/LiteBlue/Sky fill &rarr; Remini-style enhance &rarr; Download ready photo.</p>
 <div class="row">
 <button class="btn btn-success" id="downloadBtn" style="display:none">Download Photo</button>
 <button class="btn btn-outline" id="printBtn" style="display:none">Print 4x6 Sheet</button>
@@ -86,12 +87,14 @@ select,input[type=file]{width:100%;padding:10px;border:1px solid #ccc;border-rad
 </div>
 <div class="card">
 <h3 style="font-size:15px;margin-bottom:8px">How it works</h3>
-<p class="note">1. Upload any mobile photo.<br>2. Tool crops to passport 35x45 ratio keeping almost full width - sides/ears are never cut.<br>3. Select White / LiteBlue / Sky background. "Original" keeps photo background.<br>4. Remini-style enhance (bright + vivid + clarity) applied automatically.<br>5. Download single photo or 4x6 print sheet.</p>
+<p class="note">1. Upload any mobile photo.<br>2. Tool crops to passport 35x45 ratio keeping almost full width - sides/ears are never cut.<br>3. AI removes the original background (free, no API key) and fills your selected White / LiteBlue / Sky colour. "Original" keeps photo background.<br>4. Remini-style enhance (bright + vivid + clarity) applied automatically.<br>5. Download single photo or 4x6 print sheet.</p>
 </div>
 </div>
 <div class="footer">© PARVEZ DIGITAL SERVICE - parvezdigitalservice.net</div>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 <script>
 let srcImg=null, bgColor="#ffffff", keepOriginal=false;
+let statusEl=null;
 const upload=document.getElementById('upload');
 const previewCanvas=document.getElementById('previewCanvas');
 const resultCanvas=document.getElementById('resultCanvas');
@@ -132,23 +135,66 @@ function autoCropBox(w,h,ratio){
  const cx=l+cw/2, cy=t+ch*0.45; // face slightly above center
  return {x:cx-cropW/2, y:cy-cropH/2, w:cropW, h:cropH};
 }
-document.getElementById('processBtn').onclick=()=>{
+function segmentPerson(srcCanvas){
+ // AI cutout: person only, transparent background (MediaPipe, free, no API key)
+ return new Promise((res,rej)=>{
+  try{
+   const ss=new SelfieSegmentation({locateFile:f=>'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/'+f});
+   ss.setOptions({modelSelection:1});
+   ss.onResults(r=>{
+    try{
+     const w=srcCanvas.width,h=srcCanvas.height;
+     const mc=document.createElement('canvas');mc.width=w;mc.height=h;
+     const mx=mc.getContext('2d');
+     mx.filter='blur(2px)';mx.drawImage(r.segmentationMask,0,0,w,h);mx.filter='none';
+     const id=mx.getImageData(0,0,w,h),d=id.data;
+     let alphaCount=0;
+     for(let i=0;i<w*h;i++){const a=d[i*4];d[i*4+3]=a;d[i*4]=d[i*4+1]=d[i*4+2]=0;if(a>40)alphaCount++;}
+     mx.putImageData(id,0,0);
+     if(alphaCount<w*h*0.05){res(null);return;} // mask too small -> fallback
+     const out=document.createElement('canvas');out.width=w;out.height=h;
+     const ox=out.getContext('2d');ox.drawImage(srcCanvas,0,0);
+     ox.globalCompositeOperation='destination-in';ox.drawImage(mc,0,0);
+     ox.globalCompositeOperation='source-over';
+     res(out);
+    }catch(e){res(null);}
+    try{ss.close();}catch(e){}
+   });
+   const im=new Image();
+   im.onload=()=>{try{ss.send({image:im});}catch(e){res(null);}};
+   im.onerror=()=>res(null);
+   im.src=srcCanvas.toDataURL('image/png');
+  }catch(e){res(null);}
+ });
+}
+document.getElementById('processBtn').onclick=async()=>{
  if(!srcImg){alert('Please upload a photo first');return;}
+ statusEl=document.getElementById('status');
  const ratio=getRatio();
  const w=srcImg.naturalWidth, h=srcImg.naturalHeight;
  const box=autoCropBox(w,h,ratio);
- // temp canvas for cropped
+ // temp canvas for cropped photo
  const tmp=document.createElement('canvas');
  tmp.width=Math.floor(box.w); tmp.height=Math.floor(box.h);
  const tctx=tmp.getContext('2d');
- if(!keepOriginal){tctx.fillStyle=bgColor; tctx.fillRect(0,0,tmp.width,tmp.height);}
  tctx.drawImage(srcImg,box.x,box.y,box.w,box.h,0,0,tmp.width,tmp.height);
+ // AI background remove -> place person on selected colour
+ let personCanvas=tmp;
+ if(!keepOriginal){
+  statusEl.textContent='Removing background (AI)...';
+  try{const cut=await segmentPerson(tmp);if(cut)personCanvas=cut;}catch(e){}
+ }
+ const comp=document.createElement('canvas');comp.width=tmp.width;comp.height=tmp.height;
+ const cctx=comp.getContext('2d');
+ if(!keepOriginal){cctx.fillStyle=bgColor;cctx.fillRect(0,0,comp.width,comp.height);}
+ cctx.drawImage(personCanvas,0,0);
  // Remini-style HD enhance: bright + vivid + clarity pop
+ statusEl.textContent='Enhancing...';
  const outW=700, outH=Math.round(700/ratio);
  resultCanvas.width=outW; resultCanvas.height=outH;
  const ctx=resultCanvas.getContext('2d');
  ctx.filter='brightness(1.16) contrast(1.14) saturate(1.25)';
- ctx.drawImage(tmp,0,0,outW,outH);
+ ctx.drawImage(comp,0,0,outW,outH);
  ctx.filter='none';
  const bc=document.createElement('canvas');bc.width=outW;bc.height=outH;
  const bx=bc.getContext('2d');bx.filter='blur(3px)';bx.drawImage(resultCanvas,0,0);
@@ -160,6 +206,7 @@ document.getElementById('processBtn').onclick=()=>{
  previewCanvas.style.display="none";
  document.getElementById('downloadBtn').style.display="block";
  document.getElementById('printBtn').style.display="block";
+ statusEl.textContent='Done!';
 };
 document.getElementById('downloadBtn').onclick=()=>{
  const a=document.createElement('a');
