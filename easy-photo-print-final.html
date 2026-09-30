@@ -42,7 +42,7 @@ select,input{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
 <body>
 <header>Easy Photo Print</header>
 <div class="container">
-<div id="preview"><span style="color:#999">Photo select koro</span></div>
+<div id="preview"><span style="color:#999">Please select a photo</span></div>
 <div class="status" id="status"></div>
 <input type="file" id="upload" accept="image/*">
 <select id="bg">
@@ -78,7 +78,7 @@ upload.onchange=e=>{
   const url=URL.createObjectURL(f);
   const img=new Image(); img.onload=()=>{
     origImg=img; preview.innerHTML=''; preview.appendChild(img);
-    status.textContent='Photo load hoyeche. Ebar Background Remove chap dao.';
+    status.textContent='Photo loaded successfully. Now click Background Remove.';
     removeBtn.disabled=false; enhanceBtn.disabled=true; downloadBtn.disabled=true;
   }; img.src=url;
 };
@@ -92,27 +92,42 @@ function drawOnBg(foreground, bgColor){
   return c;
 }
 
+function resizeForAI(img, maxSize=1024){
+  const scale=Math.min(1, maxSize/Math.max(img.naturalWidth, img.naturalHeight));
+  if(scale>=1) return img.src;
+  const c=document.createElement('canvas');
+  c.width=Math.round(img.naturalWidth*scale);
+  c.height=Math.round(img.naturalHeight*scale);
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',0.85);
+}
+
 removeBtn.onclick=async()=>{
   if(!origImg) return;
   try{
-    status.textContent='Background remove hochche... ektu wait koro';
+    status.textContent='Removing background... Please wait up to 30 seconds';
     removeBtn.disabled=true;
-    // proper person segmentation, head cut hobe na
-    const blob=await removeBackground(origImg.src,{output:{format:'image/png',quality:1}});
+    const smallDataUrl = resizeForAI(origImg, 1024);
+    const blob=await removeBackground(smallDataUrl,{output:{format:'image/png',quality:0.9}});
     const url=URL.createObjectURL(blob);
     const img=new Image();
     img.onload=()=>{
       cutImg=img;
       finalCanvas=drawOnBg(cutImg, bgSel.value);
       preview.innerHTML=''; preview.appendChild(finalCanvas);
-      status.textContent='Background remove done. Ebar HD Enhance korte paro.';
+      status.textContent='Background removed successfully. You can now enhance in HD.';
       enhanceBtn.disabled=false; downloadBtn.disabled=false; removeBtn.disabled=false;
     };
+    img.onerror=()=>{ throw new Error('preview load fail'); };
     img.src=url;
   }catch(err){
     console.error(err);
-    status.textContent='Background remove fail korlo. Onno photo try koro.';
-    removeBtn.disabled=false;
+    // Fallback: if auto removal fails, continue with original photo
+    status.textContent='Automatic removal failed, but your photo is ready for print. You can download it.';
+    cutImg=origImg;
+    finalCanvas=drawOnBg(origImg, bgSel.value);
+    preview.innerHTML=''; preview.appendChild(finalCanvas);
+    enhanceBtn.disabled=false; downloadBtn.disabled=false; removeBtn.disabled=false;
   }
 };
 
@@ -125,7 +140,7 @@ bgSel.onchange=()=>{
 // simple HD enhance - contrast + sharpness
 enhanceBtn.onclick=()=>{
   if(!finalCanvas) return;
-  status.textContent='Enhance hochche...';
+  status.textContent='Enhancing...';
   const ctx=finalCanvas.getContext('2d');
   const id=ctx.getImageData(0,0,finalCanvas.width,finalCanvas.height);
   const d=id.data;
@@ -136,7 +151,7 @@ enhanceBtn.onclick=()=>{
   }
   ctx.putImageData(id,0,0);
   preview.innerHTML=''; preview.appendChild(finalCanvas);
-  status.textContent='HD Enhance done. Ebar Download koro.';
+  status.textContent='HD enhancement complete. Now click Download.';
 };
 
 downloadBtn.onclick=()=>{
@@ -145,7 +160,7 @@ downloadBtn.onclick=()=>{
   a.download='easy-photo-print.png';
   a.href=finalCanvas.toDataURL('image/png');
   a.click();
-  status.textContent='Download hoye geche.';
+  status.textContent='Download completed successfully.';
 };
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
