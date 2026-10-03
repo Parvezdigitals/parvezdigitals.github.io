@@ -63,13 +63,28 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 <body>
 <div class="top">
 <div class="top-left">
-<div class="hum" onclick="goBack()" style="background:#f59e0b"><span style="color:#fff;font-size:18px;font-weight:900">←</span></div>
 <div class="hum" onclick="toggleM()"><div style="display:flex;flex-direction:column"><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div></div></div>
 <div class="logo-p"><img src="logo.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='P'" alt="PA" style="color:#fbbf24;font-weight:900;font-size:20px">P</div>
 <div class="top-title"><b>PARVEZ DIGITAL</b><span>55+ Services • Secure Portal</span></div>
 </div>
-<div class="bell" onclick="toggleM()">🔔</div>
+<div class="bell" onclick="toggleNoti()" style="position:relative">🔔<span id="notiBadge" style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;padding:2px 5px;border-radius:10px;font-weight:900;display:none">0</span></div>
 </div>
+
+<!-- Notification Panel - Weekly Employment News -->
+<div id="notiPanel" style="display:none;position:fixed;top:56px;right:10px;width:340px;max-width:90vw;max-height:70vh;overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2);border:1px solid #e2e8f0;z-index:1000">
+<div style="padding:14px;background:linear-gradient(90deg,#1e293b,#334155);color:#fff;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center">
+<b style="font-size:14px">🔔 Weekly Notification - Karmasangsthan</b><span onclick="toggleNoti()" style="cursor:pointer;font-size:18px">✕</span>
+</div>
+<div id="notiList" style="padding:10px">
+<div style="text-align:center;padding:20px;color:#64748b;font-size:12px">Loading weekly papers...</div>
+</div>
+<div style="padding:10px;border-top:1px solid #e2e8f0;display:flex;gap:6px">
+<button onclick="clearNoti()" style="flex:1;padding:8px;background:#f1f5f9;border:none;border-radius:8px;font-size:11px;cursor:pointer">Clear All</button>
+<button onclick="toggleNoti();toggleM()" style="flex:1;padding:8px;background:#1e293b;color:#fff;border:none;border-radius:8px;font-size:11px;cursor:pointer">Full Menu ☰</button>
+</div>
+</div>
+<div id="notiOver" onclick="toggleNoti()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:999"></div>
+
 
 <div id="over" onclick="toggleM()"></div>
 <div id="side">
@@ -132,7 +147,8 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 <div class="item" onclick="go('https://www.kotak.com/')">🏦 Kotak Mahindra - Video KYC</div>
 <div class="item" onclick="go('https://www.idbibank.in/')">🏦 IDBI Bank - Re-KYC</div>
 <div class="item" onclick="go('https://www.indusind.com/')">🏦 IndusInd Bank - Video KYC</div>
-<div class="item" onclick="go('https://www.indianbank.net.in/')" style="background:#dbeafe;border-color:#2563eb;font-weight:800">🏦 Indian Bank - eKYC - Official - NEW ⭐</div>
+<div class="item" onclick="go('https://apps.indianbank.in/Rekyc/rekyc.aspx')" style="background:#dcfce7;border-color:#16a34a;font-weight:800">🏦 Indian Bank - Re-KYC Direct - apps.indianbank.in/Rekyc/rekyc.aspx - Official - Fixed ⭐</div>
+<div class="item" onclick="go('https://www.indianbank.net.in/')">🏦 Indian Bank - eKYC - indianbank.net.in</div>
 <div class="item" onclick="go('https://indianbank.in/')">🏦 Indian Bank Official - indianbank.in</div>
 <div class="item" onclick="go('https://www.yesbank.in/')">🏦 Yes Bank - Re-KYC</div>
 <div class="item" onclick="go('https://www.ckycindia.in/')" style="background:#dbeafe;border-color:#3b82f6;font-weight:800">🏦 CKYC - Central KYC - ckycindia.in - NEW ⭐</div>
@@ -249,47 +265,108 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 
 <script>
 let historyStack=[];
-function go(u){
- historyStack.push(window.location.href);
- window.open(u,'_blank');
- // Also push state for back button
- try{history.pushState({page:historyStack.length},'',window.location.href);}catch(e){}
-}
+function go(u){window.open(u,'_blank');}
 function tg(id){let e=document.getElementById(id);if(e){e.classList.toggle('open');e.style.display=e.classList.contains('open')?'block':'none'}}
 function toggleM(){
  let side=document.getElementById('side');
  let over=document.getElementById('over');
  side.classList.toggle('open');
  over.classList.toggle('open');
- if(side.classList.contains('open')){
-   try{history.pushState({menu:'open'},'','');}catch(e){}
-   historyStack.push('menu');
- }
 }
-function goBack(){
- if(historyStack.length>0){
-   historyStack.pop();
-   let side=document.getElementById('side');
-   if(side.classList.contains('open')){
-     side.classList.remove('open');
-     document.getElementById('over').classList.remove('open');
-     return;
+function toggleNoti(){
+ let panel=document.getElementById('notiPanel');
+ let over=document.getElementById('notiOver');
+ let isOpen=panel.style.display!=='none';
+ panel.style.display=isOpen?'none':'block';
+ over.style.display=isOpen?'none':'block';
+ if(!isOpen){loadWeeklyNews();}
+}
+
+// Weekly Employment News Notification System
+const weeklyPapers = [
+ {name:'Karmasangsthan',bn:'কর্মসংস্থান',url:'https://www.karmasangsthan.org/',icon:'📰',color:'#dc2626',desc:'West Bengal Weekly Job Paper - Every Saturday'},
+ {name:'Karmakshetra',bn:'কর্মক্ষেত্র',url:'https://www.karmakshetra.com/',icon:'📄',color:'#2563eb',desc:'Bengali Employment Weekly - Jobs & Results'},
+ {name:'Employment News',bn:'এমপ্লয়মেন্ট নিউজ',url:'https://www.employmentnews.gov.in/',icon:'📋',color:'#16a34a',desc:'Central Govt Weekly - Every Saturday'},
+ {name:'Karmasangsthan PDF',bn:'কর্মসংস্থান PDF',url:'https://www.karmasangsthan.org/karmasangsthan-pdf/',icon:'📕',color:'#d97706',desc:'Full Paper PDF - Download & Read'},
+];
+
+function getWeekNumber(){
+ let now=new Date();
+ let start=new Date(now.getFullYear(),0,1);
+ let diff=(now-start)+((start.getTimezoneOffset()-now.getTimezoneOffset())*60*1000);
+ let oneDay=1000*60*60*24;
+ let day=Math.floor(diff/oneDay);
+ return Math.ceil(day/7);
+}
+
+function loadWeeklyNews(){
+ let week=getWeekNumber();
+ let year=new Date().getFullYear();
+ let today=new Date().toLocaleDateString('bn-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+ let list=document.getElementById('notiList');
+ let html=`<div style="background:#f1f5f9;padding:8px 10px;border-radius:8px;margin-bottom:10px;font-size:11px;color:#475569;text-align:center">📅 ${today} | Week ${week} | ${year}<br>Proti soptahe auto update - 1 click e puro paper</div>`;
+ 
+ let stored=localStorage.getItem('parvez_noti_read')||'[]';
+ let readIds=JSON.parse(stored);
+ 
+ weeklyPapers.forEach((p,i)=>{
+   let id=`${p.name}-${week}-${year}`;
+   let isNew=!readIds.includes(id);
+   html+=`<div onclick="openPaper('${p.url}','${id}')" style="background:#fff;border:1px solid ${isNew?'#fbbf24':'#e2e8f0'};border-left:4px solid ${p.color};border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;${isNew?'box-shadow:0 2px 8px rgba(251,191,36,.3)':''}">
+   <div style="width:40px;height:40px;background:${p.color}20;border:1px solid ${p.color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">${p.icon}</div>
+   <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click to read full paper 📖</div></div>
+   <div style="background:${p.color};color:#fff;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:800">Open →</div>
+   </div>`;
+ });
+ 
+ html+=`<div style="margin-top:10px;background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:10px"><b style="font-size:12px;color:#92400e">📌 Auto Weekly System:</b><div style="font-size:11px;color:#92400e;margin-top:4px">• Proti Shanibar Karmasangsthan auto notification<br>• 1 click e puro paper PDF porte parben<br>• Notification bell e 🔔 NEW badge dekhabe<br>• Purono paper gulo o side menu te paben</div></div>`;
+ 
+ list.innerHTML=html;
+ updateBadge();
+}
+
+function openPaper(url,id){
+ let stored=localStorage.getItem('parvez_noti_read')||'[]';
+ let readIds=JSON.parse(stored);
+ if(!readIds.includes(id)){readIds.push(id);localStorage.setItem('parvez_noti_read',JSON.stringify(readIds));}
+ window.open(url,'_blank');
+ loadWeeklyNews();
+}
+
+function clearNoti(){
+ localStorage.setItem('parvez_noti_read',JSON.stringify([]));
+ document.getElementById('notiList').innerHTML='<div style="text-align:center;padding:20px;color:#16a34a">✅ All cleared - Notun week e abar notification asbe</div>';
+ updateBadge();
+}
+
+function updateBadge(){
+ let week=getWeekNumber();
+ let year=new Date().getFullYear();
+ let stored=localStorage.getItem('parvez_noti_read')||'[]';
+ let readIds=JSON.parse(stored);
+ let unread=weeklyPapers.filter(p=>!readIds.includes(`${p.name}-${week}-${year}`)).length;
+ let badge=document.getElementById('notiBadge');
+ if(unread>0){badge.style.display='block';badge.textContent=unread;}else{badge.style.display='none';}
+}
+
+// Auto check on load
+window.addEventListener('load',()=>{
+ setTimeout(()=>{
+   updateBadge();
+   // Auto show notification once per week if not read
+   let week=getWeekNumber();
+   let lastShown=localStorage.getItem('parvez_last_noti_week');
+   if(lastShown!=week){
+     let stored=localStorage.getItem('parvez_noti_read')||'[]';
+     let readIds=JSON.parse(stored);
+     let hasUnread=weeklyPapers.some(p=>!readIds.includes(`${p.name}-${week}-${year}`));
+     if(hasUnread){
+       // Don't auto open, just badge - user clicks bell
+       console.log('New weekly papers available - Week',week);
+     }
    }
-   try{history.back();}catch(e){window.scrollTo({top:0,behavior:'smooth'})}
- }else{
-   window.scrollTo({top:0,behavior:'smooth'});
-   if(window.history.length>1){try{history.back();}catch(e){}}
- }
-}
-window.addEventListener('popstate',function(e){
- let side=document.getElementById('side');
- if(side && side.classList.contains('open')){
-   side.classList.remove('open');
-   document.getElementById('over').classList.remove('open');
-   if(historyStack.length>0) historyStack.pop();
- }
+ },1000);
 });
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){let side=document.getElementById('side');if(side.classList.contains('open')){side.classList.remove('open');document.getElementById('over').classList.remove('open');}}});
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
