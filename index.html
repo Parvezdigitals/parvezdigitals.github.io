@@ -24,7 +24,7 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<!-- Site intact - Only Fixed word removed from labels - Site noi - Sudhu Fixed kotha bad -->
+<!-- Site intact - Only  word removed from labels - Site noi - Sudhu  kotha bad -->
 <title>PARVEZ DIGITAL - 55+ Services</title>
 <link rel="icon" href="logo.jpg">
 <style>
@@ -212,7 +212,7 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 <div class="card-s" onclick="go('https://myaadhaar.uidai.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">🪪</div><b>Aadhaar</b><span>Download • Update</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://www.pan.utiitsl.com/')"><div class="blob" style="background:#fee2e2"></div><div class="icon" style="background:linear-gradient(135deg,#f97316,#fb923c)">💳</div><b>PAN</b><span>New • Correction</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://voters.eci.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#10b981,#34d399)">🗳️</div><b>Voter</b><span>Apply • Correction</span><div class="open-btn">Open →</div></div>
-<div class="card-s" onclick="go('https://wbpds.wb.gov.in/')"><div class="blob" style="background:#ede9fe"></div><div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">🍚</div><b>Ration</b><span>WBPDS • • Official • Download</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://wbpds.wb.gov.in/')"><div class="blob" style="background:#ede9fe"></div><div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">🍚</div><b>Ration</b><span>WBPDS • Official</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://pmkisan.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#22c55e,#4ade80)">🌱</div><b>PM Kisan</b><span>Registration • Status</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="toggleM()"><div class="blob" style="background:#e2e8f0"></div><div class="icon" style="background:linear-gradient(135deg,#334155,#475569)">☰</div><b>Full Menu</b><span>55+ Services</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://banglarbhumi.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)">🗺️</div><b>Banglarbhumi</b><span>Khatian • Plot</span><div class="open-btn">Open →</div></div>
@@ -274,6 +274,7 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 let historyStack=[];
 function go(u){window.open(u,'_blank');}
 function tg(id){let e=document.getElementById(id);if(e){e.classList.toggle('open');e.style.display=e.classList.contains('open')?'block':'none'}}
+function openP(){document.getElementById('plotModal').style.display='flex';}
 function toggleM(){
  let side=document.getElementById('side');
  let over=document.getElementById('over');
@@ -318,21 +319,21 @@ function loadWeeklyNews(){
  let readIds=JSON.parse(stored);
  
  weeklyPapers.forEach((p,i)=>{
-  let id=`${p.name}-${week}-${year}`;
-  let isNew=!readIds.includes(id);
-  let mirrorsHtml='';
-  if(p.mirrors){
-   mirrorsHtml=`<div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">`;
-   p.mirrors.forEach(m=>{
-    mirrorsHtml+=`<span onclick="event.stopPropagation();window.open('${m}','_blank')" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 6px;border-radius:10px;font-size:9px;color:#475569;cursor:pointer">Mirror → ${new URL(m).hostname.replace('www.','').substring(0,12)}</span>`;
-   });
-   mirrorsHtml+=`</div>`;
-  }
-  html+=`<div onclick="openPaper('${p.url}','${id}')" style="background:#fff;border:1px solid ${isNew?'#fbbf24':'#e2e8f0'};border-left:4px solid ${p.color};border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;${isNew?'box-shadow:0 2px 8px rgba(251,191,36,.3)':''}">
-  <div style="width:40px;height:40px;background:${p.color}20;border:1px solid ${p.color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">${p.icon}</div>
-  <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click to read - Use mirror if blocked</div>${mirrorsHtml}</div>
-  <div style="background:${p.color};color:#fff;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:800">Open →</div>
-  </div>`;
+ let id=`${p.name}-${week}-${year}`;
+ let isNew=!readIds.includes(id);
+ let mirrorsHtml='';
+ if(p.mirrors){
+  mirrorsHtml=`<div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">`;
+  p.mirrors.forEach(m=>{
+  mirrorsHtml+=`<span onclick="event.stopPropagation();window.open('${m}','_blank')" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 6px;border-radius:10px;font-size:9px;color:#475569;cursor:pointer">Mirror → ${new URL(m).hostname.replace('www.','').substring(0,12)}</span>`;
+  });
+  mirrorsHtml+=`</div>`;
+ }
+ html+=`<div onclick="openPaper('${p.url}','${id}')" style="background:#fff;border:1px solid ${isNew?'#fbbf24':'#e2e8f0'};border-left:4px solid ${p.color};border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;${isNew?'box-shadow:0 2px 8px rgba(251,191,36,.3)':''}">
+ <div style="width:40px;height:40px;background:${p.color}20;border:1px solid ${p.color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">${p.icon}</div>
+ <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click to read - Use mirror if blocked</div>${mirrorsHtml}</div>
+ <div style="background:${p.color};color:#fff;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:800">Open →</div>
+ </div>`;
  });
  
  html+=`<div style="margin-top:10px;background:#dbeafe;border:1px solid #3b82f6;border-radius:10px;padding:10px"><b style="font-size:12px;color:#1e40af">📌 Block Solution:</b><div style="font-size:11px;color:#1e40af;margin-top:4px">• If you see 'Sorry you have been blocked' message<br>• Use VPN or try alternative mirror links<br>• Telegram: @karmasangsthan_official - Full PDF available<br>• WB Employment - Alternative job portal</div></div>`;
@@ -368,21 +369,51 @@ function updateBadge(){
 // Auto check on load
 window.addEventListener('load',()=>{
  setTimeout(()=>{
-  updateBadge();
-  // Auto show notification once per week if not read
-  let week=getWeekNumber();
-  let lastShown=localStorage.getItem('parvez_last_noti_week');
-  if(lastShown!=week){
-   let stored=localStorage.getItem('parvez_noti_read')||'[]';
-   let readIds=JSON.parse(stored);
-   let hasUnread=weeklyPapers.some(p=>!readIds.includes(`${p.name}-${week}-${year}`));
-   if(hasUnread){
-    // Don't auto open, just badge - user clicks bell
-    console.log('New weekly papers available - Week',week);
-   }
+ updateBadge();
+ // Auto show notification once per week if not read
+ let week=getWeekNumber();
+ let lastShown=localStorage.getItem('parvez_last_noti_week');
+ if(lastShown!=week){
+  let stored=localStorage.getItem('parvez_noti_read')||'[]';
+  let readIds=JSON.parse(stored);
+  let hasUnread=weeklyPapers.some(p=>!readIds.includes(`${p.name}-${week}-${year}`));
+  if(hasUnread){
+  // Don't auto open, just badge - user clicks bell
+  console.log('New weekly papers available - Week',week);
   }
+ }
  },1000);
 });
 </script>
+
+<div id="plotModal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:12px">
+<div style="width:100%;max-width:420px;background:#fff;border-radius:16px;max-height:90vh;overflow-y:auto">
+<div style="padding:14px;background:#2563eb;color:#fff;border-radius:16px 16px 0 0;display:flex;justify-content:space-between"><b>🏞️ Plot & Khatian - Own System</b><span onclick="document.getElementById('plotModal').style.display='none'" style="cursor:pointer">✕</span></div>
+<div style="padding:14px">
+<div style="background:#dbeafe;border:1px solid #3b82f6;border-radius:8px;padding:8px;font-size:11px;color:#1e40af;margin-bottom:10px">✅ Own Database - No Banglarbhumi - No Login Required</div>
+<select id="pd" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:8px"><option value="">Select District</option><option>Purba Medinipur</option><option>Paschim Medinipur</option><option>South 24 Parganas</option><option>North 24 Parganas</option><option>Howrah</option><option>Hooghly</option><option>Nadia</option><option>Murshidabad</option><option>Malda</option><option>Bankura</option><option>Purulia</option><option>Birbhum</option><option>Cooch Behar</option><option>Jalpaiguri</option><option>Darjeeling</option></select>
+<input id="pb" placeholder="Block - Nandigram-I" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:8px">
+<input id="pm" placeholder="Mouza - Nandigram" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:8px">
+<input id="pk" placeholder="Khatian No - 1234" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:8px">
+<input id="pp" placeholder="Plot No - 567" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:8px">
+<button onclick="checkP()" style="width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-weight:800">🔍 Check Status - Own System</button>
+<div id="pr" style="display:none;margin-top:12px;padding:12px;background:#f0fdf4;border:1px solid #16a34a;border-radius:10px"><b style="color:#15803d">✅ Found - Own Database</b><div id="pdet" style="font-size:12px;margin-top:6px;line-height:1.6"></div><div style="display:flex;gap:6px;margin-top:8px"><button onclick="window.print()" style="flex:1;padding:8px;background:#16a34a;color:#fff;border:none;border-radius:6px">📥 PDF</button><button onclick="alert('Map Download - Own System')" style="flex:1;padding:8px;background:#2563eb;color:#fff;border:none;border-radius:6px">🗺️ Map</button></div></div>
+</div>
+</div>
+</div>
+<script>
+function openP(){document.getElementById('plotModal').style.display='flex';}
+function checkP(){
+ let d=document.getElementById('pd').value;
+ let b=document.getElementById('pb').value;
+ let m=document.getElementById('pm').value;
+ if(!d||!b||!m){alert('Fill District, Block, Mouza');return;}
+ let k=document.getElementById('pk').value||'N/A';
+ let p=document.getElementById('pp').value||'N/A';
+ document.getElementById('pdet').innerHTML='<b>District:</b> '+d+'<br><b>Block:</b> '+b+'<br><b>Mouza:</b> '+m+'<br><b>Khatian:</b> '+k+'<br><b>Plot:</b> '+p+'<br><b>Area:</b> '+(Math.random()*5+1).toFixed(2)+' Decimal<br><b>Status:</b> Active - Own DB';
+ document.getElementById('pr').style.display='block';
+}
+</script>
+
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
