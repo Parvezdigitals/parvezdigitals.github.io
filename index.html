@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head><style>
 @font-face {
   font-family: "Optimistic";
@@ -24,940 +24,247 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>PARVEZ DIGITAL SERVICE - 55+ Services</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<link rel="manifest" href='data:application/manifest+json,{"name":"PARVEZ DIGITAL SERVICE","short_name":"Parvez Digital","display":"standalone","background_color":"#0f172a","theme_color":"#0f172a","icons":[{"src":"https://parvezdigitals.github.io/logo.jpg","sizes":"512x512","type":"image/jpeg"}]}'>
-<meta name="theme-color" content="#0f172a">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Parvez Digital">
-<link rel="apple-touch-icon" href="logo.jpg">
+<title>PARVEZ DIGITAL - 55+ Services</title>
 <link rel="icon" href="logo.jpg">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
-body{background:#f1f5f9;color:#0f172a;overflow-x:hidden}
-.topBar{position:fixed;top:0;left:0;width:100%;height:56px;z-index:9999;background:#0f172a;display:flex;align-items:center;justify-content:space-between;padding:0 12px;z-index:1000;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:10px}
-.logoIcon{width:36px;height:36px;border-radius:8px;object-fit:cover;background:#000}
-.logoText{color:#fff;font-weight:900;font-size:14px;line-height:1.1}
-.logoSub{color:#fbbf24;font-size:9px;font-weight:700}
-.menuDots{width:44px;height:44px;background:#1e293b;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:2px solid #f59e0b}
-.dotLine{width:20px;height:3px;background:#f59e0b;border-radius:2px}
-#sideMenu{position:fixed;top:56px;right:-100%;width:100%;max-width:400px;height:calc(100% - 56px);background:#0f172a;z-index:999;transition:right.3s ease;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
-#sideMenu.open{right:0}
-.overlay{position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);background:rgba(0,0,0,.5);z-index:998;display:none}
-.overlay.open{display:block}
-.mainContent{margin-top:56px;padding:8px;max-width:500px;margin-left:auto;margin-right:auto;min-height:calc(100vh - 56px)}
-.welcomeCard{background:linear-gradient(135deg,#0f172a,#1e293b);border:2px solid #f59e0b;border-radius:16px;padding:20px;text-align:center;color:#fff;margin-bottom:12px}
-.quickGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.qCard{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
-.qCard:hover{border-color:#f59e0b;background:#fffbeb}
-.g{width:100%;border-radius:10px;background:#fff;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.gh{padding:6px 10px;font-size:12px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:32px;border-radius:8px}
-.gl{display:none;background:#fff;padding:8px;border-radius:0 0 12px 12px}
-.gl.open{display:block}
-.i{padding:8px;font-size:10px;font-weight:700;color:#1e293b;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin:5px 0;cursor:pointer;line-height:1.4;word-wrap:break-word}
-.i:hover{background:#fffbeb;border-color:#f59e0b}
-#welcomePopup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center}
-.welcomeBox{background:#0f172a;border:2px solid #f59e0b;border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center}
-.welcomeBox h2{color:#fbbf24;font-size:20px;font-weight:900;margin-bottom:8px}
-.welcomeBox p{color:#fff;font-size:13px;margin-bottom:12px}
-.welcomeBox.sub{color:#94a3b8;font-size:10px;margin-bottom:16px}
-.welcomeBtn{background:#22c55e;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:900;font-size:13px;cursor:pointer;width:100%}
-.helpBox{background:#0f172a;border:2px solid #f59e0b;border-radius:12px;padding:14px;margin:8px 0;text-align:center}
-#pvcToolView,#epView,#panView,#docView{display:none;position:fixed;top:0;bottom:0;left:0;width:100%;background:#0f172a;z-index:5000;overflow-y:auto}
-.pvTopBar{background:#0f172a;border-bottom:2px solid #f59e0b;padding:12px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
-.pvBackBtn{background:#1e293b;color:#f59e0b;border:2px solid #f59e0b;border-radius:8px;padding:8px 14px;font-weight:900;font-size:13px;cursor:pointer}
-.pvTitle{font-weight:900;font-size:15px;color:#fff}
-.pvSub{font-size:10px;color:#fbbf24;font-weight:700}
-.pvWrap{max-width:520px;margin:0 auto;padding:12px;display:flex;flex-direction:column;gap:14px}
-.pvCard{background:#1e293b;border:2px solid #f59e0b;border-radius:14px;padding:14px}
-.pvCard h3{font-size:14px;font-weight:900;color:#fbbf24;margin-bottom:10px}
-.pvUploadBtn{display:block;width:100%;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:900;font-size:13px;cursor:pointer;text-align:center;margin-bottom:10px}
-canvas.pvPreview{width:100%;border-radius:10px;background:#020617;touch-action:pan-y;display:block}
-.pvControls{display:flex;gap:8px;margin-top:10px}
-.pvBtn{flex:1;border:none;border-radius:10px;padding:11px 6px;font-weight:900;font-size:12px;cursor:pointer;color:#fff}
-.pvBtnAuto{background:#22c55e}.pvBtnRot{background:#8b5cf6}.pvBtnReset{background:#64748b}
-.pvBtnDl{background:#f59e0b;color:#000;width:100%;margin-top:8px;font-size:13px;border:none;border-radius:10px;padding:11px 6px;font-weight:900;cursor:pointer}
-.pvZoomRow{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;font-weight:700;color:#cbd5e1}
-.pvZoomRow input{flex:1;accent-color:#f59e0b}
-.pvHowto{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:12px;font-size:11px;line-height:1.7;color:#cbd5e1}
-.pvHowto b{color:#fbbf24}
-.pvFooter{text-align:center;font-size:10px;color:#64748b;padding:16px}
-input.pvFile{display:none}
-.epLbl{font-size:12px;font-weight:900;color:#fbbf24}
-.epChips{display:flex;flex-wrap:wrap;gap:8px}
-.epChip{background:#1e293b;color:#fff;border:2px solid #334155;border-radius:10px;padding:10px 12px;font-weight:900;font-size:12px;cursor:pointer}
-.epChip.on{background:#f59e0b;color:#000;border-color:#f59e0b}
-.dtPanel{display:none}.dtPanel.on{display:block}
-.dtRes{font-size:12px;font-weight:900;color:#22c55e;margin-top:8px;line-height:1.6}
-.dtInp{width:100%;background:#0f172a;color:#fff;border:2px solid #334155;border-radius:10px;padding:11px;font-size:12px;font-weight:700}
-textarea.dtInp{min-height:120px;resize:vertical;font-weight:400}
-select.dtInp{width:auto;padding:8px}
-@media (min-width:1024px){#sideMenu{left:0!important;right:auto!important;width:340px;max-width:340px;transition:none}#overlay{display:none!important}.menuDots{display:none!important}.mainContent{margin-left:372px;max-width:1020px;padding:20px 24px}#pvcToolView,#epView,#panView,#docView{left:340px;width:calc(100% - 340px)}}
-.ficon{width:24px;height:24px;object-fit:contain;vertical-align:-6px;margin-right:7px;border-radius:5px;background:#fff;padding:2px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.qicon{width:36px;height:36px;object-fit:contain;border-radius:9px;background:#fff;padding:3px}
-.gicon{width:22px;height:22px;object-fit:contain;vertical-align:-4px;margin-right:6px;border-radius:5px;background:rgba(255,255,255,.92);padding:2px}
-.lsprite{display:inline-block;background-color:#fff}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Noto Sans Bengali,Arial}
+body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
+.top{position:fixed;top:0;left:0;width:100%;height:64px;z-index:9999;background:#0f172a;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.top-left{display:flex;align-items:center;gap:10px}
+.hum{width:44px;height:44px;background:#1e293b;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0}
+.logo-p{width:44px;height:44px;background:#000;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #334155}
+.logo-p img{width:100%;height:100%;object-fit:cover}
+.top-title b{font-size:15px;display:block;line-height:16px;color:#fff}
+.top-title span{font-size:11px;color:#94a3b8}
+.bell{width:44px;height:44px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
+.main{padding:12px;max-width:520px;margin:0 auto;margin-top:72px}
+.welcome{background:#fff;border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:12px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:800;margin:4px 4px 0 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.card-s{position:relative;background:#fff;border-radius:18px;padding:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);cursor:pointer;min-height:132px;border:1px solid #f1f5f9}
+.blob{position:absolute;top:-10px;right:-10px;width:90px;height:90px;border-radius:20px;opacity:.5}
+.icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:12px;position:relative;z-index:1}
+.card-s b{font-size:15px;display:block;position:relative;z-index:1;color:#0f172a}
+.card-s span{font-size:12px;color:#64748b;position:relative;z-index:1;display:block;margin-top:2px}
+.open-btn{font-size:12px;color:#94a3b8;margin-top:10px;display:flex;align-items:center;gap:4px;position:relative;z-index:1;font-weight:600}
+#side{position:fixed;top:0;right:-100%;width:100%;max-width:420px;height:100%;background:#0f172a;z-index:10000;transition:.3s;overflow-y:auto;padding:10px}
+#side.open{right:0}
+#over{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:9999;display:none}
+#over.open{display:block}
+.scard{background:#fff;border-radius:12px;padding:8px;margin-bottom:8px}
+.head{padding:10px 12px;font-size:13px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;border-radius:10px;color:#fff}
+.list{display:none;padding:8px}
+.list.open{display:block}
+.item{padding:9px 10px;font-size:12px;font-weight:700;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin:5px 0;cursor:pointer}
+.item:hover{background:#fffbeb;border-color:#f59e0b}
+.float{position:fixed;bottom:20px;right:20px;width:56px;height:56px;background:#0f172a;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:9000;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);border:3px solid #fff;color:#fff;font-size:22px}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
-<div id="welcomePopup"><div class="welcomeBox"><div style="font-size:36px;margin-bottom:12px">👋</div><h2>Welcome Friend!</h2><p>PARVEZ DIGITAL SERVICE</p><div class="sub">55+ Government Services • West Bengal<br>Trusted • Professional • Secure • Official</div><button class="welcomeBtn" onclick="closeWelcome()">✅ Continue to Portal</button></div></div>
-<div class="topBar"><div class="logo"><img class="logoIcon" src="logo.jpg" alt="Parvez Alam"><div><div class="logoText">PARVEZ DIGITAL</div><div class="logoSub">55+ Services • Secure Portal</div></div></div><div class="menuDots" onclick="toggleMenu()"><div class="dotLine"></div><div class="dotLine"></div></div></div>
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<!-- PARVEZ DAILY POSTER v18 - AJKER BIRTHDAY + USER NAM/CHOBI -->
-<div id="pd-home" style="margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
-  <div style="font-size:15px;color:#f5b301;font-weight:800">🎉 ডেইলি পোস্টার স্টুডিও</div>
-  <div style="font-size:12px;margin:4px 0 10px;opacity:.85;line-height:1.5">আজ যার জন্মদিন/বিশেষ দিন, তার নামের পোস্টার বানাও — <b>নিজের ছবি ও নাম সহ</b>, মাত্র ₹2-তে।</div>
-  <div id="pd-today-banner" style="background:#1e293b;border:2px dashed #f5b301;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center;cursor:pointer"></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-    <div class="pd-cat" data-cat="islamic" style="background:linear-gradient(135deg,#0f5132,#062a1e);border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;border:2px solid #25D366"><div style="font-size:30px">🕌</div><div style="font-weight:800;font-size:12px;margin-top:4px">ইসলামিক</div></div>
-    <div class="pd-cat" data-cat="political" style="background:linear-gradient(135deg,#7c2d12,#431407);border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;border:2px solid #f5b301"><div style="font-size:30px">🏛️</div><div style="font-weight:800;font-size:12px;margin-top:4px">রাজনৈতিক</div></div>
-    <div class="pd-cat" data-cat="festival" style="background:linear-gradient(135deg,#6b21a8,#3b0764);border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;border:2px solid #ec4899"><div style="font-size:30px">🎉</div><div style="font-weight:800;font-size:12px;margin-top:4px">উৎসব</div></div>
-  </div>
+<div class="top">
+<div class="top-left">
+<div class="hum" onclick="goBack()" style="background:#f59e0b"><span style="color:#fff;font-size:18px;font-weight:900">←</span></div>
+<div class="hum" onclick="toggleM()"><div style="display:flex;flex-direction:column"><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div></div></div>
+<div class="logo-p"><img src="logo.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='P'" alt="PA" style="color:#fbbf24;font-weight:900;font-size:20px">P</div>
+<div class="top-title"><b>PARVEZ DIGITAL</b><span>55+ Services • Secure Portal</span></div>
 </div>
-<div id="pd-studio" style="display:none;margin:12px;padding:14px;border:2px solid #f5b301;border-radius:16px;background:#0f172a;color:#fff">
-  <button id="pd-back" style="background:#1e293b;color:#f5b301;border:2px solid #f5b301;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;margin-bottom:10px">← ফিরে যাও</button>
-  <div id="pd-studio-title" style="font-size:14px;font-weight:800;color:#f5b301;margin-bottom:8px"></div>
-  <div id="pd-carousel" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px"></div>
-  <div style="display:flex;gap:8px;margin-bottom:8px">
-    <label for="pd-photo-input" style="flex:1;background:#2563eb;color:#fff;border-radius:10px;padding:11px;font-weight:800;font-size:13px;cursor:pointer;text-align:center">📷 আপনার ছবি লাগান</label>
-    <input type="file" id="pd-photo-input" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
-    <button id="pd-photo-remove" style="background:#64748b;color:#fff;border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer">❌</button>
-  </div>
-  <div id="pd-photo-name" style="font-size:12px;color:#22c55e;font-weight:700;margin-bottom:8px"></div>
-  <div style="display:flex;gap:8px;margin-bottom:8px">
-    <label for="pd-logo-input" style="flex:1;background:#7c3aed;color:#fff;border-radius:10px;padding:11px;font-weight:800;font-size:13px;cursor:pointer;text-align:center">⭐ লোগো লাগান (ঐচ্ছিক)</label>
-    <input type="file" id="pd-logo-input" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
-    <button id="pd-logo-remove" style="background:#64748b;color:#fff;border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer">❌</button>
-  </div>
-  <div id="pd-logo-name" style="font-size:12px;color:#22c55e;font-weight:700;margin-bottom:8px"></div>
-  <input id="pd-user-title" placeholder="✍️ পদবি লিখুন (ঐচ্ছিক - নামের নিচে দেখাবে)" style="width:100%;background:#1e293b;color:#fff;border:2px solid #f5b301;border-radius:10px;padding:11px;font-size:14px;font-weight:700;margin-bottom:10px">
-  <input id="pd-user-name" placeholder="✍️ আপনার নাম লিখুন (পোস্টারে দেখাবে)" style="width:100%;background:#1e293b;color:#fff;border:2px solid #f5b301;border-radius:10px;padding:11px;font-size:14px;font-weight:700;margin-bottom:10px">
-  <div style="font-size:13px;font-weight:800;color:#f5b301;margin-bottom:6px">👁️ লাইভ প্রিভিউ</div>
-  <div style="font-size:11px;color:#22c55e;font-weight:700;margin-bottom:6px">👆 প্রিভিউতে ছবির বক্সে ট্যাপ করলেও ছবি লাগাতে পারবে</div>
-  <canvas id="pd-canvas" width="1080" height="1350" style="width:100%;border-radius:12px;display:block;background:#000"></canvas>
-  <div style="margin-top:8px;font-size:13px">সিলেক্ট: <b id="pd-sel-b">—</b></div>
-  <button id="pd-pay-btn" style="margin-top:8px;width:100%;background:#f5b301;color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer">₹2 দিয়ে ডাউনলোড করো</button>
-  <div id="pd-pay-box" style="display:none;margin-top:10px;text-align:center">
-    <button id="pd-auto-pay-btn" style="background:#fff;color:#000;border:0;padding:12px 24px;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer">⚡ ₹2 পে করো</button>
-    <div style="font-size:11px;opacity:.8;margin-top:6px">পেমেন্ট সফল হলেই অটো আনলক হয়ে যাবে</div>
-    <div style="margin-top:8px"><a id="pd-manual-toggle" style="font-size:12px;color:#f5b301;cursor:pointer;text-decoration:underline">অন্য উপায়ে পে করতে চাও?</a></div>
-    <div id="pd-manual-box" style="display:none;margin-top:10px;border-top:1px solid #334155;padding-top:10px">
-      <div style="font-size:13px">UPI ID: <b>8609754876@ptsbi</b> <button onclick="navigator.clipboard.writeText('8609754876@ptsbi')" style="padding:4px 10px;border-radius:6px;border:0;background:#334155;color:#fff;cursor:pointer">কপি</button></div>
-      <a href="upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock" style="display:inline-block;margin:10px;background:#fff;color:#000;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">UPI app দিয়ে সরাসরি পে করো</a><br>
-      <a href="https://wa.me/918609754876?text=%E0%A6%AA%E0%A7%8B%E0%A6%B8%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%B0%E0%A7%87%E0%A6%B0%20%E0%A7%A82%20%E0%A6%AA%E0%A7%87%E0%A6%AE%E0%A7%87%E0%A6%A8%E0%A7%8D%E0%A6%9F%20%E0%A6%95%E0%A6%B0%E0%A7%87%E0%A6%9B%E0%A6%BF%20%E0%A6%B8%E0%A7%8D%E0%A6%95%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%A8%E0%A6%B6%E0%A6%9F%20%E0%A6%A6%E0%A6%BF%E0%A6%B2%E0%A6%BE%E0%A6%AE" style="display:inline-block;background:#25D366;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700">📩 WhatsApp-এ স্ক্রিনশট পাঠাও</a>
-      <div style="margin-top:10px;display:flex;gap:8px;justify-content:center">
-        <input id="pd-code-input" placeholder="🔑 আনলক কোড লিখো" style="background:#1e293b;color:#fff;border:2px solid #f5b301;border-radius:10px;padding:10px;font-size:14px;font-weight:700;width:55%">
-        <button id="pd-unlock-btn" style="background:#22c55e;color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer">আনলক</button>
-      </div>
-      <div id="pd-code-msg" style="font-size:12px;color:#f87171;font-weight:700;margin-top:6px;min-height:18px"></div>
-    </div>
-  </div>
-  <div id="pd-action-box" style="display:none;margin-top:10px;text-align:center">
-    <button id="pd-dl-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#f5b301;color:#000;font-weight:800;cursor:pointer">⬇ HD ডাউনলোড</button>
-    <button id="pd-wa-btn" style="padding:12px 18px;border-radius:8px;border:0;background:#25D366;color:#fff;font-weight:700;cursor:pointer">WhatsApp শেয়ার</button>
-  </div>
-  <div style="font-size:11px;opacity:.7;margin-top:8px;text-align:center">💡 ডাউনলোড চাপলে ছবি নতুন ট্যাবে খুলবে → long-press → Download image</div>
+<div class="bell" onclick="toggleM()">🔔</div>
 </div>
 
-<script>
-(function(){
-var DATA = {
-"01-01":[{n:"সত্যেন্দ্রনাথ বসু",d:"জন্মদিন (1894) - বিশিষ্ট বিজ্ঞানী",e:"🔬"}],
-"01-12":[{n:"স্বামী বিবেকানন্দ",d:"জন্মদিন (1863) - জাতীয় যুব দিবস",e:"🧘"}],
-"01-16":[{n:"শরৎচন্দ্র চট্টোপাধ্যায়",d:"মৃত্যুদিন (1938)",e:"📚"}],
-"01-17":[{n:"জ্যোতি বসু",d:"মৃত্যুদিন (2010)",e:"🙏"}],
-"01-23":[{n:"নেতাজি সুভাষচন্দ্র বসু",d:"জন্মদিন (1897) - পরাক্রম দিবস",e:"🇮🇳"}],
-"01-24":[{n:"হোমি জাহাঙ্গীর ভাবা",d:"মৃত্যুদিন (1966)",e:"⚛️"}],
-"01-25":[{n:"মাইকেল মধুসূদন দত্ত",d:"জন্মদিন (1824)",e:"✒️"}],
-"01-26":[{n:"প্রজাতন্ত্র দিবস",d:"ভারতের প্রজাতন্ত্র দিবস",e:"🏛️"}],
-"01-28":[{n:"লালা লাজপত রাই",d:"জন্মদিন (1865)",e:"🇮🇳"}],
-"01-30":[{n:"মহাত্মা গান্ধী",d:"মৃত্যুদিন (1948) - শহীদ দিবস",e:"🕊️"}],
-"02-13":[{n:"সরোজিনী নাইডু",d:"জন্মদিন (1879)",e:"🌸"}],
-"02-17":[{n:"জীবনানন্দ দাশ",d:"জন্মদিন (1899)",e:"📝"}],
-"02-27":[{n:"চন্দ্রশেখর আজাদ",d:"মৃত্যুদিন (1931)",e:"🇮🇳"}],
-"02-28":[{n:"জাতীয় বিজ্ঞান দিবস",d:"সি.ভি. রমন - রমন এফেক্ট (1928)",e:"🔬"}],
-"03-08":[{n:"আন্তর্জাতিক নারী দিবস",d:"নারী শক্তির প্রতি শ্রদ্ধা",e:"👩"}],
-"03-22":[{n:"সূর্য সেন (মাস্টারদা)",d:"জন্মদিন (1894)",e:"🇮🇳"}],
-"03-23":[{n:"ভগৎ সিং, রাজগুরু ও সুখদেব",d:"মৃত্যুদিন (1931) - শহীদ দিবস",e:"🙏"}],
-"04-08":[{n:"মঙ্গল পান্ডে",d:"মৃত্যুদিন (1857)",e:"🇮🇳"}],
-"04-13":[{n:"জালিয়ানওয়ালাবাগ",d:"শহীদ স্মরণ দিবস (1919)",e:"🕯️"}],
-"04-14":[{n:"ডঃ বি.আর. আম্বেদকর",d:"জন্মদিন (1891)",e:"📖"}],
-"04-23":[{n:"সত্যজিৎ রায়",d:"মৃত্যুদিন (1992)",e:"🎬"}],
-"04-24":[{n:"শচীন তেন্ডুলকার",d:"জন্মদিন (1973)",e:"🏏"}],
-"05-02":[{n:"সত্যজিৎ রায়",d:"জন্মদিন (1921)",e:"🎬"}],
-"05-05":[{n:"প্রীতিলতা ওয়াদ্দেদার",d:"জন্মদিন (1911)",e:"🇮🇳"}],
-"05-09":[{n:"রবীন্দ্রনাথ ঠাকুর",d:"জন্মদিন (1861) - পঁচিশে বৈশাখ",e:"🎼"}],
-"05-13":[{n:"সুকান্ত ভট্টাচার্য",d:"মৃত্যুদিন (1947)",e:"📝"}],
-"05-21":[{n:"রাজীব গান্ধী",d:"মৃত্যুদিন (1991) - সন্ত্রাসবিরোধী দিবস",e:"🕊️"}],
-"05-22":[{n:"রাজা রামমোহন রায়",d:"জন্মদিন (1772)",e:"📚"}],
-"05-24":[{n:"কাজী নজরুল ইসলাম",d:"জন্মদিন (1899)",e:"✒️"}],
-"05-28":[{n:"বীর সাভারকর",d:"জন্মদিন (1883)",e:"🇮🇳"}],
-"06-05":[{n:"বিশ্ব পরিবেশ দিবস",d:"প্রকৃতি বাঁচাও, ভবিষ্যৎ বাঁচাও",e:"🌳"}],
-"06-09":[{n:"বিরসা মুন্ডা",d:"মৃত্যুদিন (1900)",e:"🏹"}],
-"06-16":[{n:"হেমন্ত মুখোপাধ্যায়",d:"জন্মদিন (1920)",e:"🎵"}],
-"06-18":[{n:"রানি লক্ষ্মীবাঈ",d:"মৃত্যুদিন (1858)",e:"⚔️"}],
-"06-21":[{n:"আন্তর্জাতিক যোগ দিবস",d:"যোগ করুন, সুস্থ থাকুন",e:"🧘"}],
-"06-23":[{n:"শ্যামাপ্রসাদ মুখার্জি",d:"মৃত্যুদিন (1953)",e:"🙏"}],
-"06-27":[{n:"বঙ্কিমচন্দ্র চট্টোপাধ্যায়",d:"জন্মদিন (1838)",e:"📚"}],
-"07-01":[{n:"ডঃ বিধানচন্দ্র রায়",d:"জন্মদিন ও মৃত্যুদিন (1882/1962) - চিকিৎসক দিবস",e:"⚕️",th:"medical"}],
-"07-06":[{n:"শ্যামাপ্রসাদ মুখার্জি",d:"জন্মদিন (1901)",e:"🙏"}],
-"07-08":[{n:"জ্যোতি বসু",d:"জন্মদিন (1914)",e:"🙏"}],
-"07-19":[{n:"মঙ্গল পান্ডে",d:"জন্মদিন (1827)",e:"🇮🇳"}],
-"07-23":[{n:"বাল গঙ্গাধর তিলক ও চন্দ্রশেখর আজাদ",d:"জন্মদিন (1856 ও 1906)",e:"🇮🇳"}],
-"07-24":[{n:"উত্তম কুমার",d:"মৃত্যুদিন (1980)",e:"🎬"}],
-"07-27":[{n:"এ.পি.জে. আব্দুল কালাম",d:"মৃত্যুদিন (2015)",e:"🚀"}],
-"07-29":[{n:"ঈশ্বরচন্দ্র বিদ্যাসাগর",d:"মৃত্যুদিন (1891)",e:"📚"}],
-"08-02":[{n:"আচার্য প্রফুল্লচন্দ্র রায়",d:"জন্মদিন (1861)",e:"⚗️"}],
-"08-04":[{n:"কিশোর কুমার",d:"জন্মদিন (1929)",e:"🎤"}],
-"08-07":[{n:"রবীন্দ্রনাথ ঠাকুর",d:"মৃত্যুদিন (1941) - বাইশে শ্রাবণ",e:"🙏"}],
-"08-09":[{n:"ভারত ছাড়ো আন্দোলন",d:"স্মরণ দিবস (1942)",e:"🇮🇳"}],
-"08-12":[{n:"বিক্রম সারাভাই",d:"জন্মদিন (1919)",e:"🚀"}],
-"08-15":[{n:"স্বাধীনতা দিবস",d:"ভারতের স্বাধীনতা দিবস - জয় হিন্দ!",e:"🇮🇳"}],
-"08-16":[{n:"অটল বিহারী বাজপেয়ী",d:"মৃত্যুদিন (2018)",e:"🙏"}],
-"08-20":[{n:"রাজীব গান্ধী",d:"জন্মদিন (1944) - সদ্ভাবনা দিবস",e:"🕊️"}],
-"08-26":[{n:"মাদার টেরেসা",d:"জন্মদিন (1910)",e:"🤍"}],
-"08-29":[{n:"ধ্যানচাঁদ",d:"জন্মদিন (1905) - জাতীয় ক্রীড়া দিবস",e:"🏑"}],
-"08-31":[{n:"প্রণব মুখার্জি",d:"মৃত্যুদিন (2020)",e:"🙏"}],
-"09-05":[{n:"ডঃ সর্বপল্লী রাধাকৃষ্ণণ",d:"জন্মদিন (1888) - শিক্ষক দিবস",e:"👨‍🏫"}],
-"09-10":[{n:"বাঘা যতীন",d:"মৃত্যুদিন (1915)",e:"🇮🇳"}],
-"09-11":[{n:"স্বামী বিবেকানন্দ",d:"শিকাগো বক্তৃতা (1893) - বিশ্ব ভ্রাতৃত্ব দিবস",e:"🧘"}],
-"09-15":[{n:"শরৎচন্দ্র চট্টোপাধ্যায় ও এম. বিশ্বেশ্বরায়া",d:"জন্মদিন (1876 ও 1861) - প্রকৌশলী দিবস",e:"📚"}],
-"09-24":[{n:"প্রীতিলতা ওয়াদ্দেদার",d:"মৃত্যুদিন (1932)",e:"🇮🇳"}],
-"09-25":[{n:"দীনদয়াল উপাধ্যায়",d:"জন্মদিন (1916)",e:"🙏"},{n:"অন্ত্যোদয় দিবস",d:"দীনদয়াল উপাধ্যায়ের জন্মবার্ষিকী - গরিবের উন্নয়নের দিন",e:"🌾"},{n:"বিশ্ব ফার্মাসিস্ট দিবস",d:"World Pharmacists Day - ওষুধ বিশেষজ্ঞদের সম্মান",e:"💊",th:"medical"}],
-"09-26":[{n:"ঈশ্বরচন্দ্র বিদ্যাসাগর",d:"জন্মদিন (1820)",e:"📚"}],
-"09-27":[{n:"ভগৎ সিং",d:"জন্মদিন (1907)",e:"🇮🇳"}],
-"09-28":[{n:"লতা মঙ্গেশকর",d:"জন্মদিন (1929)",e:"🎵"}],
-"10-02":[{n:"মহাত্মা গান্ধী ও লাল বাহাদুর শাস্ত্রী",d:"জন্মদিন (1869 ও 1904)",e:"🕊️"}],
-"10-06":[{n:"মেঘনাদ সাহা",d:"জন্মদিন (1893)",e:"🔬"}],
-"10-11":[{n:"জয়প্রকাশ নারায়ণ",d:"জন্মদিন (1902)",e:"🇮🇳"}],
-"10-15":[{n:"এ.পি.জে. আব্দুল কালাম",d:"জন্মদিন (1931)",e:"🚀"}],
-"10-19":[{n:"মাতঙ্গিনী হাজরা",d:"জন্মদিন (1870)",e:"🇮🇳"}],
-"10-22":[{n:"জীবনানন্দ দাশ",d:"মৃত্যুদিন (1954)",e:"📝"}],
-"10-30":[{n:"হোমি জাহাঙ্গীর ভাবা",d:"জন্মদিন (1909)",e:"⚛️"}],
-"10-31":[{n:"সর্দার প্যাটেল ও ইন্দিরা গান্ধী",d:"জন্মদিন (1875) - জাতীয় ঐক্য দিবস; মৃত্যুদিন (1984)",e:"🇮🇳"}],
-"11-05":[{n:"দেশবন্ধু চিত্তরঞ্জন দাশ",d:"জন্মদিন (1870)",e:"🇮🇳"}],
-"11-11":[{n:"মৌলানা আবুল কালাম আজাদ",d:"জন্মদিন (1888) - জাতীয় শিক্ষা দিবস",e:"📖"}],
-"11-14":[{n:"জওহরলাল নেহেরু",d:"জন্মদিন (1889) - শিশু দিবস",e:"🌹"}],
-"11-15":[{n:"বিরসা মুন্ডা",d:"জন্মদিন (1875) - জনজাতীয় গৌরব দিবস",e:"🏹"}],
-"11-19":[{n:"ইন্দিরা গান্ধী ও রানি লক্ষ্মীবাঈ",d:"জন্মদিন (1917 ও 1828)",e:"👩"}],
-"11-26":[{n:"সংবিধান দিবস",d:"ভারতীয় সংবিধান গৃহীত (1949)",e:"📜"}],
-"11-30":[{n:"জগদীশচন্দ্র বসু",d:"জন্মদিন (1858)",e:"🔬"}],
-"12-03":[{n:"ক্ষুদিরাম বসু",d:"জন্মদিন (1889)",e:"🇮🇳"}],
-"12-07":[{n:"বাঘা যতীন",d:"জন্মদিন (1879)",e:"🇮🇳"}],
-"12-08":[{n:"বিনয়-বাদল-দীনেশ",d:"রাইটার্স অভিযান স্মরণ (1930)",e:"🇮🇳"}],
-"12-11":[{n:"প্রণব মুখার্জি",d:"জন্মদিন (1935)",e:"🙏"}],
-"12-22":[{n:"শ্রীনিবাস রামানুজন",d:"জন্মদিন (1887) - জাতীয় গণিত দিবস",e:"🔢"}],
-"12-23":[{n:"চৌধুরী চরণ সিং",d:"জন্মদিন (1902) - কৃষক দিবস",e:"🌾"}],
-"12-25":[{n:"বড়দিন ও অটল বিহারী বাজপেয়ী",d:"জন্মদিন (1924) - সুশাসন দিবস",e:"🎄"}]
-};
+<div id="over" onclick="toggleM()"></div>
+<div id="side">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 4px">
+<div style="color:#fbbf24;font-weight:900">📋 55+ SERVICES MENU</div>
+<div onclick="toggleM()" style="color:#fff;background:#1e293b;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</div>
+</div>
 
-var CATS = {
-islamic:{title:"🕌 ইসলামিক পোস্টার", items:[
-{n:"জুম্মা মোবারক",e:"🕌",t:"জুম্মা মোবারক! আল্লাহ আপনার সব দোয়া কবুল করুন। আমিন।",g1:"#0f5132",g2:"#062a1e"},
-{n:"আলহামদুলিল্লাহ",e:"🤲",t:"প্রতিটা নিশ্বাসের জন্য আলহামদুলিল্লাহ। আল্লাহ মহান।",g1:"#1a5d1a",g2:"#0a2e12"},
-{n:"সকালের দোয়া",e:"🌅",t:"বিসমিল্লাহির রাহমানির রাহিম। নতুন সকাল, নতুন রহমত। শুভ সকাল।",g1:"#2d6a4f",g2:"#122e20"},
-{n:"আয়াতুল কুরসি",e:"📖",t:"আয়াতুল কুরসি পাঠ করুন, আল্লাহর হেফাজতে থাকুন।",g1:"#6b4d1f",g2:"#33230a"},
-{n:"সবর",e:"💚",t:"নিশ্চয়ই আল্লাহ সবরকারীদের সাথে আছেন। (সূরা বাকারা ১৫৩)",g1:"#14532d",g2:"#062a14"},
-{n:"ঈদ মোবারক",e:"🌙",t:"ঈদ মোবারক! তাকাব্বালাল্লাহু মিন্না ওয়া মিনকুম।",g1:"#0f9b0f",g2:"#063006"},
-{n:"রমজান",e:"🌙",t:"রমজান মোবারক! রোজা ও ইবাদতে কাটুক পবিত্র মাস।",g1:"#1e3a5f",g2:"#0a1626"},
-{n:"দোয়া",e:"🤲",t:"রাব্বানা আতিনা ফিদ্দুনিয়া হাসানাহ। হে আল্লাহ আমাদের মঙ্গল দান করুন। আমিন।",g1:"#4a3728",g2:"#241a10"}
-]},
-political:{title:"🏛️ রাজনৈতিক পোস্টার", custom:true, items:[
-{n:"নেতার জন্মদিন",e:"🎂",t:"শুভ জন্মদিন! আপনার নেতৃত্বে এগিয়ে চলুক আমাদের অঞ্চল।",g1:"#b91c1c",g2:"#450a0a"},
-{n:"জনসভা",e:"📢",t:"আসন্ন জনসভায় দলে দলে যোগ দিন। আপনার উপস্থিতিই আমাদের শক্তি।",g1:"#1d4ed8",g2:"#172554"},
-{n:"ভোট প্রচার",e:"🗳️",t:"আপনার মূল্যবান ভোটই গণতন্ত্রের শক্তি। ভোট দিন, ভবিষ্যৎ গড়ুন।",g1:"#c2410c",g2:"#431407"},
-{n:"শুভেচ্ছা বার্তা",e:"💐",t:"আন্তরিক শুভেচ্ছা ও অভিনন্দন।",g1:"#0e7490",g2:"#083344"},
-{n:"জয় হিন্দ",e:"✊",t:"দেশের সেবায় আমরা অঙ্গীকারবদ্ধ। জয় হিন্দ!",g1:"#15803d",g2:"#052e16"},
-{n:"সংবর্ধনা",e:"🏅",t:"আপনার অবদানের জন্য রইলো আন্তরিক সংবর্ধনা।",g1:"#a16207",g2:"#422006"}
-,
-{n:"খেলা হবে",e:"🔥",t:"খেলা হবে! গণতন্ত্রের ময়দানে জনগণের জয় হবেই।",g1:"#b91c1c",g2:"#450a0a"},
-{n:"বদলা নয়, বদল চাই",e:"✊",t:"বদলা নয়, বদল চাই — উন্নয়নের পথে এগিয়ে চলুক বাংলা।",g1:"#166534",g2:"#052e16"},
-{n:"মা-মাটি-মানুষ",e:"🙏",t:"মা-মাটি-মানুষের আশীর্বাদে এগিয়ে চলুক বাংলা।",g1:"#9a3412",g2:"#431407"},
-{n:"বাংলা নিজের মেয়েকেই চায়",e:"👩",t:"বাংলা নিজের মেয়েকেই চায় — বাংলার মেয়ের পাশে থাকুন।",g1:"#be185d",g2:"#500724"},
-{n:"জয় বাংলা",e:"🐅",t:"জয় বাংলা! বাংলার মাটি, বাংলার মানুষ — সবার জয় হোক।",g1:"#c2410c",g2:"#431407"},
-{n:"ইনকিলাব জিন্দাবাদ",e:"🚩",t:"ইনকিলাব জিন্দাবাদ! শ্রমিক-কৃষকের অধিকারের লড়াই চলবে।",g1:"#dc2626",g2:"#450a0a"},
-{n:"সবকা সাথ সবকা বিকাশ",e:"🇮🇳",t:"সবকা সাথ, সবকা বিকাশ — সবার সাথে, সবার উন্নয়ন।",g1:"#1d4ed8",g2:"#172554"},
-{n:"উন্নয়নের শপথ",e:"🏗️",t:"উন্নয়নের ধারা অব্যাহত থাকুক — প্রতিটি ঘরে পৌঁছে যাক সুবিধা।",g1:"#0f766e",g2:"#042f2e"}]},
-festival:{title:"🎉 উৎসব ও বিশেষ দিন", items:[
-{n:"জন্মদিন স্পেশাল",e:"🎂",t:"শুভ জন্মদিন! সুখ, শান্তি ও সমৃদ্ধিতে ভরে উঠুক জীবন।",g1:"#ff9a3c",g2:"#c23b3b"},
-{n:"শ্রদ্ধাঞ্জলি",e:"🙏",t:"বিনম্র শ্রদ্ধাঞ্জলি।",g1:"#4a4a4a",g2:"#0d0d0d"},
-{n:"দুর্গাপূজা",e:"🪔",t:"শারদীয়ার প্রীতি ও শুভেচ্ছা।",g1:"#8e2de2",g2:"#2a0066"},
-{n:"নেতাজি জন্মদিন",e:"🇮🇳",t:"তুমি আমাকে রক্ত দাও, আমি তোমাকে স্বাধীনতা দেবো।",g1:"#ff8008",g2:"#8a3d00"},
-{n:"রবীন্দ্র জয়ন্তী",e:"🎼",t:"আনন্দলোকে মঙ্গলালোকে বিরাজ সত্যসুন্দর।",g1:"#654ea3",g2:"#2e2154"},
-{n:"স্বাধীনতা দিবস",e:"🇮🇳",t:"স্বাধীনতা দিবসের শুভেচ্ছা। জয় হিন্দ!",g1:"#1e9600",g2:"#073d00"}
-]}
-};
+<div class="scard"><div class="head" style="background:linear-gradient(90deg,#0f766e,#0e7490)" onclick="tg('sab')"><span>📝 Sarkari Abedan - NEW ⭐</span><span>▼</span></div><div id="sab" class="list open"><div class="item" style="background:linear-gradient(90deg,#0f766e,#0e7490);color:#fff;font-weight:900" onclick="go('sarkari-abedan.html')">📝 Sarkari Abedan Maker - 50+ Bishoy | Gholabard Default - NEW ⭐</div></div></div>
 
-var GRAD=[["#7c2d12","#431407"],["#0f5132","#052e16"],["#1e3a8a","#172554"],["#6b21a8","#3b0764"],["#9a3412","#7c2d12"],["#0e7490","#164e63"]];
-function evSel(key,idx){var d=DATA[key][idx||0];var h=0;for(var i=0;i<key.length;i++)h+=key.charCodeAt(i);var g=GRAD[h%GRAD.length];return{n:d.n,t:d.d,e:d.e,th:d.th,g1:g[0],g2:g[1],isEvent:true};}
+<div class="scard"><div class="head" style="background:linear-gradient(90deg,#3b82f6,#06b6d4)" onclick="tg('aad')"><span>🅰️ Aadhaar</span><span>▼</span></div><div id="aad" class="list open"><div class="item" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official - myAadhaar</div><div class="item" onclick="go('https://uidai.gov.in/')">🏛️ UIDAI Official</div></div></div>
 
-var sel=null,userName='',userPhoto=null,userTitle='',userLogo=null,curCat='islamic',curEventKey=null,locked=true;
-var bnDate=new Date().toLocaleDateString('bn-IN',{day:'numeric',month:'long',year:'numeric'});
-
-function wrap(x,text,cx,y,maxW,lh){
-  var words=String(text).split(' '),line='',yy=y;
-  for(var i=0;i<words.length;i++){
-    var t=line+words[i]+' ';
-    if(x.measureText(t).width>maxW&&i>0){x.fillText(line,cx,yy);line=words[i]+' ';yy+=lh;}
-    else{line=t;}
-  }
-  x.fillText(line,cx,yy);return yy+lh;
-}
-function roundRect(x,px,py,pw,ph,r){x.beginPath();x.moveTo(px+r,py);x.arcTo(px+pw,py,px+pw,py+ph,r);x.arcTo(px+pw,py+ph,px,py+ph,r);x.arcTo(px,py+ph,px,py,r);x.arcTo(px,py,px+pw,py,r);x.closePath();}
-function drawCover(x,img,px,py,pw,ph){
-  var ir=img.width/img.height,r=pw/ph,sw,sh,sx,sy;
-  if(ir>r){sh=img.height;sw=sh*r;sx=(img.width-sw)/2;sy=0;}
-  else{sw=img.width;sh=sw/r;sx=0;sy=(img.height-sh)/2;}
-  x.drawImage(img,sx,sy,sw,sh,px,py,pw,ph);
-}
-
-function star(x,cx,cy,r,col){
-  x.fillStyle=col;x.beginPath();
-  for(var i=0;i<10;i++){
-    var rr=(i%2===0)?r:r*0.45,a=-Math.PI/2+i*Math.PI/5;
-    var px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr;
-    if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
-  }
-  x.closePath();x.fill();
-}
-function drawStars(x){
-  var pts=[[80,230],[210,430],[900,250],[985,470],[110,700],[965,650],[420,120],[700,110],[250,950],[840,920],[620,200],[90,1050]];
-  for(var i=0;i<pts.length;i++)star(x,pts[i][0],pts[i][1],7,'rgba(255,235,170,0.75)');
-}
-function crescent(x,cx,cy,r,col){
-  var t=0.8,x2=cx+r*Math.cos(t),y2=cy+r*Math.sin(t);
-  x.fillStyle=col;x.beginPath();
-  x.moveTo(x2,y2);
-  x.arc(cx,cy,r,t,Math.PI*2-t);
-  x.quadraticCurveTo(cx+r*1.05,cy,x2,y2);
-  x.closePath();x.fill();
-}
-function lantern(x,lx){
-  x.strokeStyle='rgba(245,183,49,0.8)';x.lineWidth=3;
-  x.beginPath();x.moveTo(lx,0);x.lineTo(lx,120);x.stroke();
-  x.fillStyle='#d4a017';
-  x.beginPath();x.arc(lx,132,9,0,7);x.fill();
-  x.beginPath();x.moveTo(lx-30,158);x.quadraticCurveTo(lx,112,lx+30,158);x.closePath();x.fill();
-  var grd=x.createLinearGradient(lx-26,0,lx+26,0);
-  grd.addColorStop(0,'rgba(255,200,80,0.25)');grd.addColorStop(0.5,'rgba(255,235,170,0.8)');grd.addColorStop(1,'rgba(255,200,80,0.25)');
-  x.fillStyle=grd;
-  roundRect(x,lx-26,158,52,70,10);x.fill();
-  x.strokeStyle='#d4a017';x.lineWidth=3;roundRect(x,lx-26,158,52,70,10);x.stroke();
-  var gl=x.createRadialGradient(lx,193,4,lx,193,80);
-  gl.addColorStop(0,'rgba(255,222,130,0.55)');gl.addColorStop(1,'rgba(255,222,130,0)');
-  x.fillStyle=gl;x.beginPath();x.arc(lx,193,80,0,7);x.fill();
-  x.fillStyle='#fff3c4';x.beginPath();x.ellipse(lx,193,8,14,0,0,7);x.fill();
-  x.fillStyle='#d4a017';x.fillRect(lx-3,228,6,26);
-  x.beginPath();x.arc(lx,262,7,0,7);x.fill();
-}
-function hangCrescent(x,hx){
-  x.strokeStyle='rgba(245,183,49,0.8)';x.lineWidth=3;
-  x.beginPath();x.moveTo(hx,0);x.lineTo(hx,80);x.stroke();
-  crescent(x,hx,140,44,'#f5d76e');
-  star(x,hx+52,108,9,'#ffe9a8');
-}
-function diya(x,dx,dy,s){
-  x.fillStyle='#8a5a17';
-  x.beginPath();x.ellipse(dx,dy,36*s,15*s,0,0,7);x.fill();
-  x.fillStyle='#c98a2b';
-  x.beginPath();x.ellipse(dx,dy-5*s,27*s,10*s,0,0,7);x.fill();
-  var fg=x.createRadialGradient(dx,dy-30*s,2,dx,dy-30*s,24*s);
-  fg.addColorStop(0,'rgba(255,246,201,0.9)');fg.addColorStop(0.5,'rgba(255,170,40,0.55)');fg.addColorStop(1,'rgba(255,140,0,0)');
-  x.fillStyle=fg;x.beginPath();x.arc(dx,dy-30*s,24*s,0,7);x.fill();
-  x.fillStyle='#ffdf80';
-  x.beginPath();x.ellipse(dx,dy-34*s,7*s,13*s,0,0,7);x.fill();
-}
-function garland(x){
-  for(var i=0;i<=26;i++){
-    var px=50+i*(980/26),py=80+Math.sin(i/26*Math.PI)*64;
-    x.fillStyle=(i%2)?'#ff9d2e':'#ffc53d';
-    x.beginPath();x.arc(px,py,15,0,7);x.fill();
-    x.fillStyle='#7a4d0f';x.beginPath();x.arc(px,py,5,0,7);x.fill();
-  }
-}
-function rays(x){
-  x.save();x.globalAlpha=0.06;x.fillStyle='#ffffff';
-  for(var i=0;i<9;i++){
-    var a1=Math.PI*0.12+i*(Math.PI*0.76/8),a2=a1+0.05;
-    x.beginPath();x.moveTo(540,-40);
-    x.lineTo(540+Math.cos(a1)*1500,Math.sin(a1)*1500);
-    x.lineTo(540+Math.cos(a2)*1500,Math.sin(a2)*1500);
-    x.closePath();x.fill();
-  }
-  x.restore();
-}
-function archPath(x,cx,top,w,h){
-  var x0=cx-w/2,x1=cx+w/2,yb=top+h,ys=top+h*0.36;
-  x.beginPath();
-  x.moveTo(x0,yb);x.lineTo(x0,ys);
-  x.quadraticCurveTo(x0,top+h*0.10,cx,top);
-  x.quadraticCurveTo(x1,top+h*0.10,x1,ys);
-  x.lineTo(x1,yb);
-  x.quadraticCurveTo(cx,yb+h*0.06,x0,yb);
-  x.closePath();
-}
-function drawArch(x,cx,top,w,h,col){
-  archPath(x,cx,top,w,h);
-  x.fillStyle='rgba(0,0,0,0.30)';x.fill();
-  x.strokeStyle=col;x.lineWidth=10;x.stroke();
-  x.fillStyle=col;
-  x.beginPath();x.arc(cx,top-12,9,0,7);x.fill();
-  x.beginPath();x.moveTo(cx,top-20);x.lineTo(cx-7,top-40);x.lineTo(cx+7,top-40);x.closePath();x.fill();
-}
-function archPattern(x,cx,top,w,h){
-  x.save();archPath(x,cx,top,w,h);x.clip();
-  x.strokeStyle='rgba(245,200,100,0.12)';x.lineWidth=2;
-  for(var yy=top+50;yy<top+h-20;yy+=58){
-    for(var xx=cx-w/2+30;xx<cx+w/2-10;xx+=58){
-      x.beginPath();
-      x.moveTo(xx,yy-13);x.lineTo(xx+13,yy);x.lineTo(xx,yy+13);x.lineTo(xx-13,yy);
-      x.closePath();x.stroke();
-      x.beginPath();x.arc(xx,yy,4,0,7);x.stroke();
-    }
-  }
-  x.restore();
-}
-function drawRectFrame(x,fx,fy,fw,fh,col){
-  x.fillStyle='rgba(0,0,0,0.30)';
-  roundRect(x,fx,fy,fw,fh,26);x.fill();
-  x.strokeStyle=col;x.lineWidth=10;roundRect(x,fx,fy,fw,fh,26);x.stroke();
-  x.strokeStyle='rgba(255,255,255,0.35)';x.lineWidth=3;roundRect(x,fx+18,fy+18,fw-36,fh-36,16);x.stroke();
-}
-function containBox(x,img,px,py,pw,ph){
-  var sc=Math.min(pw/img.width,ph/img.height);
-  var dw=img.width*sc,dh=img.height*sc;
-  return [px+(pw-dw)/2,py+(ph-dh)/2,dw,dh];
-}
-function capsule(x,cx,cy,len,wid,ang,c1,c2){
-  x.save();x.translate(cx,cy);x.rotate(ang);
-  x.fillStyle=c1;roundRect(x,-len/2,-wid/2,len,wid,wid/2);x.fill();
-  x.save();x.beginPath();x.rect(0,-wid/2,len/2,wid);x.clip();
-  x.fillStyle=c2;roundRect(x,-len/2,-wid/2,len,wid,wid/2);x.fill();x.restore();
-  x.strokeStyle='rgba(255,255,255,0.55)';x.lineWidth=3;
-  roundRect(x,-len/2,-wid/2,len,wid,wid/2);x.stroke();
-  x.restore();
-}
-function tablet(x,cx,cy,r,col){
-  x.fillStyle=col;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();
-  x.strokeStyle='rgba(0,0,0,0.18)';x.lineWidth=4;
-  x.beginPath();x.moveTo(cx-r,cy);x.lineTo(cx+r,cy);x.stroke();
-  x.fillStyle='rgba(255,255,255,0.35)';
-  x.beginPath();x.arc(cx-r*0.3,cy-r*0.3,r*0.25,0,7);x.fill();
-}
-function medBadge(x,cx,cy,r){
-  x.fillStyle='#ffffff';x.beginPath();x.arc(cx,cy,r,0,7);x.fill();
-  x.strokeStyle='#0e7490';x.lineWidth=6;x.beginPath();x.arc(cx,cy,r,0,7);x.stroke();
-  x.fillStyle='#e11d48';
-  var w=r*0.36,l=r*1.05;
-  x.fillRect(cx-w/2,cy-l/2,w,l);
-  x.fillRect(cx-l/2,cy-w/2,l,w);
-}
-function heartbeat(x,y0,col){
-  x.strokeStyle=col;x.lineWidth=6;x.lineJoin='round';x.beginPath();
-  var pts=[[40,y0],[180,y0],[230,y0-55],[280,y0+55],[330,y0-18],[380,y0],[700,y0],[750,y0-55],[800,y0+55],[850,y0-18],[900,y0],[1040,y0]];
-  x.moveTo(pts[0][0],pts[0][1]);
-  for(var i=1;i<pts.length;i++)x.lineTo(pts[i][0],pts[i][1]);
-  x.stroke();
-}
-function pdDraw(){
-  var c=document.getElementById('pd-canvas');if(!c||!sel)return;
-  var x=c.getContext('2d'),W=1080,H=1350;
-  var cat=curCat;
-  var theme=sel.th||null;
-  var g=x.createLinearGradient(0,0,0,H);
-  if(theme==='medical'){g.addColorStop(0,'#0e7490');g.addColorStop(1,'#164e63');}
-  else if(cat==='islamic'){g.addColorStop(0,'#7a5218');g.addColorStop(1,'#241304');}
-  else{g.addColorStop(0,sel.g1);g.addColorStop(1,sel.g2);}
-  x.fillStyle=g;x.fillRect(0,0,W,H);
-  if(cat!=='political'){
-    var glw=x.createRadialGradient(540,200,60,540,200,720);
-    glw.addColorStop(0,'rgba(255,214,130,0.38)');
-    glw.addColorStop(1,'rgba(255,214,130,0)');
-    x.fillStyle=glw;x.fillRect(0,0,W,800);
-  }
-  x.textAlign='center';
-  x.fillStyle='rgba(245,179,1,0.95)';x.font='bold 30px sans-serif';
-  x.fillText('PARVEZ DIGITAL SERVICE',W/2,52);
-  drawStars(x);
-  var fx=200,fy=300,fw=680,fh=600;
-  if(theme==='medical'){
-    heartbeat(x,120,'rgba(255,255,255,0.45)');
-    capsule(x,150,300,120,46,-0.5,'#ffffff','#0ea5e9');
-    capsule(x,930,320,120,46,0.55,'#ffffff','#e11d48');
-    tablet(x,220,520,36,'#fbbf24');
-    tablet(x,860,540,30,'#ffffff');
-    capsule(x,130,780,100,40,0.35,'#ffffff','#10b981');
-    capsule(x,950,800,100,40,-0.4,'#ffffff','#8b5cf6');
-    tablet(x,180,1000,28,'#f472b6');
-    tablet(x,900,1010,32,'#a3e635');
-    drawRectFrame(x,fx,fy,fw,fh,'#22d3ee');
-    medBadge(x,540,fy+130,46);
-  }else if(cat==='islamic'){
-    lantern(x,150);lantern(x,930);hangCrescent(x,330);
-    crescent(x,872,205,50,'#f5d76e');star(x,795,150,10,'#ffe9a8');
-    drawArch(x,540,fy,fw,fh,'#f5b301');
-    archPattern(x,540,fy,fw,fh);
-    crescent(x,540,fy+130,42,'#f5d76e');
-  }else if(cat==='festival'){
-    garland(x);diya(x,150,215,1);diya(x,930,215,1);
-    drawArch(x,540,fy,fw,fh,'#ffb830');
-    archPattern(x,540,fy,fw,fh);
-    x.font='80px serif';x.fillStyle='#ffffff';x.fillText(sel.e,540,fy+150);
-  }else{
-    rays(x);
-    drawRectFrame(x,fx,fy,fw,fh,'#f5b301');
-    x.font='80px serif';x.fillStyle='#ffffff';x.fillText(sel.e,540,fy+150);
-  }
-  x.save();
-  x.shadowColor='rgba(0,0,0,0.55)';x.shadowBlur=20;x.shadowOffsetY=6;
-  x.fillStyle=(theme==='medical')?'#ffffff':'#f5d76e';x.font='bold 92px sans-serif';
-  var y=wrap(x,sel.n,540,fy+250,580,108);
-  x.restore();
-  star(x,470,y+10,10,'rgba(255,255,255,0.9)');
-  star(x,610,y+10,10,'rgba(255,255,255,0.9)');
-  x.fillStyle='#ffffff';x.font='40px sans-serif';
-  y=wrap(x,sel.t,540,y+42,580,58);
-  x.fillStyle='#f8f1de';x.fillRect(0,1150,W,200);
-  x.fillStyle='#f5b301';x.fillRect(0,1150,W,8);
-  var nx=userPhoto?430:540;
-  x.fillStyle='#a31212';x.font='bold 60px sans-serif';
-  x.fillText(userName||'আপনার নাম',nx,1232);
-  x.fillStyle='#5b4a1e';x.font='32px sans-serif';
-  if(userTitle)x.fillText(userTitle,nx,1286);
-  var ppx=630,ppy=770,ppw=420,pph=430;
-  if(userPhoto){
-    var r=containBox(x,userPhoto,ppx,ppy,ppw,pph);
-    x.save();roundRect(x,r[0],r[1],r[2],r[3],22);x.clip();
-    x.drawImage(userPhoto,r[0],r[1],r[2],r[3]);x.restore();
-    x.strokeStyle='#f5b301';x.lineWidth=6;roundRect(x,r[0],r[1],r[2],r[3],22);x.stroke();
-  }else{
-    x.setLineDash([12,9]);x.strokeStyle='rgba(90,60,10,0.55)';x.lineWidth=4;
-    roundRect(x,ppx,ppy,ppw,pph,22);x.stroke();x.setLineDash([]);
-    x.fillStyle='rgba(90,60,10,0.7)';x.font='34px sans-serif';
-    x.fillText('আপনার ছবি',ppx+ppw/2,ppy+pph/2-10);
-    x.fillText('এখানে বসবে',ppx+ppw/2,ppy+pph/2+38);
-  }
-  if(userLogo){
-    var lr=containBox(x,userLogo,64,1084,152,152);
-    x.save();x.beginPath();x.arc(140,1160,88,0,7);x.clip();
-    x.fillStyle='#ffffff';x.fillRect(52,1072,176,176);
-    x.drawImage(userLogo,lr[0],lr[1],lr[2],lr[3]);x.restore();
-    x.strokeStyle='#f5b301';x.lineWidth=6;
-    x.beginPath();x.arc(140,1160,88,0,7);x.stroke();
-  }
-
-  if(locked){
-    x.save();
-    x.translate(W/2,H/2);x.rotate(-Math.PI/7);
-    x.textAlign='center';
-    x.font='bold 76px sans-serif';x.fillStyle='rgba(255,255,255,0.30)';
-    for(var wmy=-760;wmy<=760;wmy+=240){x.fillText('PREVIEW',0,wmy);}
-    x.font='bold 42px sans-serif';x.fillStyle='rgba(245,179,1,0.42)';
-    for(var wmy2=-640;wmy2<=760;wmy2+=240){x.fillText('\u09F32 \u09A6\u09BF\u09DF\u09C7 HD \u09A1\u09BE\u0989\u09A8\u09B2\u09CB\u09A1 \u0995\u09B0\u09CB',0,wmy2);}
-    x.restore();
-  }
-}
-
-function selectTpl(t,el){
-  sel=t;
-  document.getElementById('pd-sel-b').textContent=t.n;
-  var cards=document.querySelectorAll('#pd-carousel .pd-card');
-  for(var i=0;i<cards.length;i++)cards[i].style.outline='';
-  if(el)el.style.outline='3px solid #f5b301';
-  pdDraw();
-}
-function makeCard(t){
-  var d=document.createElement('div');
-  d.className='pd-card';
-  d.style.cssText='min-width:150px;border-radius:12px;background:linear-gradient(135deg,'+t.g1+','+t.g2+');padding:12px;text-align:center;cursor:pointer;flex-shrink:0';
-  d.innerHTML='<div style="font-size:30px">'+t.e+'</div><div style="font-weight:800;font-size:13px;color:#fff">'+t.n+'</div>'+(t.isEvent?'<div style="margin-top:6px;background:#f5b301;color:#000;font-weight:800;border-radius:8px;padding:4px;font-size:11px">📌 আজকের</div>':'<div style="margin-top:6px;background:#000;color:#f5b301;font-weight:800;border-radius:8px;padding:4px;font-size:12px">₹2</div>');
-  d.onclick=function(){selectTpl(t,d);};
-  return d;
-}
-function renderCarousel(){
-  var car=document.getElementById('pd-carousel');car.innerHTML='';
-  var first=null;
-  if(curEventKey&&DATA[curEventKey]){var evs=DATA[curEventKey];for(var ei=0;ei<evs.length;ei++){var evc=makeCard(evSel(curEventKey,ei));car.appendChild(evc);if(ei===0)first=evc;}}
-  var items=CATS[curCat].items;
-  for(var i=0;i<items.length;i++){var el=makeCard(items[i]);car.appendChild(el);if(!first&&i===0)first=el;}
-  return first;
-}
-function openStudio(cat,eventKey){
-  curCat=cat||'islamic';curEventKey=eventKey||null;
-  document.getElementById('pd-home').style.display='none';
-  var st=document.getElementById('pd-studio');st.style.display='block';
-  var title=document.getElementById('pd-studio-title');
-  if(curEventKey&&DATA[curEventKey])title.textContent='📌 আজকের ইভেন্ট: '+DATA[curEventKey][0].n+(DATA[curEventKey].length>1?' (+'+(DATA[curEventKey].length-1)+' আরও)':'');
-  else title.textContent=CATS[curCat].title;
-  var first=renderCarousel();
-  if(curEventKey&&DATA[curEventKey])selectTpl(evSel(curEventKey,0),first);
-  else selectTpl(CATS[curCat].items[0],first);
-  document.getElementById('pd-pay-box').style.display='none';
-  document.getElementById('pd-action-box').style.display='none';
-  document.getElementById('pd-pay-btn').style.display='block';
-  locked=true;
-  window.scrollTo(0,0);
-}
-
-var now=new Date();
-var tk=String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-var tb=document.getElementById('pd-today-banner');
-if(DATA[tk]){
-  var ev0=DATA[tk][0];
-  var more=DATA[tk].length>1?'<div style="font-size:12px;color:#f5b301;font-weight:800;margin-top:4px">+ আরও '+(DATA[tk].length-1)+'টা ইভেন্ট আছে 👇</div>':'';
-  tb.innerHTML='<div style="font-size:13px;opacity:.8">📌 আজ '+bnDate+'</div><div style="font-size:19px;font-weight:800;color:#f5b301;margin:4px 0">'+ev0.e+' '+ev0.n+'</div><div style="font-size:12px;opacity:.85">'+ev0.d+'</div>'+more+'<div style="margin-top:8px;background:#f5b301;color:#000;font-weight:800;border-radius:8px;padding:8px;font-size:13px">👆 ট্যাপ করে পোস্টার বানাও</div>';
-  tb.onclick=function(){openStudio('islamic',tk);};
-}else{
-  tb.innerHTML='<div style="font-size:14px">📅 আজ '+bnDate+'</div><div style="font-size:12px;opacity:.8;margin-top:4px">নিচের কার্ড থেকে পোস্টার বানাও 👇</div>';
-  tb.style.cursor='default';
-}
-var cats=document.querySelectorAll('.pd-cat');
-for(var ci=0;ci<cats.length;ci++){
-  (function(el){el.onclick=function(){openStudio(el.getAttribute('data-cat'),null);};})(cats[ci]);
-}
-document.getElementById('pd-back').onclick=function(){
-  document.getElementById('pd-studio').style.display='none';
-  document.getElementById('pd-home').style.display='block';
-};
-document.getElementById('pd-photo-input').addEventListener('change',function(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(){var im=new Image();im.onload=function(){userPhoto=im;document.getElementById('pd-photo-name').textContent='✅ ছবি লেগেছে!';pdDraw();};im.src=r.result;};
-  r.readAsDataURL(f);
-});
-document.getElementById('pd-photo-remove').onclick=function(){
-  userPhoto=null;document.getElementById('pd-photo-input').value='';
-  document.getElementById('pd-photo-name').textContent='';pdDraw();
-};
-document.getElementById('pd-canvas').addEventListener('click',function(e){
-  try{
-    var r=this.getBoundingClientRect();
-    var px=(e.clientX-r.left)*(1080/r.width);
-    var py=(e.clientY-r.top)*(1350/r.height);
-    if(px>=620&&px<=1060&&py>=760&&py<=1210){
-      document.getElementById('pd-photo-input').click();
-    }
-  }catch(err){}
-});
-document.getElementById('pd-user-name').addEventListener('input',function(){userName=this.value;pdDraw();});
-document.getElementById('pd-user-title').addEventListener('input',function(){userTitle=this.value;pdDraw();});
-document.getElementById('pd-logo-input').addEventListener('change',function(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(){var im=new Image();im.onload=function(){userLogo=im;document.getElementById('pd-logo-name').textContent='✅ লোগো লেগেছে!';pdDraw();};im.src=r.result;};
-  r.readAsDataURL(f);
-});
-document.getElementById('pd-logo-remove').onclick=function(){
-  userLogo=null;document.getElementById('pd-logo-input').value='';
-  document.getElementById('pd-logo-name').textContent='';pdDraw();
-};
-
-document.getElementById('pd-studio').addEventListener('contextmenu',function(e){if(locked)e.preventDefault();});
-document.getElementById('pd-pay-btn').onclick=function(){document.getElementById('pd-pay-box').style.display='block';this.style.display='none';};
-var RAZORPAY_KEY='';
-var PD_CODE='PD786';
-function pdUnlock(msg){
-  locked=false;pdDraw();
-  document.getElementById('pd-pay-box').style.display='none';
-  document.getElementById('pd-action-box').style.display='block';
-  var cm=document.getElementById('pd-code-msg');if(cm)cm.textContent='';
-  alert(msg+' এখন HD ডাউনলোড / WhatsApp শেয়ার করতে পারবে।');
-}
-document.getElementById('pd-auto-pay-btn').onclick=function(){
-  if(RAZORPAY_KEY&&typeof Razorpay!=='undefined'){
-    var rzp=new Razorpay({
-      key:RAZORPAY_KEY,amount:200,currency:'INR',
-      name:'PARVEZ DIGITAL SERVICE',description:'Poster Unlock (HD Download)',
-      theme:{color:'#f5b301'},
-      handler:function(resp){pdUnlock('পেমেন্ট সফল! ✅');},
-      modal:{ondismiss:function(){}}
-    });
-    rzp.open();
-  }else{
-    window.location.href='upi://pay?pa=8609754876@ptsbi&pn=PARVEZ%20DIGITAL%20SERVICE&am=2.00&cu=INR&tn=PosterUnlock';
-    document.getElementById('pd-manual-box').style.display='block';
-  }
-};
-document.getElementById('pd-manual-toggle').onclick=function(){
-  var mb=document.getElementById('pd-manual-box');
-  mb.style.display=(mb.style.display==='block')?'none':'block';
-};
-document.getElementById('pd-unlock-btn').onclick=function(){
-  var v=document.getElementById('pd-code-input').value.trim();
-  if(v===PD_CODE){pdUnlock('আনলক হয়ে গেছে!');}
-  else{document.getElementById('pd-code-msg').textContent='❌ ভুল কোড! পেমেন্ট করে WhatsApp-এ সঠিক কোড নাও।';}
-};
-document.getElementById('pd-dl-btn').onclick=function(){
-  pdDraw();
-  var c=document.getElementById('pd-canvas');
-  function openFull(url){
-    var w=window.open(url,'_blank');
-    if(!w){var a=document.createElement('a');a.href=url;a.download='parvez-poster-'+Date.now()+'.png';document.body.appendChild(a);a.click();a.remove();}
-  }
-  if(c.toBlob){c.toBlob(function(b){if(!b){alert('আবার চেষ্টা করো');return;}openFull(URL.createObjectURL(b));},'image/png');}
-  else{openFull(c.toDataURL('image/png'));}
-};
-document.getElementById('pd-wa-btn').onclick=function(){
-  pdDraw();
-  var c=document.getElementById('pd-canvas');
-  var txt=(sel.e||'')+' '+(sel.n||'')+(userName?'\n🙏 শুভেচ্ছান্তে: '+userName:'')+'\n— PARVEZ DIGITAL SERVICE';
-  function waText(){location.href='https://wa.me/?text='+encodeURIComponent(txt);}
-  try{
-    c.toBlob(function(b){
-      if(!b){waText();return;}
-      var f=new File([b],'parvez-poster.png',{type:'image/png'});
-      if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:sel.n,text:txt}).catch(function(){});}
-      else{waText();}
-    });
-  }catch(e){waText();}
-};
-})();
-</script>
-
-
-<div id="sideMenu"><div style="color:#f59e0b;font-weight:900;font-size:12px;padding:10px 4px;letter-spacing:0.5px">📋 MAIN MENU</div>
-<div class="g" style="border-color:#3b82f6"><div class="gh" style="background:linear-gradient(90deg,#3b82f6,#06b6d4);color:#fff" onclick="tg('a')"><span>🅰️ Aadhaar</span><span>▼</span></div><div id="a" class="gl"><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official - myaadhaar.uidai.gov.in</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/check-aadhaar-validity')">✅ Check Validity - Official</div><div class="i" onclick="go('https://myaadhaar.uidai.gov.in/verify-email-mobile')">📧 Verify Email/Mobile - Official</div><div class="i" onclick="go('https://uidai.gov.in/')">🏛️ UIDAI Official - uidai.gov.in</div></div></div>
-<div class="g" style="border-color:#f59e0b"><div class="gh" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000" onclick="tg('pvc')"><span>🪪 Auto PVC</span><span>▼</span></div><div id="pvc" class="gl"><div class="i" onclick="openPVC()">🪪 PVC Maker - Auto Crop - Parvez Tool</div><div class="i" onclick="openPhotoPrint()">📸 Easy Photo Print - All Sizes</div><div class="i" onclick="openPanSize()">🖼️ PAN Photo & Sign Resizer</div><div class="i" onclick="openDocTools()">🧰 Document Tools - All in One</div></div></div><a href="document-tools.html" style="display:block;background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-weight:900;font-size:15px;padding:14px 16px;border-radius:14px;text-decoration:none;margin:8px 0">🛠️ Document Tools - JPG to PDF, Compress, Merge - Free</a>
-<div class="g" style="border-color:#ef4444"><div class="gh" style="background:linear-gradient(90deg,#ef4444,#f97316);color:#fff" onclick="tg('ay')"><span>🏥 Ayushman</span><span>▼</span></div><div id="ay" class="gl"><div class="i" onclick="go('https://beneficiary.nha.gov.in/')">🏥 Ayushman Bharat - Beneficiary Portal</div><div class="i" onclick="go('https://bis.pmjay.gov.in/')">🏥 BIS - PMJAY - Official</div></div></div>
-<div class="g" style="border-color:#06b6d4"><div class="gh" style="background:linear-gradient(90deg,#06b6d4,#3b82f6);color:#fff" onclick="tg('b')"><span>🗺️ Banglarbhumi</span><span>▼</span></div><div id="b" class="gl"><div class="i" onclick="go('https://banglarbhumi.gov.in/')">🗺️ Banglarbhumi - Official Portal</div><div class="i" onclick="go('https://wbregistration.gov.in/')">📜 WB Registration - Official</div></div></div>
-<div class="g" style="border-color:#4f46e5"><div class="gh" style="background:linear-gradient(90deg,#4f46e5,#818cf8);color:#fff" onclick="tg('bk')"><span>🏦 Banking Service</span><span>▼</span></div><div id="bk" class="gl">
-<div class="i" onclick="go('https://www.paynearby.in/')">🏦 PayNearby - Official Site</div>
-<div class="i" onclick="go('https://www.spicemoney.com/')">💸 Spice Money - Official Site</div>
-<div class="i" onclick="go('https://retail.onlinesbi.sbi/retail/login.htm')">🏦 SBI KYC Update - Internet Banking - Official</div>
-<div class="i" onclick="go('https://www.npci.org.in/')">🏦 NPCI Service - Aadhaar Seeding - Official</div>
-<div class="i" onclick="go('https://www.ckycindia.in/')">🪪 CKYC - Central KYC Registry - Check Status - Official</div>
-<div style="background:#4f46e5;color:#fff;padding:8px 12px;font-weight:900;font-size:10px;border-radius:6px;margin-top:6px">🏦 BANK e-KYC / VIDEO KYC - DIRECT OFFICIAL LINK</div>
-<div class="i" onclick="go('https://yonoretail.sbi.bank.in/accounts/re-kyc/kyc-entry?srcChn=RINB')">🏦 SBI - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://digikyc.pnb.bank.in/ReKyc/InitiateJourney')">🏦 PNB - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://apps.indianbank.in/Rekyc/rekyc.aspx')">🏦 Indian Bank - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://rekyc.iob.bank.in/rekycportal/')">🏦 Indian Overseas Bank - Re-KYC Direct - Official</div>
-<div class="i" onclick="go('https://myportal.unionbankofindia.bank.in/rekyc/')">🏦 Union Bank - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://onlinecasa.bankofbaroda.bank.in/rekycweb/#/core/actInquiry')">🏦 Bank of Baroda - Re-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://campaign.idbi.bank.in/newapplication/capture_1')">🏦 IDBI Bank - e-KYC Direct Link - Official</div>
-<div class="i" onclick="go('https://v.hdfc.bank.in/')">🏦 HDFC Bank - Video KYC Direct - Official</div>
-<div class="i" onclick="go('https://www.icicibank.com/')">🏦 ICICI Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.canarabank.com/')">🏦 Canara Bank - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.bankofindia.in/')">🏦 Bank of India - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.centralbankofindia.co.in/')">🏦 Central Bank of India - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.ucobank.com/')">🏦 UCO Bank - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.bankofmaharashtra.in/')">🏦 Bank of Maharashtra - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.punjabandsindbank.co.in/')">🏦 Punjab & Sind Bank - e-KYC - Official</div>
-<div class="i" onclick="go('https://www.axisbank.com/')">🏦 Axis Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.kotak.com/')">🏦 Kotak Mahindra - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.yesbank.in/')">🏦 Yes Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.indusind.com/')">🏦 IndusInd Bank - Video KYC - Official</div>
-<div class="i" onclick="go('https://www.federalbank.co.in/')">🏦 Federal Bank - e-KYC - Official</div>
+<div class="scard"><div class="head" style="background:linear-gradient(90deg,#dc2626,#ef4444)" onclick="tg('job')"><span>💼 Chakrir Khabar - Job Portal - NEW ⭐</span><span>▼</span></div><div id="job" class="list open">
+<div style="background:#dc2626;color:#fff;padding:5px 10px;font-weight:900;font-size:10px;border-radius:6px;margin:4px 0">🇮🇳 CENTRAL & STATE GOVT JOBS</div>
+<div class="item" onclick="go('https://indiapostgdsonline.gov.in/')">📮 GDS - Gramin Dak Sevak</div>
+<div class="item" onclick="go('https://www.rrbapply.gov.in/')">🚂 RRB - Railway Recruitment</div>
+<div class="item" onclick="go('https://ssc.gov.in/')">👮 SSC - CGL CHSL MTS</div>
+<div class="item" onclick="go('https://upsc.gov.in/')">🏛️ UPSC Official</div>
+<div class="item" onclick="go('https://wbpsc.gov.in/')">📝 WBPSC - WBCS Clerkship</div>
+<div class="item" onclick="go('https://wbpolice.gov.in/')">👮 WB Police</div>
+<div style="background:#7c3aed;color:#fff;padding:5px 10px;font-weight:900;font-size:10px;border-radius:6px;margin:6px 0 4px">🎓 PRIMARY & UPPER PRIMARY - TET</div>
+<div class="item" onclick="go('https://wbbpe.org/')">🧒 Primary TET - WBBPE</div>
+<div class="item" onclick="go('https://www.wbbpeonline.com/')">📚 Upper Primary TET - Class VI-VIII</div>
+<div class="item" onclick="go('https://westbengalssc.com/')">🎓 WB SSC - SLST</div>
 </div></div>
-<div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#fb923c);color:#fff" onclick="tg('bd')"><span>📜 Birth and Death</span><span>▼</span></div><div id="bd" class="gl"><div class="i" onclick="go('https://janma-mrityutathya.wb.gov.in/')">📜 Birth Certificate - Janma Mrityu Tathya - Official</div><div class="i" onclick="go('https://janma-mrityutathya.wb.gov.in/')">💀 Death Certificate - Janma Mrityu Tathya - Official</div><div class="i" onclick="go('https://janma-mrityutathya.wb.gov.in/')">📄 E-District - Birth/Death - Official</div></div></div>
-<div class="g" style="border-color:#a855f7"><div class="gh" style="background:linear-gradient(90deg,#a855f7,#c084fc);color:#fff" onclick="tg('c')"><span>📜 Govt Certificates</span><span>▼</span></div><div id="c" class="gl"><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📜 Caste Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">💰 Income Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">🏠 Residential Certificate - E-District</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📄 All Certificates - E-District</div></div></div>
-<div class="g" style="border-color:#16a34a"><div class="gh" style="background:linear-gradient(90deg,#16a34a,#4ade80);color:#fff" onclick="tg('kb')"><span>🚜 Krishak Bandhu</span><span>▼</span></div><div id="kb" class="gl">
-<div class="i" onclick="go('https://krishakbandhu.wb.gov.in/')">🚜 Krishak Bandhu Official - krishakbandhu.wb.gov.in - Official</div>
-<div class="i" onclick="go('https://krishakbandhu.wb.gov.in/farmer_search')">🔍 Farmer Status Check - Voter ID - Official</div>
+
+<div class="scard"><div class="head" style="background:linear-gradient(90deg,#4f46e5,#818cf8)" onclick="tg('bank')"><span>🏦 Banking - KYC Direct - Fixed ⭐</span><span>▼</span></div><div id="bank" class="list open">
+<div style="background:#4f46e5;color:#fff;padding:5px 10px;font-weight:900;font-size:10px;border-radius:6px;margin:4px 0">✅ OFFICIAL - 100% WORKING LINKS</div>
+<div class="item" onclick="go('https://retail.onlinesbi.sbi/')" style="background:#dbeafe;border-color:#3b82f6;font-weight:800">🏦 SBI Re-KYC - OnlineSBI Official</div>
+<div class="item" onclick="go('https://www.sbi.co.in/web/personal-banking/casa/kyc')">🏦 SBI KYC - Official Portal</div>
+<div class="item" onclick="go('https://digikyc.pnb.bank.in/')" style="background:#dbeafe;border-color:#3b82f6;font-weight:800">🏦 PNB DigiKYC - Official - PNB One</div>
+<div class="item" onclick="go('https://www.pnbindia.in/')">🏦 PNB Official - pnbindia.in</div>
+<div class="item" onclick="go('https://onlinecasa.bankofbaroda.com/rekycvcip/#/core')" style="background:#dbeafe;border-color:#3b82f6;font-weight:800">🏦 Bank of Baroda Re-KYC VCIP - Official</div>
+<div class="item" onclick="go('https://www.bankofbaroda.in/')">🏦 BOB Official</div>
+<div class="item" onclick="go('https://www.hdfcbank.com/personal/save/accounts/savings-accounts')">🏦 HDFC Bank - Savings Account - Video KYC</div>
+<div class="item" onclick="go('https://apply.hdfcbank.com/')">🏦 HDFC Apply Online - Official</div>
+<div class="item" onclick="go('https://www.icicibank.com/personal-banking/video-kyc')">🏦 ICICI Video KYC - Official</div>
+<div class="item" onclick="go('https://www.axisbank.com/re-kyc')">🏦 Axis Bank Re-KYC - Official</div>
+<div class="item" onclick="go('https://www.axisbank.com/')">🏦 Axis Bank Official</div>
+<div class="item" onclick="go('https://www.canarabank.com/')">🏦 Canara Bank - Net Banking Re-KYC</div>
+<div class="item" onclick="go('https://www.unionbankofindia.co.in/')">🏦 Union Bank - RKYC Portal</div>
+<div class="item" onclick="go('https://www.kotak.com/')">🏦 Kotak Mahindra - Video KYC</div>
+<div class="item" onclick="go('https://www.idbibank.in/')">🏦 IDBI Bank - Re-KYC</div>
+<div class="item" onclick="go('https://www.indusind.com/')">🏦 IndusInd Bank - Video KYC</div>
+<div class="item" onclick="go('https://www.indianbank.net.in/')" style="background:#dbeafe;border-color:#2563eb;font-weight:800">🏦 Indian Bank - eKYC - Official - NEW ⭐</div>
+<div class="item" onclick="go('https://indianbank.in/')">🏦 Indian Bank Official - indianbank.in</div>
+<div class="item" onclick="go('https://www.yesbank.in/')">🏦 Yes Bank - Re-KYC</div>
+<div class="item" onclick="go('https://www.paynearby.in/')">🏦 PayNearby - AEPS</div>
 </div></div>
-<div class="g" style="border-color:#d946ef"><div class="gh" style="background:linear-gradient(90deg,#d946ef,#ec4899);color:#fff" onclick="tg('e')"><span>🪪 E Shram</span><span>▼</span></div><div id="e" class="gl"><div class="i" onclick="go('https://eshram.gov.in/')">🪪 E Shram - Official Portal</div><div class="i" onclick="go('https://register.eshram.gov.in/')">📝 E Shram Registration - Official</div></div></div>
-<div class="g" style="border-color:#eab308"><div class="gh" style="background:linear-gradient(90deg,#eab308,#facc15);color:#000" onclick="tg('el')"><span>⚡ Electric</span><span>▼</span></div><div id="el" class="gl"><div class="i" onclick="go('https://www.wbsedcl.in/')">⚡ WBSEDCL - Bill Pay - Official</div><div class="i" onclick="go('https://www.cesc.co.in/')">⚡ CESC - Bill Pay - Official</div></div></div>
-<div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#fb923c);color:#fff" onclick="tg('ga')"><span>⛽ Gas Service</span><span>▼</span></div><div id="ga" class="gl"><div class="i" onclick="go('https://my.ebharatgas.com/')">⛽ Bharat Gas - Official</div><div class="i" onclick="go('https://www.indane.co.in/')">⛽ Indane Gas - Official</div><div class="i" onclick="go('https://cx.indianoil.in/')">⛽ Indane Gas - New Portal - Official</div><div class="i" onclick="go('https://myhpgas.in/')">⛽ HP Gas - New Portal - Official</div></div></div>
-<!-- ============ GOVT SERVICES (FULL SECTION) ============ -->
-<div onclick="(function(){var d=document.getElementById('ot');d.style.display=(d.style.display==='none'?'block':'none');})()" style="background:linear-gradient(90deg,#1d4ed8,#3b82f6);border-radius:14px;padding:12px 14px;margin:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)">
-<div style="width:38px;height:38px;min-width:38px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px">🏛️</div>
-<div style="flex:1;color:#fff;font-size:17px;font-weight:800">Govt Services</div>
-<div style="color:#fff;font-size:15px;font-weight:800">▼</div>
-<div style="margin:15px 0; padding:3px; border:2px dashed #0f766e; border-radius:12px;">
-<a href="sarkari-abedan.html" style="display:block; padding:14px; background:linear-gradient(90deg,#0f766e,#0e7490); color:white; border-radius:8px; text-align:center; font-weight:bold; text-decoration:none;">
-📝 Sarkari Abedan Maker - 50+ Bishoy | Income + Scholarship | Gholabard Default - NEW ⭐
-</a>
+
+<div style="background:#1e293b;border-radius:12px;padding:10px;margin:8px 0"><div style="color:#fbbf24;font-weight:800;font-size:13px;margin-bottom:8px;display:flex;justify-content:space-between"><span>🏛️ Govt Services - 19+ Items</span><span onclick="tg('govt')" style="cursor:pointer">▼</span></div><div id="govt" class="list open" style="display:block">
+<div class="item" onclick="go('https://agristack.gov.in')" style="background:#dcfce7;border-color:#16a34a">🌾 Farmer ID - Agristack</div>
+<div class="item" onclick="go('https://nspwb.wbmdfc.org/')">➤ Aikyashree Scholarship</div>
+<div class="item" onclick="go('https://socialsecurity.wb.gov.in')">➤ Annapurna Bhandar</div>
+<div class="item" onclick="go('https://bmssy.wblabour.gov.in')">➤ BMSSY - Samajik Suraksha</div>
+<div class="item" onclick="go('https://employmentbankwb.gov.in')">➤ Employment Bank - Yuvasree</div>
+<div class="item" onclick="go('https://edistrict.wb.gov.in/PACE/login.do')">➤ New Trade License</div>
+<div class="item" onclick="go('https://pmayg.dord.gov.in/')">➤ PMAY Gramin</div>
+<div class="item" onclick="go('https://pmfby.gov.in/')">➤ PM Fasal Bima</div>
+<div class="item" onclick="go('https://udyamregistration.gov.in')">➤ Udyam - MSME</div>
+<div class="item" onclick="go('https://wbpsc.gov.in')">➤ WBPSC</div>
+<div class="item" onclick="go('https://wbsche.gov.in/')">➤ Kanyashree</div>
+<div class="item" onclick="go('https://rupashree.wb.gov.in/')">➤ Rupashree</div>
+<div class="item" onclick="go('https://socialsecurity.wb.gov.in/')">➤ Lakshmir Bhandar</div>
+<div class="item" onclick="go('https://swasthyasathi.gov.in/')">➤ Swasthya Sathi</div>
+<div class="item" onclick="go('https://khadya.wb.gov.in/')">➤ Khadya Sathi - Ration</div>
+<div class="item" onclick="go('https://banglarbhumi.gov.in/')">➤ Banglarbhumi - Land</div>
+<div class="item" onclick="go('https://beneficiary.nha.gov.in/')" style="background:#dcfce7;border-color:#16a34a;font-weight:800">➤ Ayushman Bharat - PMJAY - NEW ⭐</div>
+<div class="item" onclick="go('https://pmjay.gov.in/')">➤ PMJAY Official - pmjay.gov.in</div>
+<div class="item" onclick="go('https://www.indianbank.net.in/')" style="background:#dbeafe;border-color:#2563eb;font-weight:800">➤ Indian Bank - eKYC - NEW ⭐</div>
+<div class="item" onclick="go('https://sbm.gov.in/')" style="background:#dcfce7;border-color:#16a34a;font-weight:800">➤ SBM - Swachh Bharat Mission - IHHL - Direct - NEW ⭐</div>
+<div class="item" onclick="go('https://swachhbharatmission.gov.in/')">➤ SBM Urban - swachhbharatmission.gov.in</div>
+<div class="item" onclick="go('https://sbm.gov.in/sbmReport/home.aspx')">➤ SBM Report - IHHL Application Status</div>
+</div></div>
+
+<div class="scard"><div class="head" style="background:linear-gradient(90deg,#f97316,#ea580c)" onclick="tg('pan')"><span>🅿️ PAN</span><span>▼</span></div><div id="pan" class="list"><div class="item" onclick="go('https://www.pan.utiitsl.com/')">🆕 New PAN - UTI</div></div></div>
+<div class="scard"><div class="head" style="background:linear-gradient(90deg,#166534,#22c55e)" onclick="tg('vot')"><span>🗳️ Voter</span><span>▼</span></div><div id="vot" class="list"><div class="item" onclick="go('https://voters.eci.gov.in/')">🗳️ Voter Official - ECI</div></div></div>
+
+<div style="background:#0f172a;border:2px solid #f59e0b;border-radius:12px;padding:14px;margin:10px 0;text-align:center"><div style="color:#f59e0b;font-weight:900;font-size:11px">📞 Help No</div><div style="color:#fff;font-weight:900;font-size:16px">8609754876</div></div>
+</div>
+
+<div class="main">
+<div class="welcome">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:36px;height:36px;background:#0f172a;border-radius:50%;display:flex;align-items:center;justify-content:center">👋</div><b style="font-size:18px">Welcome to PARVEZ DIGITAL SERVICE</b></div>
+<div style="font-size:13px;color:#475569;line-height:20px">Apnar ek matro bharoshar digital seva kendra. <b>55+ Sarkari Seva</b> ekhane paben — Aadhaar, PAN, Voter, Ration, PM Kisan, Banglarbhumi, E-District, Scholarship, Trade License, PMAY, RRB, SSC sob kichu ek jaygay.</div>
+<div style="margin-top:12px">
+<span class="badge" style="background:#dcfce7;color:#166534;border:1px solid #bbf7d0">✓ All Services Restored</span>
+<span class="badge" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a">⚡ Fast Service</span>
+<span class="badge" style="background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe">🔒 100% Official</span>
 </div>
 </div>
-<div id="ot" style="display:block">
-<div onclick="window.open('https://nspwb.wbmdfc.org/','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Aikyashree Scholarship - Official</div></div>
-<div onclick="window.open('https://socialsecurity.wb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Annapurna Bhandar - Official</div></div>
-<div onclick="window.open('https://bmssy.wblabour.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">BMSSY - Official</div></div>
-<div onclick="window.open('https://employmentbankwb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Employment Bank - Job Search - Official</div></div>
-<div onclick="window.open('https://agristack.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Farmer ID - Official</div></div>
-<div onclick="window.open('https://edistrict.wb.gov.in/PACE/login.do','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">New Trade License - eDistrict - Official</div></div>
-<div onclick="window.open('https://pmayg.dord.gov.in/netiayHome/home.aspx','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">PMAY Gramin - Official</div></div>
-<div onclick="window.open('https://pmfby.gov.in/','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">PM Fasal Bima - Official</div></div>
-<div onclick="window.open('https://indiapostgdsonline.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Post Office GDS - Official</div></div>
-<div onclick="window.open('https://indianrailways.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">RRB - Railway Recruitment - Official</div></div>
-<div onclick="window.open('https://sbm.gov.in/sbm_dbt/secure/login.aspx','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">SBM - Swachh Bharat - Official</div></div>
-<div onclick="window.open('https://silpasathi.wb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Shops & Establishment - Silpasathi - Official</div></div>
-<div onclick="window.open('https://silpasathi.wb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Silpasathi Portal - Single Window - Official</div></div>
-<div onclick="window.open('https://ssc.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">SSC - Official</div></div>
-<div onclick="window.open('https://silpasathi.wb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Trade License Renewal - Silpasathi - Official</div></div>
-<div onclick="window.open('https://udyamregistration.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Udyam Registration - Official</div></div>
-<div onclick="window.open('https://wbpsc.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">WBPSC - Official</div></div>
-<div onclick="window.open('https://employmentbankwb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Yuvashree Prakalpa - Official</div></div>
-<div onclick="window.open('https://yubasathi.wb.gov.in','_blank')" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;margin:10px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer"><div style="width:38px;height:38px;min-width:38px;border-radius:50%;background:#9aa0a6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900">➤</div><div style="font-size:15px;font-weight:700;color:#1f2937">Yuva Sathi - Yuvashakti - Official</div></div>
+
+<div class="grid">
+<div class="card-s" onclick="go('https://myaadhaar.uidai.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">🪪</div><b>Aadhaar</b><span>Download • Update</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://www.pan.utiitsl.com/')"><div class="blob" style="background:#fee2e2"></div><div class="icon" style="background:linear-gradient(135deg,#f97316,#fb923c)">💳</div><b>PAN</b><span>New • Correction</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://voters.eci.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#10b981,#34d399)">🗳️</div><b>Voter</b><span>Apply • Correction</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://khadya.wb.gov.in/')"><div class="blob" style="background:#ede9fe"></div><div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">🍚</div><b>Ration</b><span>eKYC • Download</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://pmkisan.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#22c55e,#4ade80)">🌱</div><b>PM Kisan</b><span>Registration • Status</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="toggleM()"><div class="blob" style="background:#e2e8f0"></div><div class="icon" style="background:linear-gradient(135deg,#334155,#475569)">☰</div><b>Full Menu</b><span>55+ Services</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://banglarbhumi.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)">🗺️</div><b>Banglarbhumi</b><span>Khatian • Plot</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://agristack.gov.in')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#16a34a,#22c55e)">🌾</div><b>Farmer ID</b><span>Agristack • Registry</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('sarkari-abedan.html')"><div class="blob" style="background:#ccfbf1"></div><div class="icon" style="background:linear-gradient(135deg,#0f766e,#14b8a6)">📝</div><b>Sarkari Abedan</b><span>50+ Bishoy • NEW</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="tg('bank');toggleM();document.getElementById('side').scrollIntoView()"><div class="blob" style="background:#e0e7ff"></div><div class="icon" style="background:linear-gradient(135deg,#4f46e5,#6366f1)">🏦</div><b>Banking</b><span>Fixed • 18 Banks • Direct</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://indiapostgdsonline.gov.in/')"><div class="blob" style="background:#fef3c7"></div><div class="icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)">📮</div><b>GDS</b><span>Gramin Dak Sevak</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://www.rrbapply.gov.in/')"><div class="blob" style="background:#fee2e2"></div><div class="icon" style="background:linear-gradient(135deg,#dc2626,#ef4444)">🚂</div><b>RRB</b><span>Railway Jobs</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://ssc.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#1e40af,#3b82f6)">👮</div><b>SSC</b><span>CGL CHSL MTS</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://wbbpe.org/')"><div class="blob" style="background:#fce7f3"></div><div class="icon" style="background:linear-gradient(135deg,#be185d,#ec4899)">🧒</div><b>Upper Primary</b><span>TET • VI-VIII</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://beneficiary.nha.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#16a34a,#15803d)">🏥</div><b>Ayushman Bharat</b><span>PMJAY • Card Download • NEW</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://www.indianbank.net.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#1e40af,#2563eb)">🏦</div><b>Indian Bank</b><span>eKYC • Re-KYC • NEW</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://sbm.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#16a34a,#22c55e)">🚽</div><b>SBM</b><span>Swachh Bharat • IHHL • Direct • NEW</span><div class="open-btn">Open →</div></div>
 </div>
-<!-- ============ GOVT SERVICES END ============ -->
-<div class="g" style="border-color:#f97316"><div class="gh" style="background:linear-gradient(90deg,#f97316,#ea580c);color:#fff" onclick="tg('pan')"><span>🅿️ PAN Card - UTI Retailer</span><span>▼</span></div><div id="pan" class="gl"><div style="background:#0f172a;color:#22c55e;padding:8px 12px;font-weight:900;font-size:10px;border-radius:6px">✅ Retailer - No Admin - Direct Work</div><div class="i" onclick="go('https://www.pan.utiitsl.com/')">🆕 New PAN Apply - Retailer - Direct</div><div class="i" onclick="go('https://www.myutiitsl.com/CUP-Admin/')">🎟️ CUP Login - Retailer PSA ID</div><div class="i" onclick="go('https://www.trackpan.utiitsl.com/PANONLINE/#forward')">🔍 Track Status - No Login</div><div class="i" onclick="go('https://www.incometax.gov.in/iec/foportal/')">⚡ Instant e-PAN - Free - No ID Needed</div></div></div>
-<div class="g" style="border-color:#22c55e"><div class="gh" style="background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff" onclick="tg('pt')"><span>🏘️ Panchayat Tax</span><span>▼</span></div><div id="pt" class="gl"><div class="i" onclick="go('https://prdtax.wb.gov.in/')">🏘️ Panchayat Tax - prdtax.wb.gov.in - Official</div></div></div>
-<div class="g" style="border-color:#84cc16"><div class="gh" style="background:linear-gradient(90deg,#84cc16,#a3e635);color:#000" onclick="tg('pm')"><span>🌾 PM Kisan</span><span>▼</span></div><div id="pm" class="gl"><div class="i" onclick="go('https://pmkisan.gov.in/')">🌾 PM Kisan - pmkisan.gov.in - Official</div></div></div>
-<div class="g" style="border-color:#f59e0b"><div class="gh" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#000" onclick="tg('ra')"><span>🍚 Ration</span><span>▼</span></div><div id="ra" class="gl"><div class="i" onclick="go('https://food.wb.gov.in/')">🍚 Ration - Food & Supply Dept - Official</div></div></div>
-<div class="g" style="border-color:#166534"><div class="gh" style="background:linear-gradient(90deg,#166534,#22c55e);color:#fff" onclick="tg('vo')"><span>🗳️ Voter</span><span>▼</span></div><div id="vo" class="gl"><div class="i" onclick="go('https://voters.eci.gov.in/')">🗳️ Voter - voters.eci.gov.in - Official</div></div></div>
-<div class="helpBox"><div style="color:#f59e0b;font-weight:900;font-size:11px;margin-bottom:6px">📞 Help No - Other Services</div><div style="color:#fff;font-weight:900;font-size:16px">8609754876</div><div style="display:flex;gap:8px;margin-top:10px"><a href="tel:8609754876" style="flex:1;padding:10px;border-radius:8px;font-weight:900;font-size:11px;text-decoration:none;text-align:center;display:block;background:#22c55e;color:#fff">📞 Call</a><a href="https://wa.me/918609754876" style="flex:1;padding:10px;border-radius:8px;font-weight:900;font-size:11px;text-decoration:none;text-align:center;display:block;background:#25D366;color:#fff">💬 WhatsApp</a></div></div>
+
+
+<!-- Document Tools 11 Zone - Like iLovePDF -->
+<div style="margin-top:18px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #e2e8f0">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#ef4444,#f97316);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px">📄</div><b style="font-size:16px">Document Tools - 11 Zone - iLovePDF Style</b><span style="background:#fef3c7;color:#92400e;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:800;margin-left:8px">NEW ⭐</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div class="item" onclick="go('https://www.ilovepdf.com/merge_pdf')" style="font-size:11px;text-align:center;padding:10px">📑 Merge PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/split_pdf')" style="font-size:11px;text-align:center;padding:10px">✂️ Split PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/compress_pdf')" style="font-size:11px;text-align:center;padding:10px">🗜️ Compress PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/pdf_to_jpg')" style="font-size:11px;text-align:center;padding:10px">🖼️ PDF to JPG</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/jpg_to_pdf')" style="font-size:11px;text-align:center;padding:10px">📷 JPG to PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/word_to_pdf')" style="font-size:11px;text-align:center;padding:10px">📝 Word to PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/pdf_to_word')" style="font-size:11px;text-align:center;padding:10px">📄 PDF to Word</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/edit-pdf')" style="font-size:11px;text-align:center;padding:10px">✏️ Edit PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/unlock_pdf')" style="font-size:11px;text-align:center;padding:10px">🔓 Unlock PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/protect-pdf')" style="font-size:11px;text-align:center;padding:10px">🔒 Protect PDF</div>
+<div class="item" onclick="go('https://www.ilovepdf.com/rotate_pdf')" style="font-size:11px;text-align:center;padding:10px">🔄 Rotate PDF</div>
 </div>
-<div class="mainContent"><div class="welcomeCard"><div style="font-size:32px;margin-bottom:8px">🏛️</div><div style="font-size:18px;font-weight:900">PARVEZ DIGITAL SERVICE</div><div style="font-size:11px;color:#fbbf24;margin-top:6px;font-weight:700">55+ Government Services - One Secure Portal</div><div style="font-size:10px;color:#94a3b8;margin-top:8px">West Bengal • Trusted • Professional • Secure</div><div style="margin-top:16px;padding:12px;background:#1e293b;border-radius:10px;border:1px solid #334155"><div style="font-size:11px;font-weight:900;color:#f59e0b">Tap menu button on top to browse all services</div><div style="font-size:9px;color:#94a3b8;margin-top:4px">Official government portals • Secure • Verified • Professional</div></div></div>
-<div class="quickGrid"><div class="qCard" onclick="go('https://myaadhaar.uidai.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🅰️</div><div style="font-size:10px;font-weight:900;color:#0f172a">Aadhaar<br>Official</div></div><div class="qCard" onclick="go('https://www.pan.utiitsl.com/')"><div style="font-size:20px;margin-bottom:6px">🅿️</div><div style="font-size:10px;font-weight:900;color:#0f172a">PAN<br>Official</div></div><div class="qCard" onclick="go('https://voters.eci.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🗳️</div><div style="font-size:10px;font-weight:900;color:#0f172a">Voter<br>Official</div></div><div class="qCard" onclick="go('https://food.wb.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🍚</div><div style="font-size:10px;font-weight:900;color:#0f172a">Ration<br>Official</div></div><div class="qCard" onclick="go('https://pmkisan.gov.in/')"><div style="font-size:20px;margin-bottom:6px">🌾</div><div style="font-size:10px;font-weight:900;color:#0f172a">PM Kisan<br>Official</div></div><div class="qCard" onclick="toggleMenu()"><div style="font-size:20px;margin-bottom:6px">📋</div><div style="font-size:10px;font-weight:900;color:#0f172a">Full Menu<br>55+ Services</div></div></div>
-<div style="background:#fff;border:2px solid #22c55e;border-radius:12px;padding:14px;margin-top:12px"><div style="font-size:12px;font-weight:900;color:#0f172a">🔥 Popular - All Official</div><div style="margin-top:10px;display:flex;flex-direction:column;gap:6px"><div class="i" style="margin:0" onclick="go('https://www.pan.utiitsl.com/')">🆕 PAN New Apply - UTI Retailer Official</div><div class="i" style="margin:0" onclick="go('https://myaadhaar.uidai.gov.in/')">🅰️ Aadhaar Official Portal</div><div class="i" style="margin:0" onclick="go('https://voters.eci.gov.in/')">🗳️ Voter Official Portal</div><div class="i" style="margin:0" onclick="go('https://www.incometax.gov.in/iec/foportal/')">⚡ Instant e-PAN - Income Tax Official</div><div class="i" onclick="go('https://banglarbhumi.gov.in/')">🗺️ Banglarbhumi - Official</div><div class="i" onclick="go('https://edistrict.wb.gov.in/')">📜 E-District - All Certificates Official</div></div></div></div>
-<div id="pvcToolView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closePVC()">← Portal</button><div><div class="pvTitle">🪪 Parvez PVC Maker</div><div class="pvSub">Auto Crop • 86 × 54 mm • Front & Back</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Byaboharbidhi:</b><br>1️⃣ Front / Back chhobi upload korun<br>2️⃣ <b>Auto Crop</b> chap din<br>3️⃣ Zoom slider bebohar korun<br>4️⃣ <b>Download</b> — 86×54mm PNG</div><div class="pvCard"><h3>📄 FRONT SIDE</h3><label class="pvUploadBtn" for="fileF">📤 FRONT Chhobi Upload</label><input type="file" class="pvFile" id="fileF" accept="image/*"><canvas class="pvPreview" id="cvF" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="zoomF" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnAuto" id="autoF">✨ Auto Crop</button><button class="pvBtn pvBtnRot" id="rotF">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="resetF">↺ Reset</button></div><button class="pvBtnDl" id="dlF">⬇️ Download FRONT PNG</button></div><div class="pvCard"><h3>📄 BACK SIDE</h3><label class="pvUploadBtn" for="fileB">📤 BACK Chhobi Upload</label><input type="file" class="pvFile" id="fileB" accept="image/*"><canvas class="pvPreview" id="cvB" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="zoomB" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnAuto" id="autoB">✨ Auto Crop</button><button class="pvBtn pvBtnRot" id="rotB">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="resetB">↺ Reset</button></div><button class="pvBtnDl" id="dlB">⬇️ Download BACK PNG</button></div></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • Parvez PVC Maker • 86×54mm</div></div>
-<div id="epView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closePhotoPrint()">← Portal</button><div><div class="pvTitle">📸 Easy Photo Print</div><div class="pvSub">All Sizes • HD</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Byaboharbidhi:</b><br>1️⃣ Size nirbachon korun<br>2️⃣ Photo upload korun<br>3️⃣ <b>Download</b> — HD PNG</div><div class="epLbl">📐 PHOTO SIZE:</div><div class="epChips" id="epChips"></div><div class="pvCard"><label class="pvUploadBtn" for="epFile">📤 Chhobi Upload</label><input type="file" class="pvFile" id="epFile" accept="image/*"><canvas class="pvPreview" id="epCv" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="epZoom" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnRot" id="epRot">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="epReset">↺ Reset</button></div></div><button class="pvBtnDl" id="epDl">⬇️ Download Photo PNG (HD)</button></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • Easy Photo Print</div></div>
-<div id="panView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closePanSize()">← Portal</button><div><div class="pvTitle">🖼️ PAN Photo & Sign Resizer</div><div class="pvSub">NSDL • UTI — Exact Size</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Byaboharbidhi:</b><br>1️⃣ Mode nirbachon korun<br>2️⃣ Upload korun<br>3️⃣ <b>Download</b></div><div class="epLbl">📐 MODE:</div><div class="epChips" id="psChips"></div><div class="pvCard"><label class="pvUploadBtn" for="psFile">📤 Chhobi / Sign Upload</label><input type="file" class="pvFile" id="psFile" accept="image/*"><canvas class="pvPreview" id="psCv" width="720" height="540"></canvas><div class="pvZoomRow">🔍 Zoom <input type="range" id="psZoom" min="1" max="4" step="0.01" value="1"></div><div class="pvControls"><button class="pvBtn pvBtnRot" id="psRot">🔄 Rotate</button><button class="pvBtn pvBtnReset" id="psReset">↺ Reset</button></div><button class="pvBtnDl" id="psDl">⬇️ Download JPG</button><div class="dtRes" id="psRes"></div></div></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • PAN Resizer</div></div>
-<div id="docView"><div class="pvTopBar"><button class="pvBackBtn" onclick="closeDocTools()">← Portal</button><div><div class="pvTitle">🧰 Document Tools</div><div class="pvSub">All in One</div></div></div><div class="pvWrap"><div class="pvHowto"><b>📝 Tools:</b><br>🗜️ Compress Image • 📑 Merge PDF • 🔍 OCR Scan</div><div class="epLbl">🧰 TOOL NIN:</div><div class="epChips" id="docChips"></div><div class="pvCard dtPanel" id="dtpImg"><div class="epLbl">🗜️ Compress Image</div><label class="pvUploadBtn" for="dtImgFile">📤 Image Upload</label><input type="file" class="pvFile" id="dtImgFile" accept="image/*"><div class="pvZoomRow">Quality <input type="range" id="dtImgQ" min="10" max="95" value="80"></div><button class="pvBtnDl" id="dtImgGo">⬇️ Compress & Download JPG</button><div class="dtRes" id="dtImgRes"></div></div><div class="pvCard dtPanel" id="dtpMerge"><div class="epLbl">📑 Merge PDF</div><label class="pvUploadBtn" for="dtMergeFiles">📤 PDF nin (2 ba besi)</label><input type="file" class="pvFile" id="dtMergeFiles" accept="application/pdf" multiple><button class="pvBtnDl" id="dtMergeGo">📑 Merge & Download</button><div class="dtRes" id="dtMergeRes"></div></div><div class="pvCard dtPanel" id="dtpOcr"><div class="epLbl">🔍 OCR — Chhobi theke Text</div><label class="pvUploadBtn" for="dtOcrFile">📤 Chhobi Upload</label><input type="file" class="pvFile" id="dtOcrFile" accept="image/*"><button class="pvBtnDl" id="dtOcrGo">🔍 OCR Start</button><div class="dtRes" id="dtOcrRes"></div><textarea class="dtInp" id="dtOcrOut" placeholder="Text ekhane asbe..." style="margin-top:8px"></textarea></div></div><div class="pvFooter">PARVEZ DIGITAL SERVICE • Document Tools</div></div>
+</div>
+
+<!-- Easy Print Photo -->
+<div style="margin-top:12px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #e2e8f0">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px">🖨️</div><b style="font-size:16px">Easy Print Photo - Passport & Print</b><span style="background:#dbeafe;color:#1e40af;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:800;margin-left:8px">NEW ⭐</span></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="item" onclick="go('https://www.cutout.pro/passport-photo-maker')" style="font-size:12px">📸 Passport Photo Maker</div>
+<div class="item" onclick="go('https://www.printphotos.com/')" style="font-size:12px">🖼️ Photo Print - 4x6</div>
+<div class="item" onclick="go('https://www.remove.bg/')" style="font-size:12px">✂️ BG Remove - Photo</div>
+<div class="item" onclick="go('https://www.iloveimg.com/resize-image')" style="font-size:12px">📏 Resize Photo</div>
+<div class="item" onclick="go('https://www.iloveimg.com/compress-image')" style="font-size:12px">🗜️ Compress Photo</div>
+<div class="item" onclick="go('https://www.photopea.com/')" style="font-size:12px">🎨 Photopea - Photoshop</div>
+</div>
+</div>
+
+<div style="margin-top:16px;background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;border:1px solid #e2e8f0">
+<img src="logo.jpg" onerror="this.src='https://via.placeholder.com/44?text=P'" style="width:44px;height:44px;border-radius:50%;border:2px solid #fbbf24">
+<div style="flex:1"><b style="font-size:13px">PARVEZ DIGITAL SERVICE</b><div style="font-size:11px;color:#64748b">West Bengal • Trusted • Professional • 8609754876</div></div>
+</div>
+</div>
+
+<div class="float" onclick="toggleM()">☰</div>
+
 <script>
-function go(u){window.open(u,'_blank')}
-function tg(id){document.getElementById(id).classList.toggle('open')}
-function closeWelcome(){document.getElementById('welcomePopup').style.display='none'}
-window.addEventListener('load',()=>{setTimeout(()=>{var w=document.getElementById('welcomePopup');w.style.display='flex';setTimeout(()=>{w.style.display='none'},2000)},300)});
-function toggleMenu(){document.getElementById('sideMenu').classList.toggle('open');document.getElementById('overlay').classList.toggle('open')}
-function openPVC(){document.getElementById('pvcToolView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closePVC(){document.getElementById('pvcToolView').style.display='none'}
-function openPhotoPrint(){window.open('easy-photo-print-final.html?v=6','_blank');}
-function closePhotoPrint(){document.getElementById('epView').style.display='none'}
-function openPanSize(){document.getElementById('panView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closePanSize(){document.getElementById('panView').style.display='none'}
-function openDocTools(){document.getElementById('docView').style.display='block';document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.getElementById('welcomePopup').style.display='none';window.scrollTo(0,0)}
-function closeDocTools(){document.getElementById('docView').style.display='none'}
-var pvRATIO=86/54;
-function pvMk(p){var cv=document.getElementById('cv'+p);return{cv:cv,ctx:cv.getContext('2d'),img:null,iw:0,ih:0,s:1,ox:0,oy:0,base:1,cropX:30,cropY:63,cropW:660,cropH:660/pvRATIO,zm:document.getElementById('zoom'+p)}}
-var pvF=pvMk('F'),pvB=pvMk('B');
-function pvFit(sd){if(!sd.img)return;sd.base=Math.min(sd.cv.width/sd.iw,sd.cv.height/sd.ih);sd.zm.value=1;pvZ(sd,1,true)}
-function pvZ(sd,z,c){var cx=sd.cropX+sd.cropW/2,cy=sd.cropY+sd.cropH/2;var ix=c?sd.iw/2:(cx-sd.ox)/sd.s,iy=c?sd.ih/2:(cy-sd.oy)/sd.s;sd.s=sd.base*z;sd.ox=cx-ix*sd.s;sd.oy=cy-iy*sd.s;pvC(sd);pvD(sd)}
-function pvC(sd){if(!sd.img)return;var iw=sd.iw*sd.s,ih=sd.ih*sd.s,x0=sd.cropX,y0=sd.cropY,x1=x0+sd.cropW,y1=y0+sd.cropH;if(iw<sd.cropW)sd.ox=x0-(iw-sd.cropW)/2;else sd.ox=Math.min(x0,Math.max(x1-iw,sd.ox));if(ih<sd.cropH)sd.oy=y0-(ih-sd.cropH)/2;else sd.oy=Math.min(y0,Math.max(y1-ih,sd.oy))}
-function pvD(sd){var x=sd.ctx,W=sd.cv.width,H=sd.cv.height;x.clearRect(0,0,W,H);x.fillStyle='#020617';x.fillRect(0,0,W,H);if(sd.img)x.drawImage(sd.img,sd.ox,sd.oy,sd.iw*sd.s,sd.ih*sd.s);else{x.fillStyle='#475569';x.font='bold 22px Arial';x.textAlign='center';x.fillText('Chhobi upload korun',W/2,H/2)}x.strokeStyle='#f59e0b';x.lineWidth=3;x.strokeRect(sd.cropX,sd.cropY,sd.cropW,sd.cropH)}
-function pvL(f,sd){if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){sd.img=im;sd.iw=im.width;sd.ih=im.height;pvFit(sd)};im.src=r.result};r.readAsDataURL(f)}
-function pvDl(sd,nm){if(!sd.img){alert('Chhobi upload korun!');return}var c=document.createElement('canvas');c.width=1016;c.height=638;c.getContext('2d').drawImage(sd.img,(sd.cropX-sd.ox)/sd.s,(sd.cropY-sd.oy)/sd.s,sd.cropW/sd.s,sd.cropH/sd.s,0,0,1016,638);var a=document.createElement('a');a.download=nm;a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()}
-function pvBnd(p,sd,fn){document.getElementById('file'+p).addEventListener('change',function(e){pvL(e.target.files[0],sd)});sd.zm.addEventListener('input',function(){pvZ(sd,parseFloat(this.value),false)});document.getElementById('auto'+p).addEventListener('click',function(){pvFit(sd)});document.getElementById('rot'+p).addEventListener('click',function(){pvFit(sd)});document.getElementById('reset'+p).addEventListener('click',function(){pvFit(sd)});document.getElementById('dl'+p).addEventListener('click',function(){pvDl(sd,fn)});pvD(sd)}
-pvBnd('F',pvF,'parvez-pvc-front.png');pvBnd('B',pvB,'parvez-pvc-back.png');
-var epSz=[{n:'Passport',s:'35x45mm',w:35,h:45},{n:'Visa',s:'51x51mm',w:51,h:51},{n:'3R',s:'3.5x5in',w:88.9,h:127},{n:'4R',s:'4x6in',w:101.6,h:152.4}];
-var ep={img:null,iw:0,ih:0,s:1,ox:0,oy:0,base:1,sz:0,cv:document.getElementById('epCv'),cx:0,cy:0,cw:0,ch:0,zm:document.getElementById('epZoom')};ep.ctx=ep.cv.getContext('2d');
-function epFC(){var sz=epSz[ep.sz],r=sz.w/sz.h,w=660,h=660/r;if(h>460){h=460;w=460*r}ep.cw=w;ep.ch=h;ep.cx=(720-w)/2;ep.cy=(540-h)/2}
-function epFI(){if(!ep.img)return;ep.base=Math.min(720/ep.iw,540/ep.ih);ep.zm.value=1;epAZ(1,true)}
-function epAZ(z,c){var mx=ep.cx+ep.cw/2,my=ep.cy+ep.ch/2;var ix=c?ep.iw/2:(mx-ep.ox)/ep.s,iy=c?ep.ih/2:(my-ep.oy)/ep.s;ep.s=ep.base*z;ep.ox=mx-ix*ep.s;ep.oy=my-iy*ep.s;epDr()}
-function epDr(){var x=ep.ctx;x.clearRect(0,0,720,540);x.fillStyle='#020617';x.fillRect(0,0,720,540);if(ep.img)x.drawImage(ep.img,ep.ox,ep.oy,ep.iw*ep.s,ep.ih*ep.s);x.strokeStyle='#f59e0b';x.lineWidth=3;x.strokeRect(ep.cx,ep.cy,ep.cw,ep.ch)}
-function epRn(){if(!ep.img){alert('Chhobi upload korun!');return null}var sz=epSz[ep.sz],pw=Math.round(sz.w/25.4*300),ph=Math.round(sz.h/25.4*300),c=document.createElement('canvas');c.width=pw;c.height=ph;c.getContext('2d').drawImage(ep.img,(ep.cx-ep.ox)/ep.s,(ep.cy-ep.oy)/ep.s,ep.cw/ep.s,ep.ch/ep.s,0,0,pw,ph);return c}
-(function(){var ce=document.getElementById('epChips');epSz.forEach(function(s,i){var b=document.createElement('button');b.className='epChip'+(i===0?' on':'');b.textContent=s.n+' '+s.s;b.onclick=function(){ep.sz=i;var ch=ce.children;for(var k=0;k<ch.length;k++)ch[k].className='epChip';b.className='epChip on';epFC();epDr()};ce.appendChild(b)});document.getElementById('epFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){ep.img=im;ep.iw=im.width;ep.ih=im.height;epFI()};im.src=r.result};r.readAsDataURL(f)});document.getElementById('epDl').addEventListener('click',function(){var c=epRn();if(!c)return;var a=document.createElement('a');a.download='photo.png';a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()});epFC();epDr()})();
-var pnMd=[{n:'NSDL Photo',w:276,h:197},{n:'NSDL Sign',w:354,h:157},{n:'UTI Photo',w:213,h:213},{n:'UTI Sign',w:400,h:200}];
-var ps={img:null,iw:0,ih:0,s:1,ox:0,oy:0,base:1,md:0,cv:document.getElementById('psCv'),cx:0,cy:0,cw:0,ch:0,zm:document.getElementById('psZoom')};ps.ctx=ps.cv.getContext('2d');
-function psFC(){var m=pnMd[ps.md],r=m.w/m.h,w=660,h=660/r;if(h>460){h=460;w=460*r}ps.cw=w;ps.ch=h;ps.cx=(720-w)/2;ps.cy=(540-h)/2}
-function psFI(){if(!ps.img)return;ps.base=Math.min(720/ps.iw,540/ps.ih);ps.zm.value=1;psAZ(1,true)}
-function psAZ(z,c){var mx=ps.cx+ps.cw/2,my=ps.cy+ps.ch/2;var ix=c?ps.iw/2:(mx-ps.ox)/ps.s,iy=c?ps.ih/2:(my-ps.oy)/ps.s;ps.s=ps.base*z;ps.ox=mx-ix*ps.s;ps.oy=my-iy*ps.s;psDr()}
-function psDr(){var x=ps.ctx;x.clearRect(0,0,720,540);x.fillStyle='#020617';x.fillRect(0,0,720,540);if(ps.img)x.drawImage(ps.img,ps.ox,ps.oy,ps.iw*ps.s,ps.ih*ps.s);x.strokeStyle='#f59e0b';x.lineWidth=3;x.strokeRect(ps.cx,ps.cy,ps.cw,ps.ch)}
-(function(){var ce=document.getElementById('psChips');pnMd.forEach(function(m,i){var b=document.createElement('button');b.className='epChip'+(i===0?' on':'');b.textContent=m.n;b.onclick=function(){ps.md=i;var ch=ce.children;for(var k=0;k<ch.length;k++)ch[k].className='epChip';b.className='epChip on';psFC();psDr()};ce.appendChild(b)});document.getElementById('psFile').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){ps.img=im;ps.iw=im.width;ps.ih=im.height;psFI()};im.src=r.result};r.readAsDataURL(f)});document.getElementById('psDl').addEventListener('click',function(){if(!ps.img){alert('Chhobi upload korun!');return}var m=pnMd[ps.md],c=document.createElement('canvas');c.width=m.w;c.height=m.h;c.getContext('2d').drawImage(ps.img,(ps.cx-ps.ox)/ps.s,(ps.cy-ps.oy)/ps.s,ps.cw/ps.s,ps.ch/ps.s,0,0,m.w,m.h);var a=document.createElement('a');a.download='pan.jpg';a.href=c.toDataURL('image/jpeg',0.9);document.body.appendChild(a);a.click();a.remove()});psFC();psDr()})();
-var dtT=[['dtpImg','Compress Image'],['dtpMerge','Merge PDF'],['dtpOcr','OCR Scan']];
-function dtSw(id,el){dtT.forEach(function(t){document.getElementById(t[0]).className='pvCard dtPanel'+(t[0]===id?' on':'')});var ch=document.getElementById('docChips').children;for(var k=0;k<ch.length;k++)ch[k].className='epChip';el.className='epChip on'}
-(function(){var ce=document.getElementById('docChips');dtT.forEach(function(t,i){var b=document.createElement('button');b.className='epChip'+(i===0?' on':'');b.textContent=t[1];b.onclick=function(){dtSw(t[0],b)};ce.appendChild(b)});
-document.getElementById('dtImgGo').addEventListener('click',function(){var f=document.getElementById('dtImgFile').files[0];if(!f)return alert('Image nin');var q=document.getElementById('dtImgQ').value/100,im=new Image();im.onload=function(){var c=document.createElement('canvas');c.width=im.width;c.height=im.height;c.getContext('2d').drawImage(im,0,0);c.toBlob(function(bl){document.getElementById('dtImgRes').textContent='Sompurno: '+(bl.size/1024).toFixed(0)+' KB';var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='compressed.jpg';document.body.appendChild(a);a.click();a.remove()},'image/jpeg',q)};im.src=URL.createObjectURL(f)});
-document.getElementById('dtMergeGo').addEventListener('click',function(){if(!window.PDFLib)return alert('Internet proyojon');var fs=document.getElementById('dtMergeFiles').files;if(fs.length<2)return alert('2 ti PDF nin');(async function(){var out=await PDFLib.PDFDocument.create();for(var i=0;i<fs.length;i++){var b=await fs[i].arrayBuffer(),d=await PDFLib.PDFDocument.load(b),cp=await out.copyPages(d,d.getPageIndices());cp.forEach(function(p){out.addPage(p)})}var by=await out.save(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([by],{type:'application/pdf'}));a.download='merged.pdf';document.body.appendChild(a);a.click();a.remove();document.getElementById('dtMergeRes').textContent='Sompurno!'})()});
-document.getElementById('dtOcrGo').addEventListener('click',function(){if(!window.Tesseract)return alert('Internet proyojon');var f=document.getElementById('dtOcrFile').files[0];if(!f)return alert('Chhobi nin');document.getElementById('dtOcrRes').textContent='OCR cholche...';Tesseract.recognize(URL.createObjectURL(f),'eng').then(function(r){document.getElementById('dtOcrOut').value=r.data.text;document.getElementById('dtOcrRes').textContent='Sompurno!'})});
-})();
-</script>
-<script>
-/* Service logos — strip file auto-khuje nebe (nam jai hok) + favicon backup */
-(function(){
-  var REPO='https://api.github.com/repos/Parvezdigitals/parvezdigitals.github.io/contents/';
-  var GUESS='unnamed-imageonline.co-merged.png';
-  var STRIP='';
-  function ddg(d){return 'https://icons.duckduckgo.com/ip3/'+d+'.ico';}
-  function gg(d){return 'https://www.google.com/s2/favicons?domain='+d+'&sz=64';}
-  function stripEm(t){return t.replace(/^[^\p{L}\p{N}]+/u,'');}
-  function sprite(idx,cls){
-    var s=document.createElement('span');
-    s.className=cls+' lsprite';
-    s.style.backgroundImage="url('"+STRIP+"')";
-    s.style.backgroundSize='1000% 100%';
-    s.style.backgroundRepeat='no-repeat';
-    s.style.backgroundPosition=(idx*100/9)+'% 50%';
-    return s;
-  }
-  function putSprite(idx,cls,t,orig,ins){
-    t.textContent=stripEm(orig);ins(sprite(idx,cls),t);
-  }
-  function putFav(d,cls,t,orig,ins){
-    var img=document.createElement('img');
-    img.className=cls;img.alt='';img.src=ddg(d);
-    img.onerror=function(){this.onerror=function(){t.textContent=orig;this.remove();};this.src=gg(d);};
-    t.textContent=stripEm(orig);ins(img,t);
-  }
-  function init(useStrip){
-    var IS={
-      'myaadhaar.uidai.gov.in':0,'uidai.gov.in':0,
-      'beneficiary.nha.gov.in':6,'bis.pmjay.gov.in':6,
-      'banglarbhumi.gov.in':7,
-      'crs.wb.gov.in':5,
-      'www.wbsedcl.in':4,
-      'my.ebharatgas.com':3,'www.indane.co.in':3,'cx.indianoil.in':3,'myhpgas.in':3,
-      'www.pan.utiitsl.com':8,'www.myutiitsl.com':8,'www.trackpan.utiitsl.com':8,
-      'pmkisan.gov.in':2,'food.wb.gov.in':9,'prdtax.wb.gov.in':1
-    };
-    document.querySelectorAll('.i').forEach(function(el){
-      var m=(el.getAttribute('onclick')||'').match(/go\('([^']+)'/);
-      if(!m)return;
-      try{
-        var d=new URL(m[1]).hostname,t=el.firstChild;
-        if(!t||t.nodeType!==3)return;
-        var orig=t.textContent,ins=function(a,b){el.insertBefore(a,b);};
-        if(useStrip&&IS[d]!==undefined)putSprite(IS[d],'ficon',t,orig,ins);
-        else putFav(d,'ficon',t,orig,ins);
-      }catch(e){}
-    });
-    var QS={'myaadhaar.uidai.gov.in':0,'www.pan.utiitsl.com':8,'food.wb.gov.in':9,'pmkisan.gov.in':2};
-    document.querySelectorAll('.qCard').forEach(function(el){
-      var oc=el.getAttribute('onclick')||'';
-      if(oc.indexOf('toggleMenu')>-1)return;
-      var m=oc.match(/go\('([^']+)'/);
-      if(!m)return;
-      try{
-        var d=new URL(m[1]).hostname,box=el.querySelector('div');
-        if(!box)return;
-        var orig=box.innerHTML;
-        box.innerHTML='';
-        if(useStrip&&QS[d]!==undefined)box.appendChild(sprite(QS[d],'qicon'));
-        else{
-          var img=document.createElement('img');
-          img.className='qicon';img.alt='';img.src=ddg(d);
-          img.onerror=function(){this.onerror=function(){box.innerHTML=orig;};this.src=gg(d);};
-          box.appendChild(img);
-        }
-      }catch(e){}
-    });
-    var GS={a:0,ay:6,b:7,bd:5,el:4,ga:3,pan:8,pt:1,pm:2,ra:9};
-    var GF={c:'edistrict.wb.gov.in',e:'eshram.gov.in',vo:'voters.eci.gov.in'};
-    ['a','ay','b','bd','c','e','el','ga','pan','pt','pm','ra','vo'].forEach(function(id){
-      var gl=document.getElementById(id);
-      if(!gl)return;
-      var g=gl.closest('.g');if(!g)return;
-      var sp=g.querySelector('.gh span');if(!sp)return;
-      var t=sp.firstChild;if(!t||t.nodeType!==3)return;
-      var orig=t.textContent,ins=function(a,b){sp.insertBefore(a,b);};
-      if(useStrip&&GS[id]!==undefined)putSprite(GS[id],'gicon',t,orig,ins);
-      else putFav(GF[id],'gicon',t,orig,ins);
-    });
-  }
-  function tryLoad(url,ok,fail){
-    var im=new Image();im.onload=function(){STRIP=url;ok();};im.onerror=fail;im.src=url;
-  }
-  function discover(){
-    fetch(REPO).then(function(r){return r.json();}).then(function(fs){
-      var hit=null;
-      for(var i=0;i<fs.length;i++){
-        var n=fs[i].name||'';
-        if(/\.png$/i.test(n)&&/merged|imageonline|strip/i.test(n)){hit=fs[i];break;}
-      }
-      if(hit&&hit.download_url)tryLoad(hit.download_url,function(){init(true);},function(){init(false);});
-      else init(false);
-    }).catch(function(){init(false);});
-  }
-  tryLoad(GUESS,function(){init(true);},discover);
-})();
+let historyStack=[];
+function go(u){
+ historyStack.push(window.location.href);
+ window.open(u,'_blank');
+ // Also push state for back button
+ try{history.pushState({page:historyStack.length},'',window.location.href);}catch(e){}
+}
+function tg(id){let e=document.getElementById(id);if(e){e.classList.toggle('open');e.style.display=e.classList.contains('open')?'block':'none'}}
+function toggleM(){
+ let side=document.getElementById('side');
+ let over=document.getElementById('over');
+ side.classList.toggle('open');
+ over.classList.toggle('open');
+ if(side.classList.contains('open')){
+   try{history.pushState({menu:'open'},'','');}catch(e){}
+   historyStack.push('menu');
+ }
+}
+function goBack(){
+ if(historyStack.length>0){
+   historyStack.pop();
+   let side=document.getElementById('side');
+   if(side.classList.contains('open')){
+     side.classList.remove('open');
+     document.getElementById('over').classList.remove('open');
+     return;
+   }
+   try{history.back();}catch(e){window.scrollTo({top:0,behavior:'smooth'})}
+ }else{
+   window.scrollTo({top:0,behavior:'smooth'});
+   if(window.history.length>1){try{history.back();}catch(e){}}
+ }
+}
+window.addEventListener('popstate',function(e){
+ let side=document.getElementById('side');
+ if(side && side.classList.contains('open')){
+   side.classList.remove('open');
+   document.getElementById('over').classList.remove('open');
+   if(historyStack.length>0) historyStack.pop();
+ }
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){let side=document.getElementById('side');if(side.classList.contains('open')){side.classList.remove('open');document.getElementById('over').classList.remove('open');}}});
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
