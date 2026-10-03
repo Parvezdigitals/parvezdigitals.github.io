@@ -64,7 +64,7 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 <div class="top">
 <div class="top-left">
 <div class="hum" onclick="toggleM()"><div style="display:flex;flex-direction:column"><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div><div style="width:18px;height:2px;background:#fff;margin:3px 0"></div></div></div>
-<div class="logo-p"><img src="logo.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='P'" alt="PA" style="color:#fbbf24;font-weight:900;font-size:20px">P</div>
+<div class="logo-p" style="width:40px;height:40px;border-radius:10px;overflow:hidden;background:#fff;border:2px solid #fbbf24;display:flex;align-items:center;justify-content:center"><img src="logo.jpg" onerror="this.style.display='none';this.parentElement.innerHTML='P'" alt="PA" style="width:100%;height:100%;object-fit:cover"></div>
 <div class="top-title"><b>PARVEZ DIGITAL</b><span>55+ Services • Secure Portal</span></div>
 </div>
 <div class="bell" onclick="toggleNoti()" style="position:relative">🔔<span id="notiBadge" style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;padding:2px 5px;border-radius:10px;font-weight:900;display:none">0</span></div>
@@ -284,10 +284,11 @@ function toggleNoti(){
 
 // Weekly Employment News Notification System
 const weeklyPapers = [
- {name:'Karmasangsthan',bn:'কর্মসংস্থান',url:'https://www.karmasangsthan.org/',icon:'📰',color:'#dc2626',desc:'West Bengal Weekly Job Paper - Every Saturday'},
+ {name:'Karmasangsthan',bn:'কর্মসংস্থান',url:'https://www.karmasangsthan.org/',icon:'📰',color:'#dc2626',desc:'WB Weekly Job Paper - Main - If blocked try below', mirrors:['https://karmasangsthan.net/','https://www.wbjobportal.com/karmasangsthan/','https://westbengaljob.in/karmasangsthan/']},
+ {name:'Karmasangsthan PDF',bn:'কর্মসংস্থান PDF',url:'https://www.karmasangsthan.org/karmasangsthan-pdf/',icon:'📕',color:'#d97706',desc:'Full Paper PDF - Cloudflare bypass - Try mirrors if blocked', mirrors:['https://t.me/karmasangsthan_official','https://www.karmasangsthan.org/wp-content/uploads/']},
  {name:'Karmakshetra',bn:'কর্মক্ষেত্র',url:'https://www.karmakshetra.com/',icon:'📄',color:'#2563eb',desc:'Bengali Employment Weekly - Jobs & Results'},
  {name:'Employment News',bn:'এমপ্লয়মেন্ট নিউজ',url:'https://www.employmentnews.gov.in/',icon:'📋',color:'#16a34a',desc:'Central Govt Weekly - Every Saturday'},
- {name:'Karmasangsthan PDF',bn:'কর্মসংস্থান PDF',url:'https://www.karmasangsthan.org/karmasangsthan-pdf/',icon:'📕',color:'#d97706',desc:'Full Paper PDF - Download & Read'},
+ {name:'WB Employment',bn:'WB চাকরি',url:'https://www.wbemployment.com/',icon:'💼',color:'#7c3aed',desc:'WB Jobs - Alternative if Karmasangsthan blocked'},
 ];
 
 function getWeekNumber(){
@@ -304,7 +305,7 @@ function loadWeeklyNews(){
  let year=new Date().getFullYear();
  let today=new Date().toLocaleDateString('bn-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
  let list=document.getElementById('notiList');
- let html=`<div style="background:#f1f5f9;padding:8px 10px;border-radius:8px;margin-bottom:10px;font-size:11px;color:#475569;text-align:center">📅 ${today} | Week ${week} | ${year}<br>Proti soptahe auto update - 1 click e puro paper</div>`;
+ let html=`<div style="background:#fef3c7;border:1px solid #f59e0b;padding:10px;border-radius:10px;margin-bottom:10px"><div style="font-size:12px;color:#92400e;font-weight:800">⚠️ Cloudflare Block? - Tomar screenshot er moto block hole:</div><div style="font-size:11px;color:#92400e;margin-top:4px">• Karmasangsthan site Cloudflare security use kore - kichu IP block hoy<br>• Niche alternative mirror link diyechi - 1 click e try koro<br>• Telegram channel e PDF direct paben - no block</div></div><div style="background:#f1f5f9;padding:8px 10px;border-radius:8px;margin-bottom:10px;font-size:11px;color:#475569;text-align:center">📅 ${today} | Week ${week} | ${year}<br>Proti soptahe auto update - Block hole mirror try koro</div>`;
  
  let stored=localStorage.getItem('parvez_noti_read')||'[]';
  let readIds=JSON.parse(stored);
@@ -312,14 +313,22 @@ function loadWeeklyNews(){
  weeklyPapers.forEach((p,i)=>{
    let id=`${p.name}-${week}-${year}`;
    let isNew=!readIds.includes(id);
+   let mirrorsHtml='';
+   if(p.mirrors){
+     mirrorsHtml=`<div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">`;
+     p.mirrors.forEach(m=>{
+       mirrorsHtml+=`<span onclick="event.stopPropagation();window.open('${m}','_blank')" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 6px;border-radius:10px;font-size:9px;color:#475569;cursor:pointer">Mirror → ${new URL(m).hostname.replace('www.','').substring(0,12)}</span>`;
+     });
+     mirrorsHtml+=`</div>`;
+   }
    html+=`<div onclick="openPaper('${p.url}','${id}')" style="background:#fff;border:1px solid ${isNew?'#fbbf24':'#e2e8f0'};border-left:4px solid ${p.color};border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;${isNew?'box-shadow:0 2px 8px rgba(251,191,36,.3)':''}">
    <div style="width:40px;height:40px;background:${p.color}20;border:1px solid ${p.color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">${p.icon}</div>
-   <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click to read full paper 📖</div></div>
+   <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click main, if blocked use mirror below 📖</div>${mirrorsHtml}</div>
    <div style="background:${p.color};color:#fff;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:800">Open →</div>
    </div>`;
  });
  
- html+=`<div style="margin-top:10px;background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:10px"><b style="font-size:12px;color:#92400e">📌 Auto Weekly System:</b><div style="font-size:11px;color:#92400e;margin-top:4px">• Proti Shanibar Karmasangsthan auto notification<br>• 1 click e puro paper PDF porte parben<br>• Notification bell e 🔔 NEW badge dekhabe<br>• Purono paper gulo o side menu te paben</div></div>`;
+ html+=`<div style="margin-top:10px;background:#dbeafe;border:1px solid #3b82f6;border-radius:10px;padding:10px"><b style="font-size:12px;color:#1e40af">📌 Block Solution:</b><div style="font-size:11px;color:#1e40af;margin-top:4px">• Tomar screenshot e "Sorry you have been blocked" - Cloudflare security<br>• VPN use koro ba alternative mirror link e click koro<br>• Telegram: @karmasangsthan_official e full PDF no block<br>• WB Employment - wbemployment.com e same jobs paben</div></div>`;
  
  list.innerHTML=html;
  updateBadge();
