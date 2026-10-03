@@ -24,7 +24,6 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<!-- Site intact - Only  word removed from labels - Site noi - Sudhu  kotha bad -->
 <title>PARVEZ DIGITAL - 55+ Services</title>
 <link rel="icon" href="logo.jpg">
 <style>
@@ -167,12 +166,6 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 <div class="item" onclick="go('https://silpasathi.wb.gov.in/')" style="background:#fef3c7;border-color:#f59e0b;font-weight:800">➤ Trade License - Silpasathi - silpasathi.wb.gov.in - NEW ⭐</div>
 <div class="item" onclick="go('https://edistrict.wb.gov.in/PACE/login.do')">➤ Trade License - Old - eDistrict</div>
 <div class="item" onclick="go('https://samarth.wb.gov.in/')" style="background:#dbeafe;border-color:#3b82f6;font-weight:800">➤ Samarth - Pension Status - samarth.wb.gov.in - NEW ⭐</div>
-<div class="item" onclick="go('https://banglarbhumi.gov.in/')" style="background:#dbeafe;border-color:#3b82f6;font-weight:800">🏞️ Banglarbhumi - Plot & Khatian - No Login - NEW ⭐</div>
-<div class="item" onclick="go('https://banglarbhumi.gov.in/BanglarBhumi/ViewKhatian.aspx')">📄 Khatian Status Check - No Login - Plot & Khatian Info</div>
-<div class="item" onclick="go('https://banglarbhumi.gov.in/BanglarBhumi/knowYourProperty.aspx')">🏞️ Plot Information - RS/LR - No Login - Know Your Property</div>
-<div class="item" onclick="go('https://banglarbhumi.gov.in/BanglarBhumi/MouzaMap.aspx')">🗺️ Mouza Map - Plot Map - PDF View - No Login</div>
-<div class="item" onclick="go('https://banglarbhumi.gov.in/BanglarBhumi/ViewKhatian.aspx')">📥 Khatian PDF Download - No Login - West Bengal</div>
-<div class="item" onclick="go('https://banglarbhumi.gov.in/')">➤ Banglarbhumi - Main Portal - banglarbhumi.gov.in</div>
 <div class="item" onclick="go('https://pmayg.dord.gov.in/')" style="background:#dcfce7;border-color:#16a34a;font-weight:800">➤ PMAY Gramin - NEW Portal - Official</div>
 <div class="item" onclick="go('https://rhreporting.nic.in/')">➤ AwaasSoft - PMAY-G Beneficiary List - rhreporting.nic.in</div>
 <div class="item" onclick="go('https://pmfby.gov.in/')">➤ PM Fasal Bima</div>
@@ -212,7 +205,7 @@ body{background:#eef2f7;color:#0f172a;padding-bottom:90px}
 <div class="card-s" onclick="go('https://myaadhaar.uidai.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">🪪</div><b>Aadhaar</b><span>Download • Update</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://www.pan.utiitsl.com/')"><div class="blob" style="background:#fee2e2"></div><div class="icon" style="background:linear-gradient(135deg,#f97316,#fb923c)">💳</div><b>PAN</b><span>New • Correction</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://voters.eci.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#10b981,#34d399)">🗳️</div><b>Voter</b><span>Apply • Correction</span><div class="open-btn">Open →</div></div>
-<div class="card-s" onclick="go('https://wbpds.wb.gov.in/')"><div class="blob" style="background:#ede9fe"></div><div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">🍚</div><b>Ration</b><span>WBPDS • Official</span><div class="open-btn">Open →</div></div>
+<div class="card-s" onclick="go('https://wbpds.wb.gov.in/')"><div class="blob" style="background:#ede9fe"></div><div class="icon" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">🍚</div><b>Ration</b><span>WBPDS • • Official • Download</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://pmkisan.gov.in/')"><div class="blob" style="background:#dcfce7"></div><div class="icon" style="background:linear-gradient(135deg,#22c55e,#4ade80)">🌱</div><b>PM Kisan</b><span>Registration • Status</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="toggleM()"><div class="blob" style="background:#e2e8f0"></div><div class="icon" style="background:linear-gradient(135deg,#334155,#475569)">☰</div><b>Full Menu</b><span>55+ Services</span><div class="open-btn">Open →</div></div>
 <div class="card-s" onclick="go('https://banglarbhumi.gov.in/')"><div class="blob" style="background:#dbeafe"></div><div class="icon" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)">🗺️</div><b>Banglarbhumi</b><span>Khatian • Plot</span><div class="open-btn">Open →</div></div>
@@ -318,21 +311,21 @@ function loadWeeklyNews(){
  let readIds=JSON.parse(stored);
  
  weeklyPapers.forEach((p,i)=>{
- let id=`${p.name}-${week}-${year}`;
- let isNew=!readIds.includes(id);
- let mirrorsHtml='';
- if(p.mirrors){
-  mirrorsHtml=`<div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">`;
-  p.mirrors.forEach(m=>{
-  mirrorsHtml+=`<span onclick="event.stopPropagation();window.open('${m}','_blank')" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 6px;border-radius:10px;font-size:9px;color:#475569;cursor:pointer">Mirror → ${new URL(m).hostname.replace('www.','').substring(0,12)}</span>`;
-  });
-  mirrorsHtml+=`</div>`;
- }
- html+=`<div onclick="openPaper('${p.url}','${id}')" style="background:#fff;border:1px solid ${isNew?'#fbbf24':'#e2e8f0'};border-left:4px solid ${p.color};border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;${isNew?'box-shadow:0 2px 8px rgba(251,191,36,.3)':''}">
- <div style="width:40px;height:40px;background:${p.color}20;border:1px solid ${p.color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">${p.icon}</div>
- <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click to read - Use mirror if blocked</div>${mirrorsHtml}</div>
- <div style="background:${p.color};color:#fff;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:800">Open →</div>
- </div>`;
+  let id=`${p.name}-${week}-${year}`;
+  let isNew=!readIds.includes(id);
+  let mirrorsHtml='';
+  if(p.mirrors){
+   mirrorsHtml=`<div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">`;
+   p.mirrors.forEach(m=>{
+    mirrorsHtml+=`<span onclick="event.stopPropagation();window.open('${m}','_blank')" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 6px;border-radius:10px;font-size:9px;color:#475569;cursor:pointer">Mirror → ${new URL(m).hostname.replace('www.','').substring(0,12)}</span>`;
+   });
+   mirrorsHtml+=`</div>`;
+  }
+  html+=`<div onclick="openPaper('${p.url}','${id}')" style="background:#fff;border:1px solid ${isNew?'#fbbf24':'#e2e8f0'};border-left:4px solid ${p.color};border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer;display:flex;gap:10px;align-items:center;${isNew?'box-shadow:0 2px 8px rgba(251,191,36,.3)':''}">
+  <div style="width:40px;height:40px;background:${p.color}20;border:1px solid ${p.color};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">${p.icon}</div>
+  <div style="flex:1;text-align:left"><b style="font-size:13px;color:#1e293b">${p.name} - ${p.bn} ${isNew?'<span style="background:#ef4444;color:#fff;font-size:8px;padding:2px 6px;border-radius:10px;margin-left:6px">NEW</span>':''}</b><div style="font-size:11px;color:#64748b">${p.desc}</div><div style="font-size:10px;color:#94a3b8">Week ${week} • Click to read - Use mirror if blocked</div>${mirrorsHtml}</div>
+  <div style="background:${p.color};color:#fff;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:800">Open →</div>
+  </div>`;
  });
  
  html+=`<div style="margin-top:10px;background:#dbeafe;border:1px solid #3b82f6;border-radius:10px;padding:10px"><b style="font-size:12px;color:#1e40af">📌 Block Solution:</b><div style="font-size:11px;color:#1e40af;margin-top:4px">• If you see 'Sorry you have been blocked' message<br>• Use VPN or try alternative mirror links<br>• Telegram: @karmasangsthan_official - Full PDF available<br>• WB Employment - Alternative job portal</div></div>`;
@@ -368,19 +361,19 @@ function updateBadge(){
 // Auto check on load
 window.addEventListener('load',()=>{
  setTimeout(()=>{
- updateBadge();
- // Auto show notification once per week if not read
- let week=getWeekNumber();
- let lastShown=localStorage.getItem('parvez_last_noti_week');
- if(lastShown!=week){
-  let stored=localStorage.getItem('parvez_noti_read')||'[]';
-  let readIds=JSON.parse(stored);
-  let hasUnread=weeklyPapers.some(p=>!readIds.includes(`${p.name}-${week}-${year}`));
-  if(hasUnread){
-  // Don't auto open, just badge - user clicks bell
-  console.log('New weekly papers available - Week',week);
+  updateBadge();
+  // Auto show notification once per week if not read
+  let week=getWeekNumber();
+  let lastShown=localStorage.getItem('parvez_last_noti_week');
+  if(lastShown!=week){
+   let stored=localStorage.getItem('parvez_noti_read')||'[]';
+   let readIds=JSON.parse(stored);
+   let hasUnread=weeklyPapers.some(p=>!readIds.includes(`${p.name}-${week}-${year}`));
+   if(hasUnread){
+    // Don't auto open, just badge - user clicks bell
+    console.log('New weekly papers available - Week',week);
+   }
   }
- }
  },1000);
 });
 </script>
