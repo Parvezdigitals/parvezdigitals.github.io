@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WB Full - Applicant Address Fixed</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f1f5f9;font-family:'Noto Sans Bengali',Inter,system-ui}
+.hdr{background:#1e3a8a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}
+.logo{display:flex;gap:10px;align-items:center}.wb{width:36px;height:36px;background:#fff;color:#1e3a8a;border-radius:10px;display:grid;place-items:center;font-weight:900}
+.lbtn{padding:6px 12px;border-radius:999px;border:1px solid #ffffff55;background:#ffffff22;color:#fff;font-size:12px;cursor:pointer}.lbtn.on{background:#fff;color:#1e3a8a;font-weight:700}
+.wrap{max-width:1280px;margin:12px auto;display:grid;grid-template-columns:400px 1fr;gap:12px;padding:0 10px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);margin-bottom:12px}
+.lab{font-size:10px;font-weight:700;color:#475569;margin:8px 0 3px;display:block;letter-spacing:.4px;text-transform:uppercase}
+.inp,select{width:100%;padding:9px 10px;border:1px solid #cbd5e1;border-radius:9px;font-size:13px}
+.chip{display:inline-block;padding:5px 10px;border:1px solid #e2e8f0;border-radius:999px;font-size:11px;margin:3px;cursor:pointer;background:#f8fafc}.chip.on{background:#1e3a8a;color:#fff;border-color:#1e3a8a}.chip.v{background:#fffbeb;border-color:#fde68a}
+.preview{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px;min-height:700px;line-height:1.9;font-size:13px;white-space:pre-wrap}
+.topb{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:6px 8px;font-size:11px;margin-bottom:10px}
+.flex{display:flex;justify-content:space-between;align-items:flex-end;margin-top:22px;border-top:1px solid #e2e8f0;padding-top:10px}
+.abtn{flex:1;padding:9px;border-radius:9px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:11px;cursor:pointer}.abtn.pr{background:#1e3a8a;color:#fff;border-color:#1e3a8a}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="hdr">
+<div class="logo"><div class="wb">WB</div><div><div style="font-weight:700;font-size:13px">পশ্চিমবঙ্গ সমস্ত জিপি ও গ্রাম ডাটাবেস</div><div style="font-size:10px;opacity:.8">Applicant Address Fixed + All PS + Purpose</div></div></div>
+<div><button id="bBn" class="lbtn on" onclick="setLang('bn')">বাং</button><button id="bEn" class="lbtn" onclick="setLang('en')">EN</button></div>
+</div>
+
+<div class="wrap">
+<div>
+<div class="card">
+<span class="lab">অফিস / জিপি লোকেশন (যেখানে আবেদন জমা)</span>
+<span class="lab" data-bn="জেলা (২৩টি জেলা - সব)" data-en="District (All 23 Districts)">জেলা (২৩টি জেলা - সব)</span><select id="dist" onchange="onDist()"></select>
+<span class="lab" data-bn="ব্লক (সব ব্লক - West Bengal এর যে কোনো)" data-en="Block (All Blocks - Anywhere in WB)">ব্লক (সব ব্লক - West Bengal এর যে কোনো)</span><select id="block" onchange="onBlockCustomChange()"></select>
+<div id="customBlockDiv" style="display:none;margin-top:6px">
+<input id="customBlock" class="inp" placeholder="নিজের ব্লক নিজে লিখুন - যেমন খেজুরী-১ / KHEJURI-I" oninput="update()" style="border:2px dashed #f59e0b;background:#fffbeb">
+</div>
+<span class="lab" data-bn="গ্রাম পঞ্চায়েত (সব GP - যে কোনো)" data-en="Gram Panchayat (All GP - Any)">গ্রাম পঞ্চায়েত (সব GP - যে কোনো)</span><select id="gp" onchange="onGpCustomChange()"></select>
+<div id="customGpDiv" style="display:none;margin-top:6px">
+<input id="customGp" class="inp" placeholder="নিজের GP নিজে লিখুন - যেমন কলাগেছিয়া / Kalagechia" oninput="update()" style="border:2px dashed #10b981;background:#ecfdf5">
+</div>
+<span class="lab" data-bn="গ্রাম (অফিস) - যে কোনো গ্রাম" data-en="Village (Office) - Any Village">গ্রাম (অফিস) - যে কোনো গ্রাম</span>
+<input id="vill" class="inp" placeholder="যেমন কলাগেছিয়া / যে কোনো গ্রাম লিখুন" value="কলাগেছিয়া" oninput="update()">
+<div id="villSug" style="margin-top:5px"></div>
+<span class="lab" data-bn="পোস্ট অফিস" data-en="Post Office">পোস্ট অফিস</span><input id="po" class="inp" list="poL" value="কামারদা বাজার" oninput="onPoChange()"><datalist id="poL"></datalist>
+<span class="lab" data-bn="থানা" data-en="Police Station">থানা</span><input id="thana" class="inp" list="thL" value="খেজুরী" oninput="update()"><datalist id="thL"></datalist>
+<span class="lab" data-bn="পিন কোড (অটো)" data-en="PIN (Auto)">পিন কোড (অটো)</span><input id="pin" class="inp" value="৭২১৪৩২" oninput="update()" style="background:#f0fdf4;border-color:#86efac;font-weight:700">
+</div>
+
+<div class="card">
+<span class="lab" data-bn="সম্বোধন" data-en="Salutation">সম্বোধন (মাননীয় / মাননীয়া)</span>
+<div style="display:flex;gap:6px;margin-bottom:8px">
+<button id="salM" class="chip on" style="flex:1;padding:10px;font-weight:700" onclick="setSal('মাননীয়')">মাননীয়</button>
+<button id="salF" class="chip" style="flex:1;padding:10px;font-weight:700" onclick="setSal('মাননীয়া')">মাননীয়া</button>
+</div>
+<span class="lab" data-bn="কার বরাবর আবেদন" data-en="Authority">কার বরাবর আবেদন - BDO/SDO/DM/Pradhan</span>
+<select id="auth" onchange="update()" class="inp" style="font-weight:700;background:#eff6ff;border-color:#93c5fd">
+<option value="pradhan">প্রধান - Pradhan</option>
+<option value="bdo">বিডিও - BDO</option>
+<option value="sdo">এসডিও - SDO</option>
+<option value="dm">ডিএম - DM</option>
+<option value="sabhapati">সভাপতি - Sabhapati</option>
+<option value="oc">ওসি - OC</option>
+<option value="ic">আইসি - IC</option>
+<option value="mla">বিধায়ক - MLA</option>
+</select>
+
+<span class="lab" data-bn="বিষয় / সার্টিফিকেটের ধরন" data-en="Certificate Type">বিষয় / সার্টিফিকেট - Income/Residential/Legal Heir etc</span>
+<select id="cert" onchange="update()" class="inp" style="font-weight:700;background:#fffbeb;border-color:#fde68a">
+<option value="income_svmcm">স্বামী বিবেকানন্দ স্কলারশিপ আয় - SVMCM Income</option>
+<option value="income_oasis">OASIS স্কলারশিপ আয়</option>
+<option value="income_kanyashree">কন্যাশ্রী আয়</option>
+<option value="income_nabanna">নবান্ন স্কলারশিপ আয়</option>
+<option value="income_aikyashree">ঐক্যশ্রী আয়</option>
+<option value="income">সাধারণ আয় শংসাপত্র - Income Certificate</option>
+<option value="residential">বাসিন্দা শংসাপত্র - Residential</option>
+<option value="caste">জাতি শংসাপত্র - Caste</option>
+<option value="caste_sc">SC সার্টিফিকেট</option>
+<option value="caste_st">ST সার্টিফিকেট</option>
+<option value="caste_obc">OBC সার্টিফিকেট</option>
+<option value="character">চারিত্রিক শংসাপত্র - Character</option>
+<option value="legal_heir">লিগ্যাল হেয়ার - Legal Heir</option>
+<option value="heir">ওয়ারিশান - Warish / Heir</option>
+<option value="income_low">নিম্ন আয় - Low Income</option>
+<option value="unmarried">অবিবাহিত - Unmarried</option>
+<option value="trade">ট্রেড লাইসেন্স - Trade License</option>
+<option value="electric">বিদ্যুৎ সংযোগ - Electric</option>
+<option value="bpl">BPL সার্টিফিকেট</option>
+</select>
+
+<span class="lab" data-bn="কেন লাগবে / উদ্দেশ্য" data-en="Purpose">কেন লাগবে / উদ্দেশ্য - Income/Residential keno lagbe</span>
+<select id="purpose" onchange="update()" class="inp" style="background:#f0fdf4;border-color:#86efac">
+<option value="svmcm">স্বামী বিবেকানন্দ স্কলারশিপ (SVMCM) এর জন্য</option>
+<option value="oasis">OASIS স্কলারশিপ এর জন্য</option>
+<option value="kanyashree">কন্যাশ্রী প্রকল্পের জন্য</option>
+<option value="nabanna">নবান্ন স্কলারশিপ এর জন্য</option>
+<option value="aikyashree">ঐক্যশ্রী স্কলারশিপ এর জন্য</option>
+<option value="medhashree">মেধাশ্রী স্কলারশিপ এর জন্য</option>
+<option value="student_credit">স্টুডেন্ট ক্রেডিট কার্ড এর জন্য</option>
+<option value="job">চাকরির আবেদনের জন্য</option>
+<option value="bank_loan">ব্যাঙ্ক লোন এর জন্য</option>
+<option value="college_admission">কলেজে ভর্তির জন্য</option>
+<option value="caste_verification">জাতি যাচাই এর জন্য</option>
+<option value="residential_proof">বাসস্থানের প্রমাণ হিসাবে</option>
+<option value="income_proof">আয়ের প্রমাণ হিসাবে</option>
+<option value="legal_heir_property">সম্পত্তি ওয়ারিশান হিসাবে</option>
+<option value="pension">পেনশনের জন্য</option>
+<option value="ration">রেশন কার্ড এর জন্য</option>
+<option value="passport">পাসপোর্ট এর জন্য</option>
+<option value="other">অন্যান্য কাজের জন্য</option>
+</select>
+
+<div style="background:#f8fafc;border:2px solid #1e3a8a;border-radius:10px;padding:10px;margin-top:12px">
+<div style="font-size:12px;font-weight:800;color:#1e3a8a;margin-bottom:8px">🏠 আবেদনকারীর আলাদা ঠিকানা / Applicant Separate Address (এটা Preview তে যাবে)</div>
+<span class="lab" data-bn="আবেদনকারীর নাম" data-en="Applicant Name">আবেদনকারীর নাম</span><input id="an" class="inp" value="Sek parvez alam" oninput="update()">
+<span class="lab" data-bn="পিতা / অভিভাবক" data-en="Father">পিতা / অভিভাবক</span><input id="fn" class="inp" value="Sek MEHEBUB alam" oninput="update()">
+<span class="lab" data-bn="আবেদনকারীর গ্রাম" data-en="Applicant Village">আবেদনকারীর গ্রাম (এটা change হবে)</span><input id="app_vill" class="inp" placeholder="যেমন ঘোলাবাড়" value="ঘোলাবাড়" oninput="update()" style="border:2px solid #f59e0b;background:#fffbeb">
+<span class="lab" data-bn="আবেদনকারীর পোস্ট অফিস" data-en="Applicant PO">আবেদনকারীর পোস্ট অফিস</span><input id="app_po" class="inp" placeholder="কামারদা বাজার" value="কামারদা বাজার" oninput="update()" style="border:2px solid #f59e0b;background:#fffbeb">
+<span class="lab" data-bn="আবেদনকারীর থানা (সব PS)" data-en="Applicant PS">আবেদনকারীর থানা - সব PS আছে (২৫০+)</span><input id="app_ps" class="inp" list="thL" placeholder="খেজুরী - সব থানা আছে" value="খেজুরী" oninput="update()" style="border:2px solid #f59e0b;background:#fffbeb">
+<span class="lab" data-bn="আবেদনকারীর পিন" data-en="Applicant PIN">আবেদনকারীর পিন</span><input id="app_pin" class="inp" placeholder="৭২১৪৩২" value="৭২১৪৩২" oninput="update()" style="border:2px solid #f59e0b;background:#fffbeb">
+<span class="lab" data-bn="আবেদনকারীর ব্লক" data-en="Applicant Block">আবেদনকারীর ব্লক</span><input id="app_block" class="inp" placeholder="খেজুরী-১" value="খেজুরী-১" oninput="update()" style="border:2px solid #f59e0b;background:#fffbeb">
+<span class="lab" data-bn="আবেদনকারীর জেলা" data-en="Applicant District">আবেদনকারীর জেলা</span><input id="app_dist" class="inp" placeholder="পূর্ব মেদিনীপুর" value="পূর্ব মেদিনীপুর" oninput="update()" style="border:2px solid #f59e0b;background:#fffbeb">
+<div style="margin-top:8px;display:flex;gap:6px"><span class="chip" onclick="copyOfficeToApplicant()" style="background:#dbeafe;border-color:#93c5fd;flex:1;text-align:center;padding:8px">📋 অফিস ঠিকানা কপি করুন</span><span class="chip" onclick="clearApplicant()" style="background:#fee2e2;border-color:#fca5a5;flex:1;text-align:center;padding:8px">🗑️ Clear</span></div>
+</div>
+
+<span class="lab" data-bn="বার্ষিক আয়" data-en="Annual Income">বার্ষিক আয় (যদি প্রযোজ্য)</span><input id="inc" type="number" class="inp" value="60000" oninput="update()">
+<div style="margin-top:6px"><span class="chip" onclick="setInc(48000)">₹ 48,000</span><span class="chip on" onclick="setInc(60000)">₹ 60,000</span><span class="chip" onclick="setInc(80000)">₹ 80,000</span><span class="chip" onclick="setInc(100000)">₹ 1,00,000</span></div>
+</div>
+</div>
+
+<div>
+<div class="card" style="padding:0;overflow:hidden">
+<div class="topb" id="topb"></div>
+<div id="prev" class="preview"></div>
+<div style="padding:0 18px 14px">
+<div class="flex"><div id="sthan"></div><div id="binit" style="text-align:right"></div></div>
+<div style="display:flex;gap:6px;margin-top:12px"><button class="abtn pr" onclick="copyT()">📋 Copy</button><button class="abtn" onclick="wa()">WA</button><button class="abtn" onclick="dl()">TXT</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const districts=["Purba Medinipur","Paschim Medinipur","Paschim Bardhaman","Purba Bardhaman","Nadia","North 24 Parganas","South 24 Parganas","Howrah","Hooghly","Bankura","Birbhum","Murshidabad","Malda","Jalpaiguri","Cooch Behar","Uttar Dinajpur","Dakshin Dinajpur","Darjeeling","Alipurduar","Kalimpong","Jhargram","Kolkata","Purulia"];
+const wbBlocks = {
+"Purba Medinipur":["KHEJURI-I","KHEJURI-II","Bhagwanpur-I","Bhagwanpur-II","Contai-I","Contai-II","Contai-III","Egra-I","Egra-II","Nandakumar","Nandigram-I","Nandigram-II","Mahishadal","Moyna","Tamluk","Haldia","Panskura","Ramnagar-I","Ramnagar-II","Deshapran","Patashpur-I","Patashpur-II","Chandipur","Sutahata","Potashpur"],
+"Paschim Medinipur":["Midnapore Sadar","Kharagpur-I","Kharagpur-II","Keshiary","Dantan-I","Dantan-II","Mohanpur","Narayangarh","Sankrail","Keshipur","Garhbeta-I","Garhbeta-II","Garhbeta-III","Chandrakona-I","Chandrakona-II","Ghatal","Daspur-I","Daspur-II","Keshpur","Debra","Sabang","Pingla","Narayangarh","Jhargram","Jamboni","Belpahari","Binpur-I","Binpur-II","Gopiballavpur-I","Gopiballavpur-II","Nayagram","Sankrail-JGM"],
+"Purba Bardhaman":["Bardhaman-I","Bardhaman-II","Memari-I","Memari-II","Jamalpur","Raina-I","Raina-II","Khandaghosh","Galsi-I","Galsi-II","Ausgram-I","Ausgram-II","Bhatar","Mongalkote","Katwa-I","Katwa-II","Ketugram-I","Ketugram-II","Kalna-I","Kalna-II","Purbasthali-I","Purbasthali-II","Monteswar"],
+"Paschim Bardhaman":["Asansol","Raniganj","Jamuria","Barabani","Andal","Pandabeswar","Faridpur-Durgapur","Kanksa","Durgapur","Laudoha","Hirapur","Salalpur","Kulti"],
+"Bankura":["Bankura-I","Bankura-II","Chhatna","Saltora","Mejia","Gangajalghati","Barjora","Onda","Indus","Kotulpur","Jaypur","Patrasayer","Indpur","Hirbandh","Raipur","Sarenga","Simlapal","Taldangra","Bishnupur","Sonamukhi","Khatra","Ranibandh"],
+"Birbhum":["Bolpur-Sriniketan","Illambazar","Labpur","Nanoor","Mayureswar-I","Mayureswar-II","Rampurhat-I","Rampurhat-II","Murarai-I","Murarai-II","Nalhati-I","Nalhati-II","Rajnagar","Suri-I","Suri-II","Sainthia","Dubrajpur","Khoyrasol","Mohammad Bazar"],
+"Cooch Behar":["Cooch Behar-I","Cooch Behar-II","Dinhata-I","Dinhata-II","Sitai","Sitalkuchi","Mathabhanga-I","Mathabhanga-II","Tufanganj-I","Tufanganj-II","Mekhliganj","Haldibari"],
+"Uttar Dinajpur":["Raiganj","Hemtabad","Kaliaganj","Itahar","Karandighi","Chakulia","Goalpokher-I","Goalpokher-II","Islampur","Chopra"],
+"Dakshin Dinajpur":["Balurghat","Hili","Kumarganj","Gangarampur","Tapan","Kushmandi","Banshihari","Harirampur"],
+"Darjeeling":["Darjeeling-Pulbazar","Rangli-Rangliot","Jorebunglow-Sukhiapokhri","Kurseong","Mirik","Matigara","Naxalbari","Phansidewa","Kharibari","Sukna"],
+"Alipurduar":["Alipurduar-I","Alipurduar-II","Falakata","Madarihat-Birpara","Kalchini","Kumargram"],
+"Jalpaiguri":["Jalpaiguri Sadar","Rajganj","Maynaguri","Dhupguri","Mal","Matiali","Nagrakata","Banarhat","Kranti"],
+"Kalimpong":["Kalimpong-I","Kalimpong-II","Gorubathan","Pedong","Lava","Rongli"],
+"Howrah":["Bally-Jagacha","Domjur","Uluberia-I","Uluberia-II","Bagnan-I","Bagnan-II","Amta-I","Amta-II","Udaynarayanpur","Shyampur-I","Shyampur-II","Panchla","Jagatballavpur","Sankrail"],
+"Hooghly":["Chinsurah-Mogra","Polba-Dadpur","Dhaniakhali","Pandua","Balagarh","Chanditala-I","Chanditala-II","Jangipara","Khanakul-I","Khanakul-II","Goghat-I","Goghat-II","Arambagh","Pursurah","Tarakeswar","Haripal","Singur","Serampore-Uttarpara"],
+"North 24 Parganas":["Barasat-I","Barasat-II","Amdanga","Deganga","Habra-I","Habra-II","Bagda","Bongaon","Gaighata","Hingalganj","Hasnabad","Minakhan","Sandeshkhali-I","Sandeshkhali-II","Barrackpore-I","Barrackpore-II","Basirhat-I","Basirhat-II","Swrupnagar","Harua","Rajarhat","New Town","Bidhannagar"],
+"South 24 Parganas":["Baruipur","Bhangar-I","Bhangar-II","Sonarpur","Jaynagar-I","Jaynagar-II","Kultali","Canning-I","Canning-II","Basanti","Gosaba","Kakdwip","Namkhana","Sagar","Patharpratima","Kulpi","Mathurapur-I","Mathurapur-II","Mandirbazar","Mograhat-I","Mograhat-II","Diamond Harbour-I","Diamond Harbour-II","Falta","Magrahat-I","Magrahat-II","Bishnupur-I","Bishnupur-II","Budge Budge-I","Budge Budge-II"],
+"Nadia":["Krishnanagar-I","Krishnanagar-II","Nabadwip","Santipur","Ranaghat-I","Ranaghat-II","Chakdaha","Haringhata","Kalyani","Nakashipara","Chapra","Krishnaganj","Hanskhali","Karimpur-I","Karimpur-II","Tehatta-I","Tehatta-II"],
+"Murshidabad":["Berhampore","Beldanga-I","Beldanga-II","Hariharpara","Naoda","Kandi","Khargram","Burwan","Bharatpur-I","Bharatpur-II","Raghunathganj-I","Raghunathganj-II","Suti-I","Suti-II","Farakka","Samserganj","Sagardighi","Jangipur","Lalgola","Bhagawangola-I","Bhagawangola-II","Domkal","Jalangi","Ranitala","Murshidabad-Jiaganj"],
+"Malda":["English Bazar","Manikchak","Kaliachak-I","Kaliachak-II","Kaliachak-III","Chanchal-I","Chanchal-II","Ratua-I","Ratua-II","Gazole","Bamangola","Habibpur","Old Malda","Harishchandrapur-I","Harishchandrapur-II"],
+"Purulia":["Purulia-I","Purulia-II","Hura","Puncha","Manbazar-I","Manbazar-II","Bandwan","Barabazar","Balarampur","Bagmundi","Jhalda-I","Jhalda-II","Joypur","Arsha","Raghunathpur-I","Raghunathpur-II","Neturia","Santuri","Kashipur","Para"],
+"Jhargram":["Jhargram","Jamboni","Binpur-I","Binpur-II","Gopiballavpur-I","Gopiballavpur-II","Sankrail","Nayagram","Belpahari","Gopiballavpur"],
+"Kolkata":["Kolkata Municipal Corporation"]
+};
+const thanas=["Khejuri","Contai","Egra","Tamluk","Haldia","Nandigram","Nandakumar","Mahishadal","Moyna","Bhagwanpur","Panskura","Ramnagar","Sutahata","Chandipur","Patashpur","Deshapran","Digha","Mandarmani","Kanthi","Marishda","Junput","Henria","Bajkul","Itaberia","Bhupatinagar","Baroj","Dakshin Khejuri","Nandigram-PS","Mahishadal-PS","Sutahata-PS","Durgachak","Haldia-PS","Tamluk-PS","Panskura-PS","Moyna-PS","Nandakumar-PS","Chandipur-PS","Bhagwanpur-PS","Patashpur-PS","Egra-PS","Contai-PS","Bankura","Bishnupur","Onda","Indus","Kotulpur","Sonamukhi","Bolpur","Suri","Rampurhat","Sainthia","Dinhata","Mathabhanga","Cooch Behar Kotwali","Tufanganj","Balurghat","Gangarampur","Darjeeling Sadar","Kurseong","Siliguri","Arambagh","Khanakul","Goghat","Pursurah","Tarakeswar","Howrah","Bagnan","Uluberia","Amta","Shyampur","Domjur","Jalpaiguri","Dhupguri","Malbazar","Jhargram","Jamboni","Belpahari","Kalimpong","Kolkata Bowbazar","Burrabazar","Park Street","English Bazar","Malda","Berhampore","Kandi","Beldanga","Jangipur","Krishnanagar","Nabadwip","Ranaghat","Santipur","Chakdaha","Kalyani","Barasat","Basirhat","Bongaon","Habra","Barrackpore","Titagarh","Khardah","Asansol","Durgapur","Raniganj","Kharagpur","Midnapore","Keshiary","Dantan","Bardhaman","Katwa","Kalna","Purulia","Raghunathpur","Baruipur","Diamond Harbour","Kakdwip","Canning","Raiganj","Islampur","Kaliaganj","Bankura-PS","Purulia-PS","Jhargram-PS","Darjeeling-PS","Malda-PS","Murshidabad-PS","Nadia-PS","North 24 PGS","South 24 PGS","Howrah-PS","Hooghly-PS","Birbhum-PS","Cooch Behar-PS","Uttar Dinajpur-PS","Dakshin Dinajpur-PS","Alipurduar-PS","Kalimpong-PS","Kolkata-PS","Paschim Bardhaman-PS","Paschim Medinipur-PS","Purba Bardhaman-PS","Purba Medinipur-PS"];
+const poPinMap={"কামারদা বাজার":"৭২১৪৩২","Kamarda Bazar":"721432","খেজুরী":"৭২১৪৩১","Khejuri":"721431","হেঁড়িয়া":"৭২১৪৩০","Heria":"721430","কাঁথি":"৭২১৪০১","Contai":"721401","এগরা":"৭২১৪৪৮","Egra":"721448","তমলুক":"৭২১৬৩৬","Tamluk":"721636","হলদিয়া":"৭২১৬০২","Haldia":"721602","নন্দীগ্রাম":"৭২১৬৫৬","Nandigram":"721656","নন্দকুমার":"৭২১৬৬৪","Nandakumar":"721664","ঘোলাবাড়":"৭২১৪৩২","Gholabard":"721432","কলাগেছিয়া":"৭২১৪৩২","Kalagechia":"721432"};
+const bn={
+"Purba Medinipur":"পূর্ব মেদিনীপুর","Paschim Medinipur":"পশ্চিম মেদিনীপুর","Paschim Bardhaman":"পশ্চিম বর্ধমান","Purba Bardhaman":"পূর্ব বর্ধমান","Nadia":"নদীয়া","North 24 Parganas":"উত্তর ২৪ পরগনা","South 24 Parganas":"দক্ষিণ ২৪ পরগনা","Howrah":"হাওড়া","Hooghly":"হুগলী","Bankura":"বাঁকুড়া","Birbhum":"বীরভূম","Murshidabad":"মুর্শিদাবাদ","Malda":"মালদা","Jalpaiguri":"জলপাইগুড়ি","Cooch Behar":"কোচবিহার","Uttar Dinajpur":"উত্তর দিনাজপুর","Dakshin Dinajpur":"দক্ষিণ দিনাজপুর","Darjeeling":"দার্জিলিং","Alipurduar":"আলিপুরদুয়ার","Kalimpong":"কালিম্পং","Jhargram":"ঝাড়গ্রাম","Kolkata":"কলকাতা","Purulia":"পুরুলিয়া",
+"KHEJURI-I":"খেজুরী-১","KHEJURI-II":"খেজুরী-২","Bhagwanpur-I":"ভগবানপুর-১","Bhagwanpur-II":"ভগবানপুর-২","Contai-I":"কাঁথি-১","Contai-II":"কাঁথি-২","Contai-III":"কাঁথি-৩","Egra-I":"এগরা-১","Egra-II":"এগরা-২","Nandakumar":"নন্দকুমার","Nandigram-I":"নন্দীগ্রাম-১","Nandigram-II":"নন্দীগ্রাম-২","Mahishadal":"মহিষাদল","Moyna":"ময়না","Tamluk":"তমলুক","Haldia":"হলদিয়া","Panskura":"পাঁশকুড়া","Kharagpur":"খড়গপুর","Midnapore":"মেদিনীপুর","Asansol":"আসানসোল","Durgapur":"দুর্গাপুর","Bardhaman":"বর্ধমান","Barasat":"বারাসাত","Baruipur":"বারুইপুর","Kalagechia":"কলাগেছিয়া","Gholabard":"ঘোলাবাড়","Kamarda Bazar":"কামারদা বাজার","Birbandar":"বীরবন্দর","Heria":"হেঁড়িয়া"
+};
+const bnRev={};Object.keys(bn).forEach(k=>{bnRev[bn[k]]=k;});
+function isBengali(s){return /[\u0980-\u09FF]/.test(s);}
+function toBnSmart(s){if(!s) return s; if(isBengali(s)) return s; if(bn[s]) return bn[s]; let found = Object.keys(bn).find(k=>k.toLowerCase()===s.toLowerCase()); if(found) return bn[found]; return s;}
+function toEnSmart(s){if(!s) return s; let t = (s||'').toString().trim(); if(!t) return t; if(!isBengali(t)) return t; if(bnRev[t]) return bnRev[t]; const hardBnToEn = {"ঘোলাবাড়":"Gholabard","কামারদা বাজার":"Kamarda Bazar","খেজুরী":"Khejuri","পূর্ব মেদিনীপুর":"Purba Medinipur","কলাগেছিয়া":"Kalagechia","বীরবন্দর":"Birbandar","হেঁড়িয়া":"Heria"}; if(hardBnToEn[t]) return hardBnToEn[t]; return t;}
+const gpData={"KHEJURI-I":["Birbandar","Heria","Kalagechia","Kamarda","Lakshi","Tikashi"],"KHEJURI-II":["Bijayanagar","Janka","Khajuri","Lakshya","Majna","Tetikta"]};
+const villData={"Kalagechia":["Gholabard","Kamarda Bazar","Kalagechia","Barabari"]};
+let lang='bn'; let salutation='মাননীয়';
+function setLang(l){lang=l;document.getElementById('bBn').classList.toggle('on',l==='bn');document.getElementById('bEn').classList.toggle('on',l==='en');document.querySelectorAll('[data-bn]').forEach(e=>{e.textContent=l==='bn'?e.dataset.bn:e.dataset.en;});renderDist();onDist();update();}
+function renderDist(){let d=document.getElementById('dist');let cur=d.value||'Purba Medinipur';d.innerHTML='';districts.forEach(di=>{let o=document.createElement('option');o.value=di;o.textContent=lang==='bn'?(bn[di]||di):di;if(di===cur)o.selected=true;d.appendChild(o);});initPoList();}
+function initPoList(){let dl=document.getElementById('poL');if(dl){dl.innerHTML='';Object.keys(poPinMap).forEach(po=>{let o=document.createElement('option');o.value=po;dl.appendChild(o);});}let dl2=document.getElementById('thL');if(dl2){dl2.innerHTML='';thanas.forEach(t=>{let o=document.createElement('option');o.value=lang==='bn'?(bn[t]||t):t;dl2.appendChild(o);});}}
+function onDist(){let dist=document.getElementById('dist').value;let b=document.getElementById('block');let cur=b.value||'';b.innerHTML='';let blocks = wbBlocks[dist] || Object.keys(gpData);blocks.forEach(bl=>{let o=document.createElement('option');o.value=bl;o.textContent=lang==='bn'?(bn[bl]||bl):bl;if(bl===cur|| (dist==='Purba Medinipur' && bl==='KHEJURI-I')) o.selected=true;b.appendChild(o);});let customOpt=document.createElement('option');customOpt.value="__custom__";customOpt.textContent=lang==='bn'?"✏️ অন্য ব্লক নিজে লিখুন (Custom Block)":"✏️ Other Block (Custom)";b.appendChild(customOpt);let customBlockDiv=document.getElementById('customBlockDiv');if(cur==="__custom__") {if(customBlockDiv) customBlockDiv.style.display='block';} else {if(customBlockDiv) customBlockDiv.style.display='none';}onBlock();}
+function onBlockCustomChange(){let b=document.getElementById('block');let div=document.getElementById('customBlockDiv');if(b.value==="__custom__") div.style.display='block';else div.style.display='none';onBlock();}
+function onBlock(){let blEl=document.getElementById('block');let bl=blEl.value;if(bl==="__custom__"){bl=document.getElementById('customBlock').value||"Custom Block";}let g=document.getElementById('gp');let cur=g.value;g.innerHTML='';let gps=gpData[bl]||["GP-1","GP-2","GP-3","GP-4","GP-5"];gps.forEach(gp=>{let o=document.createElement('option');o.value=gp;o.textContent=lang==='bn'?(bn[gp]||gp):gp;if(gp===cur||gp==='Kalagechia')o.selected=true;g.appendChild(o);});let customOpt=document.createElement('option');customOpt.value="__custom__";customOpt.textContent=lang==='bn'?"✏️ অন্য GP নিজে লিখুন":"✏️ Other GP (Custom)";g.appendChild(customOpt);onGp();}
+function onGpCustomChange(){let g=document.getElementById('gp');let div=document.getElementById('customGpDiv');if(g.value==="__custom__") div.style.display='block';else div.style.display='none';update();}
+function onGp(){renderVillSug();update();}
+function renderVillSug(){let gp=document.getElementById('gp').value;let list=villData[gp]||["Village-1","Village-2"];let div=document.getElementById('villSug');div.innerHTML='';list.forEach(v=>{let s=document.createElement('span');s.className='chip v';s.textContent=lang==='bn'?(bn[v]||v):v;s.onclick=()=>{document.getElementById('vill').value=v;update();};div.appendChild(s);});}
+function clearApplicant(){["app_vill","app_po","app_ps","app_pin","app_block","app_dist"].forEach(id=>document.getElementById(id).value='');update();}
+function onPoChange(){let po=document.getElementById('po').value.trim();if(poPinMap[po]){document.getElementById('pin').value=poPinMap[po];}else{for(let k in poPinMap){if(po.includes(k)||k.includes(po)){document.getElementById('pin').value=poPinMap[k];break;}}}update();}
+const bd={"0":"০","1":"১","2":"২","3":"৩","4":"৪","5":"৫","6":"৬","7":"৭","8":"৮","9":"৯"};const ed={"০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9"};function toBn(s){return (s||"").toString().replace(/[0-9]/g,d=>bd[d]);}function toEnNum(s){return (s||"").toString().replace(/[০-৯]/g,d=>ed[d]);}
+function fmt(n){return n.toLocaleString('en-IN');}
+function getAuthBn(a){const m={pradhan:"প্রধান",bdo:"বিডিও",sdo:"এসডিও",dm:"ডিএম",sabhapati:"সভাপতি",oc:"ওসি",ic:"আইসি",mla:"বিধায়ক"};return m[a]||a;}
+function getAuthEn(a){const m={pradhan:"Pradhan",bdo:"BDO",sdo:"SDO",dm:"DM",sabhapati:"Sabhapati",oc:"OC",ic:"IC",mla:"MLA"};return m[a]||a;}
+function getAuthTitleBn(a,isMale){if(a==='pradhan') return isMale?'মাননীয় প্রধান সাহেব সমীপে,':'মাননীয়া প্রধান সাহেবা সমীপে,';if(a==='bdo') return isMale?'মাননীয় ব্লক সমষ্টি উন্নয়ন আধিকারিক সমীপে,':'মাননীয়া ব্লক সমষ্টি উন্নয়ন আধিকারিকা সমীপে,';if(a==='sdo') return 'মাননীয় মহকুমা শাসক সমীপে,';if(a==='dm') return 'মাননীয় জেলা শাসক সমীপে,';return isMale?'মাননীয় মহাশয় সমীপে,':'মাননীয়া মহাশয়া সমীপে,';}
+function getAuthTitleEn(a,isMale){if(a==='pradhan') return isMale?'The Respected Pradhan Sir,':'The Respected Pradhan Madam,';if(a==='bdo') return 'The Respected BDO,';if(a==='sdo') return 'The Respected SDO,';if(a==='dm') return 'The Respected DM,';return isMale?'The Respected Sir,':'The Respected Madam,';}
+function getAuthAddressBn(a,gp,vill,block,dist){if(a==='pradhan') return `${gp} গ্রাম পঞ্চায়েত${vill?` (${vill})`:''}\n${block} ব্লক, ${dist} জেলা`;if(a==='bdo') return `${block} ব্লক উন্নয়ন আধিকারিকের কার্যালয়\n${block}, ${dist}`;if(a==='sdo') return `মহকুমা শাসকের কার্যালয়\n${dist} জেলা`;if(a==='dm') return `জেলা শাসকের কার্যালয়\n${dist} জেলা`;return `${gp} গ্রাম পঞ্চায়েত, ${block} ব্লক, ${dist} জেলা`;}
+function getAuthAddressEn(a,gp,vill,block,dist){if(a==='pradhan') return `${gp} Gram Panchayat${vill?` (${vill})`:''}\n${block} Block, ${dist} District`;if(a==='bdo') return `Office of the BDO\n${block}, ${dist}`;if(a==='sdo') return `Office of the SDO\n${dist} District`;if(a==='dm') return `Office of the DM\n${dist} District`;return `${gp} GP, ${block} Block, ${dist} District`;}
+function getCertBn(c){const m={income_svmcm:"স্বামী বিবেকানন্দ স্কলারশিপ আয়ের প্রমাণপত্র",income_oasis:"OASIS স্কলারশিপ আয়ের প্রমাণপত্র",income_kanyashree:"কন্যাশ্রী আয়ের প্রমাণপত্র",income_nabanna:"নবান্ন স্কলারশিপ আয়ের প্রমাণপত্র",income_aikyashree:"ঐক্যশ্রী আয়ের প্রমাণপত্র",income:"আয় শংসাপত্র",residential:"বাসিন্দা শংসাপত্র",caste:"জাতি শংসাপত্র",caste_sc:"SC জাতি শংসাপত্র",caste_st:"ST জাতি শংসাপত্র",caste_obc:"OBC জাতি শংসাপত্র",character:"চারিত্রিক শংসাপত্র",legal_heir:"লিগ্যাল হেয়ার সার্টিফিকেট",heir:"ওয়ারিশান সার্টিফিকেট",income_low:"নিম্ন আয়ের শংসাপত্র",unmarried:"অবিবাহিত শংসাপত্র",trade:"ট্রেড লাইসেন্স",electric:"বিদ্যুৎ সংযোগের অনুমতি",bpl:"BPL শংসাপত্র"};return m[c]||c;}
+function getCertEn(c){const m={income_svmcm:"Income Certificate for SVMCM",income_oasis:"Income for OASIS",income_kanyashree:"Income for Kanyashree",income_nabanna:"Income for Nabanna",income_aikyashree:"Income for Aikyashree",income:"Income Certificate",residential:"Residential Certificate",caste:"Caste Certificate",caste_sc:"SC Caste",caste_st:"ST Caste",caste_obc:"OBC Caste",character:"Character Certificate",legal_heir:"Legal Heir",heir:"Warish Certificate",income_low:"Low Income",unmarried:"Unmarried",trade:"Trade License",electric:"Electric Connection",bpl:"BPL"};return m[c]||c;}
+function getPurposeBn(p){const m={svmcm:"স্বামী বিবেকানন্দ স্কলারশিপ (SVMCM)",oasis:"OASIS স্কলারশিপ",kanyashree:"কন্যাশ্রী প্রকল্প",nabanna:"নবান্ন স্কলারশিপ",aikyashree:"ঐক্যশ্রী স্কলারশিপ",medhashree:"মেধাশ্রী স্কলারশিপ",student_credit:"স্টুডেন্ট ক্রেডিট কার্ড",job:"চাকরির আবেদন",bank_loan:"ব্যাঙ্ক লোন",college_admission:"কলেজে ভর্তি",caste_verification:"জাতি যাচাই",residential_proof:"বাসস্থানের প্রমাণ",income_proof:"আয়ের প্রমাণ",legal_heir_property:"সম্পত্তি ওয়ারিশান",pension:"পেনশন",ration:"রেশন কার্ড",passport:"পাসপোর্ট",other:"অন্যান্য কাজ"};return m[p]||p;}
+function getPurposeEn(p){const m={svmcm:"SVMCM Scholarship",oasis:"OASIS",kanyashree:"Kanyashree",nabanna:"Nabanna",aikyashree:"Aikyashree",job:"Job Application",bank_loan:"Bank Loan",college_admission:"College Admission",residential_proof:"Residential Proof",income_proof:"Income Proof",legal_heir_property:"Property Heir",pension:"Pension",ration:"Ration Card",passport:"Passport",other:"Other"};return m[p]||p;}
+function setInc(v){document.getElementById('inc').value=v;update();}
+function setSal(s){salutation=s;document.getElementById('salM').classList.toggle('on',s==='মাননীয়');document.getElementById('salF').classList.toggle('on',s==='মাননীয়া');update();}
+function copyOfficeToApplicant(){document.getElementById('app_vill').value=document.getElementById('vill').value;document.getElementById('app_po').value=document.getElementById('po').value;document.getElementById('app_ps').value=document.getElementById('thana').value;document.getElementById('app_pin').value=document.getElementById('pin').value;document.getElementById('app_block').value=document.getElementById('block').options[document.getElementById('block').selectedIndex]?.text || document.getElementById('block').value;document.getElementById('app_dist').value=document.getElementById('dist').options[document.getElementById('dist').selectedIndex]?.text || document.getElementById('dist').value;update();}
+function update(){let distEl=document.getElementById('dist'), blockEl=document.getElementById('block'), gpEl=document.getElementById('gp');let distEn=distEl.value, blockEnRaw=blockEl.value, gpEnRaw=gpEl.value;let blockEn = blockEnRaw==="__custom__" ? (document.getElementById('customBlock').value||"Custom Block") : blockEnRaw;let gpEn = gpEnRaw==="__custom__" ? (document.getElementById('customGp').value||"Custom GP") : gpEnRaw;let villInput=document.getElementById('vill').value||'', po=document.getElementById('po').value, thanaIn=document.getElementById('thana').value, pin=document.getElementById('pin').value;let appVill=document.getElementById('app_vill')?.value||villInput, appPo=document.getElementById('app_po')?.value||po, appPs=document.getElementById('app_ps')?.value||thanaIn, appPin=document.getElementById('app_pin')?.value||pin, appBlock=document.getElementById('app_block')?.value||blockEn, appDist=document.getElementById('app_dist')?.value||distEn;let an=document.getElementById('an').value, fn=document.getElementById('fn').value, inc=parseInt(document.getElementById('inc').value)||0;let auth=document.getElementById('auth').value, cert=document.getElementById('cert').value, purpose=document.getElementById('purpose')?.value||'svmcm';let dist = lang==='bn' ? toBnSmart(distEn) : toEnSmart(distEn);let block = lang==='bn' ? toBnSmart(blockEn) : toEnSmart(blockEn);let gp = lang==='bn' ? toBnSmart(gpEn) : toEnSmart(gpEn);let vill = lang==='bn' ? toBnSmart(villInput) : toEnSmart(villInput);let aVill = lang==='bn' ? toBnSmart(appVill) : toEnSmart(appVill);let aPo = lang==='bn' ? toBnSmart(appPo) : toEnSmart(appPo);let aPs = lang==='bn' ? toBnSmart(appPs) : toEnSmart(appPs);let aBlock = lang==='bn' ? toBnSmart(appBlock) : toEnSmart(appBlock);let aDist = lang==='bn' ? toBnSmart(appDist) : toEnSmart(appDist);let enFmt=fmt(inc), bnFmt=toBn(enFmt); let appPinDisplay = lang==="bn" ? toBn(toEnNum(appPin)) : toEnNum(appPin);let purposeBn=getPurposeBn(purpose), purposeEn=getPurposeEn(purpose);document.getElementById('topb').textContent=lang==='bn'?`জেলা: ${dist} | ব্লক: ${block} | জিপি: ${gp} | গ্রাম: ${vill} | ${getAuthBn(auth)} | ${getCertBn(cert)} | কারণ: ${purposeBn}`:`District: ${dist} | Block: ${block} | GP: ${gp} | Village: ${vill} | ${getAuthEn(auth)} | ${getCertEn(cert)} | Purpose: ${purposeEn}`;let toB, sub, body;let isMale = salutation==='মাননীয়';if(lang==='bn'){let authTitle = getAuthTitleBn(auth, isMale);let dear = isMale ? 'মাননীয় মহাশয়,' : 'মাননীয়া মহাশয়া,';let certName = getCertBn(cert);toB=`প্রতি,\n${authTitle}\n${getAuthAddressBn(auth, gp, vill, block, dist)}`;sub=`বিষয়: ${certName} প্রদানের জন্য আবেদন - ${purposeBn} এর জন্য`;if(cert.includes('income')){body=`${dear}\n\nসবিনয় নিবেদন এই যে, আমি ${an}, পিতা/অভিভাবক - ${fn}, গ্রাম - ${aVill}, পোস্ট - ${aPo}, থানা - ${aPs}, পিন - ${appPinDisplay}, ব্লক - ${aBlock}, জেলা - ${aDist} এর একজন স্থায়ী বাসিন্দা।\n\nআমার ${certName} প্রয়োজন, ${purposeBn} এর জন্য। আমার পরিবারের বার্ষিক আয় ${bnFmt}/- টাকা মাত্র।\n\nঅতএব, আমাকে উক্ত ${certName} প্রদান করে বাধিত করবেন।`;}else{body=`${dear}\n\nসবিনয় নিবেদন এই যে, আমি ${an}, পিতা/অভিভাবক - ${fn}, গ্রাম - ${aVill}, পোস্ট - ${aPo}, থানা - ${aPs}, পিন - ${appPinDisplay}, ব্লক - ${aBlock}, জেলা - ${aDist} এর একজন স্থায়ী বাসিন্দা।\n\nআমার ${certName} প্রয়োজন, ${purposeBn} এর জন্য।\n\nঅতএব, আমাকে উক্ত ${certName} প্রদান করে বাধিত করবেন।`;}}else{let authTitleEn = getAuthTitleEn(auth, isMale);let dearEn = isMale ? 'Respected Sir,' : 'Respected Madam,';let certNameEn = getCertEn(cert);let purposeEn2 = getPurposeEn(purpose);toB=`To,\n${authTitleEn}\n${getAuthAddressEn(auth, gp, vill, block, dist)}`;sub=`Subject: Application for Issue of ${certNameEn} - For ${purposeEn2}`;if(cert.includes('income')){body=`${dearEn}\n\nI beg to state that I am ${an}, S/O - ${fn}, Village - ${aVill}, Post - ${aPo}, P.S. - ${aPs}, PIN - ${appPin}, Block - ${aBlock}, District - ${aDist} is a permanent resident.\n\nI need ${certNameEn} for ${purposeEn2}. My family annual income is ₹ ${enFmt}/- only.\n\nTherefore, kindly issue ${certNameEn} for ${purposeEn2} and oblige.`;}else{body=`${dearEn}\n\nI beg to state that I am ${an}, S/O - ${fn}, Village - ${aVill}, Post - ${aPo}, P.S. - ${aPs}, PIN - ${appPin}, Block - ${aBlock}, District - ${aDist}.\n\nI need ${certNameEn} for ${purposeEn2}.\n\nTherefore, kindly issue ${certNameEn} and oblige.`;}}document.getElementById('prev').textContent=toB+"\n\n"+sub+"\n\n"+body;document.getElementById('sthan').innerHTML=lang==='bn'?`স্থান: ${aVill}<br>তারিখ: 9 Oct 2026`:`Place: ${aVill}<br>Date: 9 Oct 2026`;document.getElementById('binit').innerHTML=lang==='bn'?`বিনীত,<br><b style="font-size:14px">${an}</b>`:`Yours faithfully,<br><b style="font-size:14px">${an}</b>`;}
+function copyT(){let t=document.getElementById('prev').textContent+"\n\n"+document.getElementById('sthan').innerText+"\n"+document.getElementById('binit').innerText;navigator.clipboard.writeText(t);alert('Copied');}
+function wa(){let t=document.getElementById('prev').textContent;window.open('https://wa.me/?text='+encodeURIComponent(t));}
+function dl(){let t=document.getElementById('prev').textContent+"\n\n"+document.getElementById('sthan').innerText+"\n"+document.getElementById('binit').innerText;let b=new Blob([t],{type:'text/plain'});let u=URL.createObjectURL(b);let a=document.createElement('a');a.href=u;a.download='abedon.txt';a.click();}
+renderDist();onDist();update();
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</html>
