@@ -155,10 +155,10 @@ function patchGP(){
   document.querySelectorAll('div').forEach(el=>{
     const s=el.getAttribute('style')||'';
     if(s.includes('cursor:pointer') && el.textContent.includes('GP Application')){
-      el.onclick=()=>{window.open('./gp-fixed.html','_blank');};
+      el.onclick=()=>{window.open('./gp.html','_blank');};
     }
     if(s.includes('cursor:pointer') && el.textContent.includes('Gram Database')){
-      el.onclick=()=>{window.open('./gp-fixed.html','_blank');};
+      el.onclick=()=>{window.open('./gp.html','_blank');};
     }
   });
 }
