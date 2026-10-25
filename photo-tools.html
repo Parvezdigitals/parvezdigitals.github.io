@@ -5,90 +5,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Passport Photo</title>
 <style>
-body{background:#F7F1DE;font-family:sans-serif;margin:0;padding:15px;padding-bottom:60px}
-header{background:#0F4C3D;color:white;padding:15px;text-align:center;border-radius:12px;margin-bottom:15px}
-h1{margin:0;font-size:18px}
-.card{background:#FFF9E6;border:2px solid #0A1F1A;border-radius:16px;padding:16px}
-label{display:block;font-weight:bold;margin:12px 0 6px}
-input,select{width:100%;padding:12px;border:2px solid #0A1F1A;border-radius:10px;font-size:15px}
-button{width:100%;padding:14px;margin-top:12px;border:none;border-radius:30px;font-weight:bold;font-size:16px}
-.green{background:#2e7d32;color:white;display:none}
-.blue{background:#0F4C40;color:white}
-.preview{background:white;border:2px dashed #0A1F1A;border-radius:12px;padding:12px;margin-top:15px;text-align:center}
-canvas{max-width:100%;border-radius:8px}
-.info{text-align:center;margin-top:8px;font-size:13px}
-a{display:block;text-align:center;margin-top:20px;color:#0F4C3D;font-weight:bold}
+body { background: #F7F1DE; font-family: sans-serif; padding: 15px; text-align: center; }
+h2 { color: #0F4C3D; }
+input { margin: 15px 0; }
+button { background: #0F4C40; color: white; border: none; padding: 14px 25px; font-size: 16px; border-radius: 30px; margin: 8px; font-weight: bold; }
+#downloadBtn { background: #2e7d32; display: none; }
+canvas { border: 2px solid #0A1F1A; margin-top: 15px; max-width: 100%; }
 </style>
 </head>
 <body>
-<header>
-<h1>🛂 PASSPORT PHOTO</h1>
-<p style="margin:5px 0 0;font-size:12px">Indian Size • PARVEZ DIGITAL</p>
-</header>
 
-<div class="card">
-<label>সাইজ বাছাও</label>
-<select id="size">
-<option value="35x45">৩৫×৪৫ মিমি (পাসপোর্ট)</option>
-<option value="51x51">২×২ ইঞ্চি</option>
-</select>
+<h2>🛂 PASSPORT PHOTO</h2>
+<p>PARVEZ DIGITAL</p>
 
-<label>ফটো আপলোড করো</label>
-<input type="file" id="file" accept="image/*">
-
-<button class="blue" onclick="process()">প্রসেস করো</button>
-
-<div class="preview">
+<input type="file" id="photo" accept="image/*">
+<br>
+<button onclick="processPhoto()">প্রসেস করো</button>
+<br>
 <canvas id="canvas"></canvas>
-</div>
-<div class="info" id="info">ফটো আপলোড করে প্রসেস চাপো</div>
-
-<button class="green" id="dl" onclick="download()">⬇️ ডাউনলোড করো</button>
-</div>
-
-<a href="index.html">← হোমে ফিরে যাও</a>
+<br>
+<button id="downloadBtn" onclick="downloadPhoto()">⬇️ ডাউনলোড করো</button>
 
 <script>
-const canvas=document.getElementById('canvas');
-const ctx=canvas.getContext('2d');
-let ready=false;
+function processPhoto() {
+  var file = document.getElementById('photo').files[0];
+  if (!file) {
+    alert('আগে একটা ফটো সিলেক্ট করো');
+    return;
+  }
 
-function process(){
-const file=document.getElementById('file').files[0];
-if(!file)return alert('ফটো সিলেক্ট করো!');
-const reader=new FileReader();
-reader.onload=function(e){
-const img=new Image();
-img.onload=function(){
-const val=document.getElementById('size').value;
-const [w,h]=val.split('x').map(Number);
-canvas.width=Math.round(w*11.811);
-canvas.height=Math.round(h*11.811);
-const scale=Math.max(canvas.width/img.width,canvas.height/img.height);
-const sw=canvas.width/scale;
-const sh=canvas.height/scale;
-const sx=(img.width-sw)/2;
-const sy=(img.height-sh)/2;
-ctx.fillStyle='#fff';
-ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.drawImage(img,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
-document.getElementById('info').innerText=w+'×'+h+' মিমি রেডি';
-document.getElementById('dl').style.display='block';
-ready=true;
-};
-img.src=e.target.result;
-};
-reader.readAsDataURL(file);
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
+
+      // 35x45 mm size
+      canvas.width = 413;
+      canvas.height = 531;
+
+      // White background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Center crop
+      var scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+      var w = canvas.width / scale;
+      var h = canvas.height / scale;
+      var x = (img.width - w) / 2;
+      var y = (img.height - h) / 2;
+
+      ctx.drawImage(img, x, y, w, h, 0, 0, canvas.width, canvas.height);
+
+      document.getElementById('downloadBtn').style.display = 'inline-block';
+      alert('সফল! এখন ডাউনলোড বাটন চাপো');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
-function download(){
-if(!ready)return alert('আগে প্রসেস করো');
-const a=document.createElement('a');
-a.download='passport-photo.png';
-a.href=canvas.toDataURL('image/png');
-a.click();
+function downloadPhoto() {
+  var canvas = document.getElementById('canvas');
+  var link = document.createElement('a');
+  link.download = 'passport-photo.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 }
-document.getElementById('file').onchange=process;
 </script>
+
 </body>
 </html>
