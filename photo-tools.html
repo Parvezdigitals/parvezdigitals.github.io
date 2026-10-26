@@ -1,79 +1,339 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Photo</title>
-<style>
-body { background: #F7F1DE; font-family: sans-serif; padding: 15px; text-align: center; }
-h2 { color: #0F4C3D; }
-input { margin: 15px 0; }
-button { background: #0F4C40; color: white; border: none; padding: 14px 25px; font-size: 16px; border-radius: 30px; margin: 8px; font-weight: bold; }
-#downloadBtn { background: #2e7d32; display: none; }
-canvas { border: 2px solid #0A1F1A; margin-top: 15px; max-width: 100%; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parvez Digital - Service Portals</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1b4332; /* Dark Green as per your image */
+            --accent-color: #2d6a4f;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --card-bg: #fffdf5; /* Light creamy background for cards */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        /* Header Styling */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-section img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+        }
+        .logo-text h1 {
+            font-size: 18px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .logo-text p {
+            font-size: 10px;
+            margin: 0;
+            opacity: 0.8;
+        }
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 20px;
+        }
+
+        /* Main Grid */
+        .container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Service Card Styling */
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: 0.3s;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .card-icon {
+            background: #eee;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #777;
+        }
+        .card h3 {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .card p {
+            font-size: 13px;
+            color: #666;
+            margin: 0 0 15px 0;
+            line-height: 1.4;
+        }
+        .card-links {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .card-links div {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .open-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.3s;
+            display: block;
+        }
+        .open-btn:hover {
+            background-color: var(--accent-color);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            color: white;
+            font-size: 12px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .nav-item:hover, .nav-item.active {
+            opacity: 1;
+        }
+        .nav-item i {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h2>🛂 PASSPORT PHOTO</h2>
-<p>PARVEZ DIGITAL</p>
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <i class="fas fa-bars" style="cursor:pointer; font-size: 20px;"></i>
+            <div class="logo-text">
+                <h1>PARVEZ DIGITAL</h1>
+                <p>OFFICIAL SERVICE PORTALS</p>
+            </div>
+        </div>
+        <div class="header-icons">
+            <i class="fas fa-bell"></i>
+            <span style="background:red; color:white; font-size:10px; border-radius:50%; padding:2px 5px; position:absolute; right:15px; top:12px;">42</span>
+        </div>
+    </header>
 
-<input type="file" id="photo" accept="image/*">
-<br>
-<button onclick="processPhoto()">প্রসেস করো</button>
-<br>
-<canvas id="canvas"></canvas>
-<br>
-<button id="downloadBtn" onclick="downloadPhoto()">⬇️ ডাউনলোড করো</button>
+    <!-- Services Grid -->
+    <div class="container">
+        
+        <!-- Passport Photo Maker -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>Passport Photo Maker</h3>
+            <p>Create a professional passport size photo online instantly.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.passportphoto.online</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-<script>
-function processPhoto() {
-  var file = document.getElementById('photo').files[0];
-  if (!file) {
-    alert('আগে একটা ফটো সিলেক্ট করো');
-    return;
-  }
+        <!-- Photo Crop -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>Photo Crop</h3>
+            <p>Crop your photo online with precise dimensions.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.iloveimg.com/crop-image</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var img = new Image();
-    img.onload = function() {
-      var canvas = document.getElementById('canvas');
-      var ctx = canvas.getContext('2d');
+        <!-- Photo Gallery -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>Photo Gallery</h3>
+            <p>Choose JPG, PNG or WebP photos and preview for print.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> localphotogallery.com</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-      // 35x45 mm size
-      canvas.width = 413;
-      canvas.height = 531;
+        <!-- Photo Resize -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>Photo Resize</h3>
+            <p>Resize any photo to your required dimensions.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.iloveimg.com/resize-image</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-      // White background
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+        <!-- QR Lock -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>QR Lock</h3>
+            <p>Professional QR code generator official tool.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.qr-code-generator.com</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-      // Center crop
-      var scale = Math.max(canvas.width / img.width, canvas.height / img.height);
-      var w = canvas.width / scale;
-      var h = canvas.height / scale;
-      var x = (img.width - w) / 2;
-      var y = (img.height - h) / 2;
+        <!-- Resume Maker -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>Resume Maker</h3>
+            <p>Create a professional resume / CV online.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.canva.com/resumes</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-      ctx.drawImage(img, x, y, w, h, 0, 0, canvas.width, canvas.height);
+        <!-- 4x6 Photo -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>4x6 Photo</h3>
+            <p>4x6 photo resize official tool for printing.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.iloveimg.com/resize</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-      document.getElementById('downloadBtn').style.display = 'inline-block';
-      alert('সফল! এখন ডাউনলোড বাটন চাপো');
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
+        <!-- A4 Photo -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>A4 Photo</h3>
+            <p>A4 photo resize official tool for documents.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.iloveimg.com/resize</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
 
-function downloadPhoto() {
-  var canvas = document.getElementById('canvas');
-  var link = document.createElement('a');
-  link.download = 'passport-photo.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}
-</script>
+        <!-- ID Card Print -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>ID Card Print</h3>
+            <p>ID card design official tool and layout.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.canva.com/id-cards</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
+
+        <!-- Mock Test -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-link"></i></div>
+            <h3>Mock Test</h3>
+            <p>Official portal for mock tests and exam prep.</p>
+            <div class="card-links">
+                <div><i class="fas fa-building"></i> Official Portal</div>
+                <div><i class="fas fa-link"></i> www.ssc.gov.in</div>
+            </div>
+            <a href="#" class="open-btn">OPEN ↗</a>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fas fa-home"></i>
+            Home
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-bell"></i>
+            Notice
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-bars"></i>
+            Menu
+        </div>
+    </div>
 
 </body>
 </html>
